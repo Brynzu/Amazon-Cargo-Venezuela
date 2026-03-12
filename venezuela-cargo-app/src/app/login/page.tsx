@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isSignUpSuccess, setIsSignUpSuccess] = useState(false)
 
   const router = useRouter()
   const supabase = createClient()
@@ -50,9 +51,29 @@ export default function LoginPage() {
       setError(error.message)
       setIsLoading(false)
     } else {
-      router.push('/')
-      router.refresh()
+      setIsSignUpSuccess(true)
+      setIsLoading(false)
     }
+  }
+
+  if (isSignUpSuccess) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 p-4">
+        <Card className="w-full max-w-sm text-center">
+          <CardHeader>
+            <CardTitle className="text-2xl text-green-600">Success!</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-gray-600">Check your email for a confirmation link to activate your account.</p>
+          </CardContent>
+          <CardFooter>
+            <Button variant="outline" className="w-full" onClick={() => setIsSignUpSuccess(false)}>
+              Back to Login
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    )
   }
 
   return (
