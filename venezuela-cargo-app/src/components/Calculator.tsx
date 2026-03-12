@@ -7,17 +7,28 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
+import { logisticsData } from "@/lib/logistics";
 import { createClient } from "@/utils/supabase/client";
 
 export function Calculator({ user }: { user: any }) {
   const [url, setUrl] = useState("");
   const [price, setPrice] = useState("");
-  const [courier, setCourier] = useState("Liberty Express");
+
+  // Logistics & Client Details
+  const [clientName, setClientName] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedOffice, setSelectedOffice] = useState("");
+
   const [paymentMethod, setPaymentMethod] = useState("Zelle");
   const [file, setFile] = useState<File | null>(null);
   const [breakdown, setBreakdown] = useState<CostBreakdown | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Computed Options
+  const stateObj = logisticsData.states.find(s => s.name === selectedState);
+  const cityObj = stateObj?.cities.find(c => c.name === selectedCity);
 
   const supabase = createClient();
 
@@ -30,8 +41,8 @@ export function Calculator({ user }: { user: any }) {
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!breakdown || !url || !file || !user) {
-      alert("Please fill in all fields and upload a receipt.");
+    if (!breakdown || !url || !file || !user || !clientName || !whatsapp || !selectedState || !selectedCity || !selectedOffice) {
+      alert("Please fill in all logistics details and upload a receipt.");
       return;
     }
 
@@ -70,6 +81,13 @@ export function Calculator({ user }: { user: any }) {
           product_name: 'Amazon Order', // Hardcoded as requested
           total_price_usd: breakdown.totalCost,
           amazon_price: breakdown.amazonPrice,
+          client_name: clientName,
+          whatsapp: whatsapp,
+          state: selectedState,
+          city: selectedCity,
+          office: selectedOffice,
+          receipt_url: publicUrl,
+          status: 'Pending',
         })
         .select()
         .single();
@@ -96,10 +114,10 @@ export function Calculator({ user }: { user: any }) {
         throw paymentError;
       }
 
-      // Optionally update user's preferred courier if they changed it
+      // Optionally update user's preferred courier to the new office logic
       await supabase
         .from('users')
-        .update({ preferred_courier_office: courier })
+        .update({ preferred_courier_office: selectedOffice })
         .eq('id', user.id);
 
       console.log('Database record created!');
@@ -108,6 +126,11 @@ export function Calculator({ user }: { user: any }) {
       // Reset form
       setUrl("");
       setPrice("");
+      setClientName("");
+      setWhatsapp("");
+      setSelectedState("");
+      setSelectedCity("");
+      setSelectedOffice("");
       setFile(null);
       setBreakdown(null);
 
@@ -181,22 +204,68 @@ export function Calculator({ user }: { user: any }) {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             {user ? (
-              <form onSubmit={handleCreateOrder} className="w-full space-y-4">
+              <form onSubmit={handleCreateOrder} className="w-full space-y-4 text-left">
+                <hr className="my-4"/>
+                <h3 className="text-lg font-bold">1. Delivery Info</h3>
+
                 <div className="space-y-2">
-                  <Label htmlFor="courier">Preferred Courier Office</Label>
-                  <Select value={courier} onValueChange={setCourier}>
-                    <SelectTrigger id="courier">
-                      <SelectValue placeholder="Select a courier" />
+                  <Label htmlFor="clientName">Full Name</Label>
+                  <Input id="clientName" placeholder="John Doe" value={clientName} onChange={e => setClientName(e.target.value)} required />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="whatsapp">WhatsApp Number</Label>
+                  <Input id="whatsapp" placeholder="+58 412..." value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>State</Label>
+                    <Select value={selectedState} onValueChange={(val) => { setSelectedState(val); setSelectedCity(""); setSelectedOffice(""); }}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select State" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {logisticsData.states.map(s => (
+                          <SelectItem key={s.name} value={s.name}>{s.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>City</Label>
+                    <Select value={selectedCity} onValueChange={(val) => { setSelectedCity(val); setSelectedOffice(""); }} disabled={!selectedState}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select City" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {stateObj?.cities.map(c => (
+                          <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label>Preferred Courier Office</Label>
+                  <Select value={selectedOffice} onValueChange={setSelectedOffice} disabled={!selectedCity}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Office" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Liberty Express">Liberty Express</SelectItem>
-                      <SelectItem value="MRW">MRW</SelectItem>
-                      <SelectItem value="Zoom">Zoom</SelectItem>
-                      <SelectItem value="Domesa">Domesa</SelectItem>
-                      <SelectItem value="Tealca">Tealca</SelectItem>
+                      {cityObj?.offices.map(o => (
+                        <SelectItem key={o} value={o}>
+                          {o.includes('Liberty Express') ? `⭐ ${o} (Recommended)` : o}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>
+
+                <hr className="my-4"/>
+                <h3 className="text-lg font-bold">2. Payment</h3>
+
                 <div className="space-y-2">
                   <Label htmlFor="paymentMethod">Payment Method</Label>
                   <Select value={paymentMethod} onValueChange={setPaymentMethod}>

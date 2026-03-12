@@ -1,10 +1,9 @@
--- Create custom types
+-- Create custom types (Updated)
 CREATE TYPE order_status AS ENUM (
-  'pending_payment',
-  'processing',
-  'in_miami',
-  'shipped_to_vzla',
-  'ready_for_pickup'
+  'Pending',
+  'Paid',
+  'Shipped',
+  'Cancelled'
 );
 
 CREATE TYPE payment_method AS ENUM (
@@ -52,16 +51,33 @@ CREATE TRIGGER on_auth_user_created
   FOR EACH ROW EXECUTE PROCEDURE public.handle_new_user();
 
 
--- Orders Table
+-- Orders Table (Updated with Logistics, Name, Whatsapp and Receipt URL)
 CREATE TABLE public.orders (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+
+  -- New Client Info
+  client_name TEXT NOT NULL,
+  whatsapp TEXT NOT NULL,
+
+  -- Item Info
   amazon_url TEXT NOT NULL,
   product_name TEXT NOT NULL,
-  status order_status DEFAULT 'pending_payment' NOT NULL,
-  tracking_number TEXT,
   total_price_usd NUMERIC(10, 2) NOT NULL,
   amazon_price NUMERIC(10, 2) NOT NULL,
+
+  -- Order Status
+  status order_status DEFAULT 'Pending' NOT NULL,
+  tracking_number TEXT,
+
+  -- New Logistics Fields
+  state TEXT NOT NULL,
+  city TEXT NOT NULL,
+  office TEXT NOT NULL,
+
+  -- New Receipt URL (as requested by user)
+  receipt_url TEXT,
+
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -116,9 +132,26 @@ WITH CHECK (
   )
 );
 
--- Storage bucket for receipts (Requires Storage enabled in Supabase)
--- INSERT INTO storage.buckets (id, name, public) VALUES ('receipts', 'receipts', false);
+-- ==========================================
+-- ADMIN POLICIES (brynzulino@gmail.com)
+-- ==========================================
 
--- Storage Policies
--- CREATE POLICY "Users can upload own receipts" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'receipts' AND auth.uid() = owner);
--- CREATE POLICY "Users can view own receipts" ON storage.objects FOR SELECT USING (bucket_id = 'receipts' AND auth.uid() = owner);
+-- Admin can read all users
+CREATE POLICY "Admin can view all users"
+ON public.users FOR SELECT
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+
+-- Admin can read all orders
+CREATE POLICY "Admin can view all orders"
+ON public.orders FOR SELECT
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+
+-- Admin can update all orders (e.g., status)
+CREATE POLICY "Admin can update all orders"
+ON public.orders FOR UPDATE
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+
+-- Admin can read all payments
+CREATE POLICY "Admin can view all payments"
+ON public.payments FOR SELECT
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
