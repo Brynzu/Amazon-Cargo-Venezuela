@@ -64,7 +64,7 @@ export default function LoginPage() {
             <CardTitle className="text-2xl text-green-600">Success!</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-600">Check your email for a confirmation link to activate your account.</p>
+            <p className="text-gray-600">Please check your email to confirm your account.</p>
           </CardContent>
           <CardFooter>
             <Button variant="outline" className="w-full" onClick={() => setIsSignUpSuccess(false)}>

@@ -20,15 +20,6 @@ export default async function Home() {
       <main className="w-full">
         <Calculator user={user} />
       </main>
-
-      {user && (
-        <div className="mt-8 text-sm text-gray-500">
-          Logged in as: {user.email}
-          <form action="/auth/signout" method="post" className="inline ml-2">
-            <button className="underline text-blue-600 hover:text-blue-800">Sign Out</button>
-          </form>
-        </div>
-      )}
     </div>
   )
 }
