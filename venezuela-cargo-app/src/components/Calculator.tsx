@@ -8,11 +8,19 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+import { createClient } from "@/utils/supabase/client";
+
 export function Calculator({ user }: { user: any }) {
   const [url, setUrl] = useState("");
   const [price, setPrice] = useState("");
+  const [productName, setProductName] = useState("");
   const [courier, setCourier] = useState("Liberty Express");
+  const [paymentMethod, setPaymentMethod] = useState("Zelle");
+  const [file, setFile] = useState<File | null>(null);
   const [breakdown, setBreakdown] = useState<CostBreakdown | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const supabase = createClient();
 
   const handleCalculate = () => {
     const numPrice = parseFloat(price);
@@ -23,10 +31,93 @@ export function Calculator({ user }: { user: any }) {
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!breakdown || !url) return;
+    if (!breakdown || !url || !productName || !file || !user) {
+      alert("Please fill in all fields and upload a receipt.");
+      return;
+    }
 
-    // The actual submission would happen here, to Supabase
-    alert(`Order submission logic goes here for: \nURL: ${url}\nTotal: $${breakdown.totalCost}\nCourier: ${courier}`);
+    setIsSubmitting(true);
+    try {
+      console.log('Starting upload...');
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('RECEIPTS')
+        .upload(filePath, file);
+
+      if (uploadError) {
+        console.error('Upload failed:', uploadError);
+        alert('Failed to upload receipt. Check console for details.');
+        throw uploadError;
+      }
+
+      console.log('Upload success!');
+      console.log('Creating database record...');
+
+      // Get public URL for the receipt
+      const { data: { publicUrl } } = supabase.storage
+        .from('RECEIPTS')
+        .getPublicUrl(filePath);
+
+      // Insert Order
+      const { data: orderData, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: user.id,
+          amazon_url: url,
+          product_name: productName,
+          total_price_usd: breakdown.totalCost,
+          amazon_price: breakdown.amazonPrice,
+        })
+        .select()
+        .single();
+
+      if (orderError) {
+        console.error('Order creation failed:', orderError);
+        alert('Failed to create order. Check console for details.');
+        throw orderError;
+      }
+
+      // Insert Payment
+      const { error: paymentError } = await supabase
+        .from('payments')
+        .insert({
+          order_id: orderData.id,
+          method: paymentMethod,
+          receipt_screenshot_url: publicUrl,
+          amount_paid: breakdown.totalCost,
+        });
+
+      if (paymentError) {
+        console.error('Payment creation failed:', paymentError);
+        alert('Failed to create payment record. Check console for details.');
+        throw paymentError;
+      }
+
+      // Optionally update user's preferred courier if they changed it
+      await supabase
+        .from('users')
+        .update({ preferred_courier_office: courier })
+        .eq('id', user.id);
+
+      console.log('Database record created!');
+      alert('Order successfully submitted!');
+
+      // Reset form
+      setUrl("");
+      setPrice("");
+      setProductName("");
+      setFile(null);
+      setBreakdown(null);
+
+    } catch (error) {
+      console.error('Error in submission process:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -37,6 +128,15 @@ export function Calculator({ user }: { user: any }) {
           <CardDescription>Enter the Amazon link and the product price in USD.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="productName">Product Name</Label>
+            <Input
+              id="productName"
+              placeholder="e.g. Echo Dot"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+            />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="amazonUrl">Amazon Product URL</Label>
             <Input
@@ -109,11 +209,31 @@ export function Calculator({ user }: { user: any }) {
                   </Select>
                 </div>
                 <div className="space-y-2">
+                  <Label htmlFor="paymentMethod">Payment Method</Label>
+                  <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                    <SelectTrigger id="paymentMethod">
+                      <SelectValue placeholder="Select a payment method" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Zelle">Zelle</SelectItem>
+                      <SelectItem value="Binance">Binance</SelectItem>
+                      <SelectItem value="PagoMovil">PagoMovil</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
                   <Label htmlFor="receipt">Upload Payment Receipt</Label>
-                  <Input id="receipt" type="file" accept="image/*" />
+                  <Input
+                    id="receipt"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setFile(e.target.files?.[0] || null)}
+                  />
                   <p className="text-sm text-gray-500">Pay ${breakdown.totalCost} and upload screenshot</p>
                 </div>
-                <Button type="submit" className="w-full" size="lg">Submit Order</Button>
+                <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : "Submit Order"}
+                </Button>
               </form>
             ) : (
               <div className="text-center w-full">
