@@ -13,7 +13,6 @@ import { createClient } from "@/utils/supabase/client";
 export function Calculator({ user }: { user: any }) {
   const [url, setUrl] = useState("");
   const [price, setPrice] = useState("");
-  const [productName, setProductName] = useState("");
   const [courier, setCourier] = useState("Liberty Express");
   const [paymentMethod, setPaymentMethod] = useState("Zelle");
   const [file, setFile] = useState<File | null>(null);
@@ -31,7 +30,7 @@ export function Calculator({ user }: { user: any }) {
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!breakdown || !url || !productName || !file || !user) {
+    if (!breakdown || !url || !file || !user) {
       alert("Please fill in all fields and upload a receipt.");
       return;
     }
@@ -45,7 +44,7 @@ export function Calculator({ user }: { user: any }) {
       const filePath = `${fileName}`;
 
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('RECEIPTS')
+        .from('receipts')
         .upload(filePath, file);
 
       if (uploadError) {
@@ -59,7 +58,7 @@ export function Calculator({ user }: { user: any }) {
 
       // Get public URL for the receipt
       const { data: { publicUrl } } = supabase.storage
-        .from('RECEIPTS')
+        .from('receipts')
         .getPublicUrl(filePath);
 
       // Insert Order
@@ -68,7 +67,7 @@ export function Calculator({ user }: { user: any }) {
         .insert({
           user_id: user.id,
           amazon_url: url,
-          product_name: productName,
+          product_name: 'Amazon Order', // Hardcoded as requested
           total_price_usd: breakdown.totalCost,
           amazon_price: breakdown.amazonPrice,
         })
@@ -104,12 +103,11 @@ export function Calculator({ user }: { user: any }) {
         .eq('id', user.id);
 
       console.log('Database record created!');
-      alert('Order successfully submitted!');
+      alert('Order submitted! We will verify your payment shortly.');
 
       // Reset form
       setUrl("");
       setPrice("");
-      setProductName("");
       setFile(null);
       setBreakdown(null);
 
@@ -128,15 +126,6 @@ export function Calculator({ user }: { user: any }) {
           <CardDescription>Enter the Amazon link and the product price in USD.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="productName">Product Name</Label>
-            <Input
-              id="productName"
-              placeholder="e.g. Echo Dot"
-              value={productName}
-              onChange={(e) => setProductName(e.target.value)}
-            />
-          </div>
           <div className="space-y-2">
             <Label htmlFor="amazonUrl">Amazon Product URL</Label>
             <Input
@@ -220,6 +209,22 @@ export function Calculator({ user }: { user: any }) {
                       <SelectItem value="PagoMovil">PagoMovil</SelectItem>
                     </SelectContent>
                   </Select>
+
+                  {paymentMethod === 'Zelle' && (
+                    <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
+                      <strong>Send to:</strong> Brynzulino@gmail.com <br/>
+                      <strong>Name:</strong> BRYAN KLUGE
+                    </div>
+                  )}
+
+                  {paymentMethod === 'PagoMovil' && (
+                    <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
+                      <strong>Send to:</strong> <br/>
+                      <strong>Cell:</strong> 04227167657 <br/>
+                      <strong>Cedula:</strong> 30136044 <br/>
+                      <strong>BANCO:</strong> Banco Venezuela
+                    </div>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="receipt">Upload Payment Receipt</Label>
