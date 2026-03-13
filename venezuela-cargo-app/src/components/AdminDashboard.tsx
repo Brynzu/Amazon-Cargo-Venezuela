@@ -236,34 +236,47 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-2">Requested Items</p>
                 <div className="space-y-2 bg-gray-50 p-3 rounded border">
-                  {Array.isArray(selectedOrder.items) && selectedOrder.items.length > 0 ? (
-                    selectedOrder.items.map((item, idx) => (
-                      <div key={idx} className="flex justify-between items-center text-sm border-b last:border-0 pb-2 last:pb-0">
-                        <a
-                          href={item?.url || "#"}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline truncate max-w-[80%]"
-                          title={item?.url || "Link"}
-                        >
-                          Item {idx + 1}
-                        </a>
-                        <span className="font-semibold text-gray-700">${Number(item?.price || 0).toFixed(2)}</span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex justify-between items-center text-sm">
-                      <a
-                        href={selectedOrder.amazon_url || "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline truncate max-w-[80%]"
-                      >
-                        {selectedOrder.amazon_url || "Link missing"}
-                      </a>
-                      <span className="font-semibold text-gray-700">Legacy Item</span>
-                    </div>
-                  )}
+                  {(() => {
+                    let parsedItems = selectedOrder.items;
+                    if (typeof parsedItems === 'string') {
+                      try {
+                        parsedItems = JSON.parse(parsedItems);
+                      } catch (e) {
+                        parsedItems = [];
+                      }
+                    }
+
+                    if (Array.isArray(parsedItems) && parsedItems.length > 0) {
+                      return parsedItems.map((item: any, idx: number) => (
+                        <div key={idx} className="flex justify-between items-center text-sm border-b last:border-0 pb-2 last:pb-0">
+                          <a
+                            href={item?.url || "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline truncate max-w-[80%]"
+                            title={item?.url || "Link"}
+                          >
+                            Item {idx + 1}
+                          </a>
+                          <span className="font-semibold text-gray-700">${Number(item?.price || 0).toFixed(2)}</span>
+                        </div>
+                      ));
+                    } else {
+                      return (
+                        <div className="flex justify-between items-center text-sm">
+                          <a
+                            href={selectedOrder.amazon_url || "#"}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline truncate max-w-[80%]"
+                          >
+                            {selectedOrder.amazon_url || "Link missing"}
+                          </a>
+                          <span className="font-semibold text-gray-700">Legacy Item</span>
+                        </div>
+                      );
+                    }
+                  })()}
                 </div>
               </div>
 

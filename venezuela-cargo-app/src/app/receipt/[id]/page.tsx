@@ -52,19 +52,28 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
           <div className="mb-12">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">Items Included</p>
             <div className="space-y-3">
-              {Array.isArray(order.items) && order.items.length > 0 ? (
-                order.items.map((item: any, idx: number) => (
-                  <div key={idx} className="flex justify-between text-sm">
-                    <span className="text-gray-600 truncate max-w-[80%] pr-4">{item?.url || 'Item'}</span>
-                    <span className="font-medium whitespace-nowrap">${Number(item?.price || 0).toFixed(2)}</span>
-                  </div>
-                ))
-              ) : (
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600 truncate max-w-[80%] pr-4">{order.amazon_url || 'Amazon Item'}</span>
-                  <span className="font-medium whitespace-nowrap">${Number(order.amazon_price || order.total_price_usd || 0).toFixed(2)}</span>
-                </div>
-              )}
+              {(() => {
+                let parsedItems = order.items;
+                if (typeof parsedItems === 'string') {
+                  try { parsedItems = JSON.parse(parsedItems); } catch(e) { parsedItems = []; }
+                }
+
+                if (Array.isArray(parsedItems) && parsedItems.length > 0) {
+                  return parsedItems.map((item: any, idx: number) => (
+                    <div key={idx} className="flex justify-between text-sm">
+                      <span className="text-gray-600 truncate max-w-[80%] pr-4">{item?.url || 'Item'}</span>
+                      <span className="font-medium whitespace-nowrap">${Number(item?.price || 0).toFixed(2)}</span>
+                    </div>
+                  ));
+                } else {
+                  return (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600 truncate max-w-[80%] pr-4">{order.amazon_url || 'Amazon Item'}</span>
+                      <span className="font-medium whitespace-nowrap">${Number(order.amazon_price || order.total_price_usd || 0).toFixed(2)}</span>
+                    </div>
+                  );
+                }
+              })()}
             </div>
           </div>
 

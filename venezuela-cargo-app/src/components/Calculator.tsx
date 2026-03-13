@@ -116,7 +116,10 @@ export function Calculator({ user }: { user: any }) {
         .from('orders')
         .insert({
           user_id: user.id,
-          items: cleanItems,
+          items: cleanItems, // Supabase JS client automatically serializes objects/arrays for JSONB columns
+          amazon_url: cleanItems[0]?.url || "", // Pass legacy field empty or first item to avoid NOT NULL violations if schema isn't fully updated yet
+          product_name: "Multi-Item Order",
+          amazon_price: 0,
           total_price_usd: breakdown.totalCost,
           client_name: clientName,
           whatsapp: whatsapp,
