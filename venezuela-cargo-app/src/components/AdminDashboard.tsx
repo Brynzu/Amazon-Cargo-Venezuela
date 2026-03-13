@@ -27,8 +27,9 @@ type Order = {
   id: string
   client_name: string
   whatsapp: string
-  amazon_url: string
-  product_name: string
+  amazon_url?: string
+  product_name?: string
+  items?: {url: string; price: number}[]
   total_price_usd: number
   exchange_rate: number | null
   status: string
@@ -185,16 +186,37 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
               </div>
 
               <div>
-                <p className="text-sm font-semibold text-gray-500">Product URL</p>
-                <a
-                  href={selectedOrder.amazon_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline flex items-center mt-1 break-all"
-                >
-                  <ExternalLink className="h-4 w-4 mr-1 inline shrink-0" />
-                  View Item on Amazon
-                </a>
+                <p className="text-sm font-semibold text-gray-500 mb-2">Requested Items</p>
+                <div className="space-y-2 bg-gray-50 p-3 rounded border">
+                  {selectedOrder.items && selectedOrder.items.length > 0 ? (
+                    selectedOrder.items.map((item, idx) => (
+                      <div key={idx} className="flex justify-between items-center text-sm border-b last:border-0 pb-2 last:pb-0">
+                        <a
+                          href={item.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline truncate max-w-[80%]"
+                          title={item.url}
+                        >
+                          Item {idx + 1}
+                        </a>
+                        <span className="font-semibold text-gray-700">${Number(item.price).toFixed(2)}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex justify-between items-center text-sm">
+                      <a
+                        href={selectedOrder.amazon_url || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 hover:underline truncate max-w-[80%]"
+                      >
+                        {selectedOrder.amazon_url || "Link missing"}
+                      </a>
+                      <span className="font-semibold text-gray-700">Legacy Item</span>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="pt-2 border-t">

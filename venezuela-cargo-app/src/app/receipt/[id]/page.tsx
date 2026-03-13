@@ -37,7 +37,7 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-2 gap-8 mb-8">
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Billed To</p>
               <p className="text-lg font-medium">{order.client_name}</p>
@@ -49,7 +49,26 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
             </div>
           </div>
 
-          <div className="border-t border-b border-gray-200 py-6 mb-8">
+          <div className="mb-12">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">Items Included</p>
+            <div className="space-y-3">
+              {order.items && order.items.length > 0 ? (
+                order.items.map((item: any, idx: number) => (
+                  <div key={idx} className="flex justify-between text-sm">
+                    <span className="text-gray-600 truncate max-w-[80%] pr-4">{item.url}</span>
+                    <span className="font-medium whitespace-nowrap">${Number(item.price).toFixed(2)}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-600 truncate max-w-[80%] pr-4">{order.amazon_url || 'Amazon Item'}</span>
+                  <span className="font-medium whitespace-nowrap">${Number(order.amazon_price || 0).toFixed(2)}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="border-t border-b border-gray-200 py-6 mb-8 bg-gray-50/50 px-4 -mx-4 rounded-lg">
             <div className="flex justify-between items-center text-2xl font-black text-primary">
               <span>Total USD</span>
               <span>${order.total_price_usd.toFixed(2)}</span>

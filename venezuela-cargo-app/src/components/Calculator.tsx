@@ -9,12 +9,13 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { logisticsData, getUniqueStates, getCitiesByState, CourierOffice } from "@/lib/logistics";
 import { createClient } from "@/utils/supabase/client";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 
+type Item = { url: string; price: string };
+
 export function Calculator({ user }: { user: any }) {
-  const [url, setUrl] = useState("");
-  const [price, setPrice] = useState("");
+  const [items, setItems] = useState<Item[]>([{ url: "", price: "" }]);
 
   // Logistics & Client Details
   const [clientName, setClientName] = useState("");
@@ -78,16 +79,22 @@ export function Calculator({ user }: { user: any }) {
   }, [supabase]);
 
   const handleCalculate = () => {
-    const numPrice = parseFloat(price);
-    if (!isNaN(numPrice) && numPrice > 0) {
-      setBreakdown(calculateTotalCost(numPrice));
+    const total = items.reduce((acc, item) => {
+      const num = parseFloat(item.price);
+      return acc + (isNaN(num) ? 0 : num);
+    }, 0);
+
+    if (total > 0) {
+      setBreakdown(calculateTotalCost(total));
     }
   };
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!breakdown || !url || !file || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
-      alert("Please fill in all logistics details and upload a receipt.");
+    const hasInvalidItems = items.some(i => !i.url || !i.price || isNaN(parseFloat(i.price)));
+
+    if (!breakdown || hasInvalidItems || !file || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
+      alert("Please ensure all item fields, logistics details, and receipt are filled out correctly.");
       return;
     }
 
@@ -120,14 +127,15 @@ export function Calculator({ user }: { user: any }) {
       // Insert Order
       const fullOfficeString = `${selectedOfficeDetails.carrier} - ${selectedOfficeDetails.officeName} - ${selectedOfficeDetails.fullAddress}`;
 
+      // Store clean numbers in DB
+      const cleanItems = items.map(i => ({ url: i.url, price: parseFloat(i.price) }));
+
       const { data: orderData, error: orderError } = await supabase
         .from('orders')
         .insert({
           user_id: user.id,
-          amazon_url: url,
-          product_name: 'Amazon Order', // Hardcoded as requested
+          items: cleanItems,
           total_price_usd: breakdown.totalCost,
-          amazon_price: breakdown.amazonPrice,
           client_name: clientName,
           whatsapp: whatsapp,
           state: selectedOfficeDetails.state,
@@ -202,64 +210,95 @@ export function Calculator({ user }: { user: any }) {
 
   return (
     <div className="w-full max-w-lg mx-auto space-y-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Calculate Shipping</CardTitle>
-          <CardDescription>Enter the Amazon link and the product price in USD.</CardDescription>
+      <Card className="shadow-none border-gray-200">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-2xl font-bold tracking-tight">Calculate Shipping</CardTitle>
+          <CardDescription className="text-sm">Enter your product links and prices in USD.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="amazonUrl">Amazon Product URL</Label>
-            <Input
-              id="amazonUrl"
-              placeholder="https://amazon.com/dp/..."
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="price">Product Price ($)</Label>
-            <Input
-              id="price"
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
-          <Button onClick={handleCalculate} className="w-full">
-            Calculate Cost
+        <CardContent className="space-y-6">
+          {items.map((item, index) => (
+            <div key={index} className="space-y-4 p-4 border rounded-lg bg-gray-50 relative">
+              {items.length > 1 && (
+                <button
+                  onClick={() => setItems(items.filter((_, i) => i !== index))}
+                  className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                  title="Remove item"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+              <div className="space-y-2 pr-6">
+                <Label>Amazon Product URL</Label>
+                <Input
+                  placeholder="https://amazon.com/dp/..."
+                  value={item.url}
+                  onChange={(e) => {
+                    const newItems = [...items];
+                    newItems[index].url = e.target.value;
+                    setItems(newItems);
+                  }}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Product Price ($)</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  placeholder="0.00"
+                  value={item.price}
+                  onChange={(e) => {
+                    const newItems = [...items];
+                    newItems[index].price = e.target.value;
+                    setItems(newItems);
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+
+          <Button
+            variant="outline"
+            className="w-full border-dashed"
+            onClick={() => setItems([...items, { url: "", price: "" }])}
+          >
+            <Plus className="w-4 h-4 mr-2" /> Add another item
+          </Button>
+
+          <Button onClick={handleCalculate} className="w-full text-md h-12 mt-4">
+            Calculate Total Cost
           </Button>
         </CardContent>
       </Card>
 
       {breakdown && (
-        <Card className="border-green-200 shadow-md">
-          <CardHeader>
-            <CardTitle>Cost Breakdown</CardTitle>
+        <Card className="shadow-none border-primary/20 bg-primary/5">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Cost Breakdown</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Amazon Price</span>
+          <CardContent className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Items Total</span>
               <span className="font-medium">${breakdown.amazonPrice.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">US Sales Tax (7%)</span>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">US Sales Tax (7%)</span>
               <span className="font-medium">${breakdown.usTax.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Service Commission (15%)</span>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Service Commission (15%)</span>
               <span className="font-medium">${breakdown.serviceCommission.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Handling Fee</span>
+            <div className="flex justify-between text-sm">
+              <span className="text-muted-foreground">Handling Fee</span>
               <span className="font-medium">${breakdown.handlingFee.toFixed(2)}</span>
             </div>
-            <div className="border-t pt-2 mt-4 flex justify-between font-bold text-lg">
-              <span>Total Cost</span>
+            <div className="border-t border-primary/10 pt-3 mt-4 flex justify-between font-black text-xl text-primary">
+              <span>Total</span>
               <span>${breakdown.totalCost.toFixed(2)}</span>
             </div>
+            <p className="text-xs text-primary/80 mt-2">
+              <strong>Pro Tip:</strong> Para artículos de bajo costo, recuerda que el manejo mínimo es de $5 por orden para garantizar la seguridad de tu carga.
+            </p>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             {user ? (

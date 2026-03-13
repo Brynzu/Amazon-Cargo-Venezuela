@@ -6,8 +6,8 @@ import { Header } from '@/components/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'CargoBox | US to Venezuela',
-  description: 'Concierge shipping service from Amazon to Venezuela by CargoBox',
+  title: 'CargoBox - Envíos de Amazon a Venezuela (San Antonio de los Altos)',
+  description: 'Calcula tu envío desde USA a Venezuela de forma transparente y segura. Manejo mínimo de $5 por orden.',
 }
 
 import Link from 'next/link'

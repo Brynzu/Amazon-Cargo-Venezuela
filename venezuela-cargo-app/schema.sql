@@ -61,11 +61,14 @@ CREATE TABLE public.orders (
   client_name TEXT NOT NULL,
   whatsapp TEXT NOT NULL,
 
-  -- Item Info
-  amazon_url TEXT NOT NULL,
-  product_name TEXT NOT NULL,
+  -- Item Info (Legacy)
+  amazon_url TEXT,
+  product_name TEXT,
+  amazon_price NUMERIC(10, 2),
+
+  -- Multi-item Info
+  items JSONB,
   total_price_usd NUMERIC(10, 2) NOT NULL,
-  amazon_price NUMERIC(10, 2) NOT NULL,
 
   -- Order Status
   status order_status DEFAULT 'pending_payment' NOT NULL,
