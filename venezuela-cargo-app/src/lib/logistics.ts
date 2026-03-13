@@ -41,6 +41,15 @@ export const logisticsData: CourierOffice[] = [
   },
   {
     carrier: "Liberty Express",
+    state: "Miranda",
+    city: "San Antonio de Los Altos",
+    officeName: "C.C. Los Altos",
+    fullAddress: "Centro Comercial Los Altos, Planta Baja, San Antonio de Los Altos",
+    postalCode: "1204",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Centro+Comercial+Los+Altos+San+Antonio"
+  },
+  {
+    carrier: "Liberty Express",
     state: "Zulia",
     city: "Maracaibo",
     officeName: "5 de Julio",
@@ -70,6 +79,15 @@ export const logisticsData: CourierOffice[] = [
   },
   {
     carrier: "Zoom",
+    state: "Miranda",
+    city: "San Antonio de Los Altos",
+    officeName: "San Antonio",
+    fullAddress: "Av. Perimetral, C.C. Galerías Las Américas, Nivel PB, San Antonio de los Altos",
+    postalCode: "1204",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Zoom+Galerias+Las+Americas+San+Antonio+de+Los+Altos"
+  },
+  {
+    carrier: "Zoom",
     state: "Zulia",
     city: "Maracaibo",
     officeName: "Delicias",
@@ -96,6 +114,15 @@ export const logisticsData: CourierOffice[] = [
     fullAddress: "Av. La Hoyada, Centro Comercial La Hoyada, Los Teques",
     postalCode: "1201",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=Tealca+Los+Teques"
+  },
+  {
+    carrier: "Tealca",
+    state: "Miranda",
+    city: "San Antonio de Los Altos",
+    officeName: "Perimetral San Antonio",
+    fullAddress: "Av. Perimetral Francisco Salias, Sector El Pico, San Antonio de Los Altos",
+    postalCode: "1204",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Tealca+San+Antonio+de+Los+Altos"
   },
   {
     carrier: "Tealca",

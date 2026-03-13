@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { calculateTotalCost, CostBreakdown } from "@/lib/calculator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -31,6 +31,18 @@ export function Calculator({ user }: { user: any }) {
 
   // Computed Options
   const states = getUniqueStates();
+
+  // Auto-select State and City if zip code matches perfectly
+  useEffect(() => {
+    if (postalCodeInput.trim().length >= 4) {
+      const match = logisticsData.find(o => o.postalCode === postalCodeInput.trim());
+      if (match) {
+        setSelectedState(match.state);
+        setSelectedCity(match.city);
+      }
+    }
+  }, [postalCodeInput]);
+
   const cities = selectedState ? getCitiesByState(selectedState) : [];
 
   let availableOffices = logisticsData.filter(o =>
