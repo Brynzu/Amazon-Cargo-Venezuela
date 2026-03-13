@@ -10,10 +10,16 @@ export default async function AdminPage() {
     .select('*')
     .order('created_at', { ascending: false })
 
+  const { data: settings } = await supabase
+    .from('settings')
+    .select('exchange_rate')
+    .eq('id', 1)
+    .single()
+
   if (error) {
     return (
       <div className="container mx-auto py-10">
-        <h1 className="text-destructive font-bold text-2xl">Error loading orders</h1>
+        <h1 className="text-destructive font-bold text-2xl">Error loading data</h1>
         <p className="text-gray-600">{error.message}</p>
       </div>
     )
@@ -21,7 +27,10 @@ export default async function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <AdminDashboard initialOrders={orders || []} />
+      <AdminDashboard
+        initialOrders={orders || []}
+        initialExchangeRate={settings?.exchange_rate || 710.00}
+      />
     </div>
   )
 }

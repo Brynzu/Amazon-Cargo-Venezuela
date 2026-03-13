@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { logisticsData, getUniqueStates, getCitiesByState, CourierOffice } from "@/lib/logistics";
 import { createClient } from "@/utils/supabase/client";
 import { ExternalLink } from "lucide-react";
+import Link from "next/link";
 
 export function Calculator({ user }: { user: any }) {
   const [url, setUrl] = useState("");
@@ -28,6 +29,8 @@ export function Calculator({ user }: { user: any }) {
   const [file, setFile] = useState<File | null>(null);
   const [breakdown, setBreakdown] = useState<CostBreakdown | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [exchangeRate, setExchangeRate] = useState<number>(710.00);
+  const [submittedOrderId, setSubmittedOrderId] = useState<string | null>(null);
 
   // Computed Options
   const states = getUniqueStates();
@@ -63,6 +66,16 @@ export function Calculator({ user }: { user: any }) {
   const selectedOfficeDetails = logisticsData.find(o => `${o.carrier}-${o.officeName}` === selectedOfficeCode);
 
   const supabase = createClient();
+
+  useEffect(() => {
+    async function fetchRate() {
+      const { data } = await supabase.from('settings').select('exchange_rate').eq('id', 1).single();
+      if (data) {
+        setExchangeRate(data.exchange_rate);
+      }
+    }
+    fetchRate();
+  }, [supabase]);
 
   const handleCalculate = () => {
     const numPrice = parseFloat(price);
@@ -122,6 +135,7 @@ export function Calculator({ user }: { user: any }) {
           office: fullOfficeString,
           office_map_url: selectedOfficeDetails.mapUrl,
           receipt_url: publicUrl,
+          exchange_rate: exchangeRate,
           status: 'pending_payment',
         })
         .select()
@@ -156,20 +170,7 @@ export function Calculator({ user }: { user: any }) {
         .eq('id', user.id);
 
       console.log('Database record created!');
-      alert('Order submitted! We will verify your payment shortly.');
-
-      // Reset form
-      setUrl("");
-      setPrice("");
-      setClientName("");
-      setWhatsapp("");
-      setSelectedCarrier("");
-      setPostalCodeInput("");
-      setSelectedState("");
-      setSelectedCity("");
-      setSelectedOfficeCode("");
-      setFile(null);
-      setBreakdown(null);
+      setSubmittedOrderId(orderData.id);
 
     } catch (error) {
       console.error('Error in submission process:', error);
@@ -177,6 +178,27 @@ export function Calculator({ user }: { user: any }) {
       setIsSubmitting(false);
     }
   };
+
+  if (submittedOrderId) {
+    return (
+      <div className="w-full max-w-lg mx-auto space-y-8 text-center p-6 bg-white rounded-xl border shadow-sm">
+        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900">Order Submitted!</h2>
+        <p className="text-gray-600">We are verifying your payment. Your shipment will be processed shortly.</p>
+
+        <div className="mt-8 flex flex-col space-y-3">
+          <Link href={`/receipt/${submittedOrderId}`} target="_blank" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-8 w-full">
+            Download / View Receipt
+          </Link>
+          <Button variant="outline" className="w-full" onClick={() => window.location.reload()}>
+            Create Another Order
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-lg mx-auto space-y-8">
@@ -382,7 +404,17 @@ export function Calculator({ user }: { user: any }) {
                     accept="image/*"
                     onChange={(e) => setFile(e.target.files?.[0] || null)}
                   />
-                  <p className="text-sm text-gray-500">Pay ${breakdown.totalCost} and upload screenshot</p>
+                  {paymentMethod === 'PagoMovil' ? (
+                     <p className="text-sm font-bold text-primary mt-1 border p-2 rounded bg-blue-50 border-blue-200 text-center">
+                      Total a pagar: ${(breakdown.totalCost).toFixed(2)} USD
+                      <br/>
+                      <span className="text-lg">{(breakdown.totalCost * exchangeRate).toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.</span>
+                     </p>
+                  ) : (
+                     <p className="text-sm font-bold text-primary mt-1 border p-2 rounded bg-blue-50 border-blue-200 text-center">
+                      Total a pagar: ${(breakdown.totalCost).toFixed(2)} USD
+                     </p>
+                  )}
                 </div>
                 <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? "Submitting..." : "Submit Order"}

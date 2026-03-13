@@ -18,7 +18,10 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { ExternalLink } from "lucide-react"
+import Link from 'next/link'
 
 type Order = {
   id: string
@@ -27,6 +30,7 @@ type Order = {
   amazon_url: string
   product_name: string
   total_price_usd: number
+  exchange_rate: number | null
   status: string
   office: string
   office_map_url: string | null
@@ -34,10 +38,28 @@ type Order = {
   created_at: string
 }
 
-export function AdminDashboard({ initialOrders }: { initialOrders: Order[] }) {
+export function AdminDashboard({ initialOrders, initialExchangeRate }: { initialOrders: Order[], initialExchangeRate: number }) {
   const [orders, setOrders] = useState<Order[]>(initialOrders)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [exchangeRate, setExchangeRate] = useState<string>(initialExchangeRate.toString())
+  const [isSavingRate, setIsSavingRate] = useState(false)
   const supabase = createClient()
+
+  const handleSaveRate = async () => {
+    setIsSavingRate(true)
+    const newRate = parseFloat(exchangeRate)
+    const { error } = await supabase
+      .from('settings')
+      .update({ exchange_rate: newRate, updated_at: new Date().toISOString() })
+      .eq('id', 1)
+
+    if (error) {
+      alert("Failed to update exchange rate.")
+    } else {
+      alert(`Exchange rate updated to ${newRate} Bs/USD`)
+    }
+    setIsSavingRate(false)
+  }
 
   const handleStatusChange = async (orderId: string, newStatus: string) => {
     const { error } = await supabase
@@ -53,9 +75,32 @@ export function AdminDashboard({ initialOrders }: { initialOrders: Order[] }) {
     }
   }
 
+  const getWhatsAppLink = (order: Order) => {
+    const phone = order.whatsapp.replace(/\D/g, '')
+    const pdfUrl = typeof window !== 'undefined' ? `${window.location.origin}/receipt/${order.id}` : ''
+    const text = `Hola ${order.client_name}! Te escribimos de *CargoBox*. Recibimos tu orden por $${order.total_price_usd}. Puedes ver tu comprobante aquí: ${pdfUrl}`
+    return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
+  }
+
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+      <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <div className="flex items-center gap-2 bg-white p-3 rounded-md border shadow-sm">
+          <Label htmlFor="rate" className="whitespace-nowrap font-medium">Tasa del día (Bs/USD):</Label>
+          <Input
+            id="rate"
+            type="number"
+            step="0.01"
+            className="w-24 h-8"
+            value={exchangeRate}
+            onChange={(e) => setExchangeRate(e.target.value)}
+          />
+          <Button size="sm" onClick={handleSaveRate} disabled={isSavingRate}>
+            {isSavingRate ? "Saving..." : "Update"}
+          </Button>
+        </div>
+      </div>
       <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
@@ -90,9 +135,15 @@ export function AdminDashboard({ initialOrders }: { initialOrders: Order[] }) {
                     </SelectContent>
                   </Select>
                 </TableCell>
-                <TableCell className="text-right">
+                <TableCell className="text-right space-x-2 whitespace-nowrap">
+                  <a href={getWhatsAppLink(order)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-green-600 bg-background shadow-sm hover:bg-green-50 hover:text-green-700 h-8 px-3 text-green-600">
+                    WhatsApp
+                  </a>
+                  <Link href={`/receipt/${order.id}`} target="_blank" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 px-3">
+                    Ticket
+                  </Link>
                   <Button variant="outline" size="sm" onClick={() => setSelectedOrder(order)}>
-                    View Details
+                    Details
                   </Button>
                 </TableCell>
               </TableRow>

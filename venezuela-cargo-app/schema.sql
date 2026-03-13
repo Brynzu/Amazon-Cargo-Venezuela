@@ -80,6 +80,9 @@ CREATE TABLE public.orders (
   -- New Receipt URL (as requested by user)
   receipt_url TEXT,
 
+  -- Frozen Exchange Rate at time of purchase
+  exchange_rate NUMERIC(10, 2),
+
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -133,6 +136,31 @@ WITH CHECK (
     AND public.orders.user_id = auth.uid()
   )
 );
+
+-- ==========================================
+-- SETTINGS TABLE (Global Configuration)
+-- ==========================================
+CREATE TABLE public.settings (
+  id INT PRIMARY KEY DEFAULT 1,
+  exchange_rate NUMERIC(10, 2) DEFAULT 710.00 NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Insert default row
+INSERT INTO public.settings (id, exchange_rate) VALUES (1, 710.00) ON CONFLICT (id) DO NOTHING;
+
+ALTER TABLE public.settings ENABLE ROW LEVEL SECURITY;
+
+-- Anyone can read settings
+CREATE POLICY "Anyone can view settings"
+ON public.settings FOR SELECT
+USING (true);
+
+-- Only admin can update settings
+CREATE POLICY "Admin can update settings"
+ON public.settings FOR UPDATE
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+
 
 -- ==========================================
 -- ADMIN POLICIES (brynzulino@gmail.com)

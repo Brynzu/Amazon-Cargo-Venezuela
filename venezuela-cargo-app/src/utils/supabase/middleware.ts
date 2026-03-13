@@ -44,15 +44,11 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith('/login') &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    request.nextUrl.pathname.startsWith('/dashboard')
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
+  // Protect /receipt routes so users can only see them if logged in
+  if (!user && request.nextUrl.pathname.startsWith('/receipt')) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
+    // Optional: add a ?next=... parameter to redirect back after login
     return NextResponse.redirect(url)
   }
 

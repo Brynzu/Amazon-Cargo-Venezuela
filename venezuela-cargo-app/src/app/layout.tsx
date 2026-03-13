@@ -6,8 +6,8 @@ import { Header } from '@/components/Header'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Venezuela Cargo App',
-  description: 'Concierge shipping service from Amazon to Venezuela',
+  title: 'CargoBox | US to Venezuela',
+  description: 'Concierge shipping service from Amazon to Venezuela by CargoBox',
 }
 
 export default function RootLayout({

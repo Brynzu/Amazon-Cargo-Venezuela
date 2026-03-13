@@ -20,7 +20,10 @@ export async function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2">
-          <span className="font-bold text-xl tracking-tight text-primary">Venezuela Cargo App</span>
+          <div className="w-8 h-8 bg-primary rounded flex items-center justify-center">
+            <span className="text-white font-black text-lg">C</span>
+          </div>
+          <span className="font-bold text-xl tracking-tight text-primary">Cargo<span className="text-secondary">Box</span></span>
         </Link>
         <div className="flex items-center gap-4">
           {user ? (
