@@ -129,10 +129,10 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="pending_payment">Pending Payment</SelectItem>
+                      <SelectItem value="pending_payment">Pending Verification</SelectItem>
                       <SelectItem value="processing">Processing</SelectItem>
-                      <SelectItem value="in_miami">In Miami</SelectItem>
-                      <SelectItem value="shipped_to_vzla">Shipped to Vzla</SelectItem>
+                      <SelectItem value="in_miami">Received in Miami</SelectItem>
+                      <SelectItem value="shipped_to_vzla">In Transit to VZLA</SelectItem>
                       <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
                     </SelectContent>
                   </Select>
@@ -188,19 +188,19 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-2">Requested Items</p>
                 <div className="space-y-2 bg-gray-50 p-3 rounded border">
-                  {selectedOrder.items && selectedOrder.items.length > 0 ? (
+                  {Array.isArray(selectedOrder.items) && selectedOrder.items.length > 0 ? (
                     selectedOrder.items.map((item, idx) => (
                       <div key={idx} className="flex justify-between items-center text-sm border-b last:border-0 pb-2 last:pb-0">
                         <a
-                          href={item.url}
+                          href={item?.url || "#"}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:underline truncate max-w-[80%]"
-                          title={item.url}
+                          title={item?.url || "Link"}
                         >
                           Item {idx + 1}
                         </a>
-                        <span className="font-semibold text-gray-700">${Number(item.price).toFixed(2)}</span>
+                        <span className="font-semibold text-gray-700">${Number(item?.price || 0).toFixed(2)}</span>
                       </div>
                     ))
                   ) : (

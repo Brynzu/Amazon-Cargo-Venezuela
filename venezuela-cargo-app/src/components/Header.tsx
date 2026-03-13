@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { User, LogOut, Box } from 'lucide-react'
+import { User, LogOut, Box, Menu, PlusCircle, ListOrdered } from 'lucide-react'
 
 export async function Header() {
   const supabase = await createClient()
@@ -27,24 +27,37 @@ export async function Header() {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                  <Avatar className="h-10 w-10">
-                    <AvatarFallback className="bg-primary text-primary-foreground">
-                      {user.email?.charAt(0).toUpperCase() || <User className="h-5 w-5" />}
-                    </AvatarFallback>
-                  </Avatar>
+                <Button variant="ghost" size="icon" className="h-10 w-10 rounded-full border border-gray-200">
+                  <Menu className="h-5 w-5 text-primary" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
                     <p className="text-sm font-medium leading-none">Account</p>
-                    <p className="text-xs leading-none text-muted-foreground">
+                    <p className="text-xs leading-none text-muted-foreground truncate">
                       {user.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/" className="flex w-full items-center">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    <span>New Order</span>
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/orders" className="flex w-full items-center">
+                    <ListOrdered className="mr-2 h-4 w-4" />
+                    <span>My Orders</span>
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
+
                 <DropdownMenuItem asChild className="cursor-pointer text-destructive focus:text-destructive">
                   <form action="/auth/signout" method="post" className="w-full">
                     <button type="submit" className="flex w-full items-center">
