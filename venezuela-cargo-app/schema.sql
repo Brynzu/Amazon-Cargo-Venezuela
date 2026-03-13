@@ -1,9 +1,10 @@
 -- Create custom types (Updated)
 CREATE TYPE order_status AS ENUM (
-  'Pending',
-  'Paid',
-  'Shipped',
-  'Cancelled'
+  'pending_payment',
+  'processing',
+  'in_miami',
+  'shipped_to_vzla',
+  'ready_for_pickup'
 );
 
 CREATE TYPE payment_method AS ENUM (
@@ -67,7 +68,7 @@ CREATE TABLE public.orders (
   amazon_price NUMERIC(10, 2) NOT NULL,
 
   -- Order Status
-  status order_status DEFAULT 'Pending' NOT NULL,
+  status order_status DEFAULT 'pending_payment' NOT NULL,
   tracking_number TEXT,
 
   -- New Logistics Fields

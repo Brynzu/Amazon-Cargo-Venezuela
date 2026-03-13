@@ -76,14 +76,15 @@ export function AdminDashboard({ initialOrders }: { initialOrders: Order[] }) {
                     value={order.status}
                     onValueChange={(val) => handleStatusChange(order.id, val)}
                   >
-                    <SelectTrigger className="w-[130px]">
+                    <SelectTrigger className="w-[160px]">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                      <SelectItem value="Paid">Paid</SelectItem>
-                      <SelectItem value="Shipped">Shipped</SelectItem>
-                      <SelectItem value="Cancelled">Cancelled</SelectItem>
+                      <SelectItem value="pending_payment">Pending Payment</SelectItem>
+                      <SelectItem value="processing">Processing</SelectItem>
+                      <SelectItem value="in_miami">In Miami</SelectItem>
+                      <SelectItem value="shipped_to_vzla">Shipped to Vzla</SelectItem>
+                      <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
                     </SelectContent>
                   </Select>
                 </TableCell>

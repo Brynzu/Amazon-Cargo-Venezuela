@@ -87,7 +87,7 @@ export function Calculator({ user }: { user: any }) {
           city: selectedCity,
           office: selectedOffice,
           receipt_url: publicUrl,
-          status: 'Pending',
+          status: 'pending_payment',
         })
         .select()
         .single();
