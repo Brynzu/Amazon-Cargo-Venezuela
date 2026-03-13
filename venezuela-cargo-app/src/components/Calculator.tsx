@@ -20,7 +20,6 @@ export function Calculator({ user }: { user: any }) {
   // Logistics & Client Details
   const [clientName, setClientName] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
-  const [selectedCarrier, setSelectedCarrier] = useState("");
   const [postalCodeInput, setPostalCodeInput] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
@@ -50,7 +49,6 @@ export function Calculator({ user }: { user: any }) {
   const cities = selectedState ? getCitiesByState(selectedState) : [];
 
   let availableOffices = logisticsData.filter(o =>
-    (!selectedCarrier || o.carrier === selectedCarrier) &&
     (!selectedState || o.state === selectedState) &&
     (!selectedCity || o.city === selectedCity)
   );
@@ -316,21 +314,7 @@ export function Calculator({ user }: { user: any }) {
                   <Input id="whatsapp" placeholder="+58 412..." value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
                 </div>
 
-                <div className="space-y-2">
-                  <Label>Step 1: Carrier (Optional)</Label>
-                  <Select value={selectedCarrier} onValueChange={(val) => { setSelectedCarrier(val); setSelectedOfficeCode(""); }}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Any Carrier" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Liberty Express">Liberty Express</SelectItem>
-                      <SelectItem value="Zoom">Zoom</SelectItem>
-                      <SelectItem value="Tealca">Tealca</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-2 mt-4">
                   <div className="space-y-2 col-span-1">
                     <Label>Zip Code</Label>
                     <Input placeholder="e.g. 1060" value={postalCodeInput} onChange={e => setPostalCodeInput(e.target.value)} />
@@ -364,10 +348,10 @@ export function Calculator({ user }: { user: any }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Step 3: Select Office Address</Label>
+                  <Label>Select Office Address (Liberty Express)</Label>
                   <Select value={selectedOfficeCode} onValueChange={setSelectedOfficeCode}>
                     <SelectTrigger className="h-auto whitespace-normal text-left py-3">
-                      <SelectValue placeholder="Choose a physical location..." />
+                      <SelectValue placeholder="Choose a Liberty Express location..." />
                     </SelectTrigger>
                     <SelectContent className="max-w-[350px]">
                       {availableOffices.map((o) => {

@@ -1,4 +1,4 @@
-export type Carrier = "Liberty Express" | "Zoom" | "Tealca";
+export type Carrier = "Liberty Express";
 
 export interface CourierOffice {
   carrier: Carrier;
@@ -11,7 +11,24 @@ export interface CourierOffice {
 }
 
 export const logisticsData: CourierOffice[] = [
-  // LIBERTY EXPRESS
+  {
+    carrier: "Liberty Express",
+    state: "Miranda",
+    city: "San Antonio de Los Altos",
+    officeName: "C.C. Los Altos",
+    fullAddress: "Centro Comercial Los Altos, Planta Baja, San Antonio de Los Altos",
+    postalCode: "1204",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Centro+Comercial+Los+Altos+San+Antonio"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Miranda",
+    city: "Guarenas",
+    officeName: "Buenaventura",
+    fullAddress: "Centro Comercial Buenaventura, Nivel Planta Baja, Guarenas",
+    postalCode: "1220",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Buenaventura+Guarenas"
+  },
   {
     carrier: "Liberty Express",
     state: "Distrito Capital",
@@ -32,21 +49,30 @@ export const logisticsData: CourierOffice[] = [
   },
   {
     carrier: "Liberty Express",
-    state: "Miranda",
-    city: "Guarenas",
-    officeName: "Buenaventura",
-    fullAddress: "Centro Comercial Buenaventura, Nivel Planta Baja, Guarenas",
-    postalCode: "1220",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Buenaventura+Guarenas"
+    state: "Aragua",
+    city: "Maracay",
+    officeName: "Las Delicias",
+    fullAddress: "Av. Las Delicias, Centro Comercial Locatel, Planta Baja",
+    postalCode: "2102",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Las+Delicias+Maracay"
   },
   {
     carrier: "Liberty Express",
-    state: "Miranda",
-    city: "San Antonio de Los Altos",
-    officeName: "C.C. Los Altos",
-    fullAddress: "Centro Comercial Los Altos, Planta Baja, San Antonio de Los Altos",
-    postalCode: "1204",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Centro+Comercial+Los+Altos+San+Antonio"
+    state: "Carabobo",
+    city: "Valencia",
+    officeName: "El Trigal",
+    fullAddress: "Av. Mañongo, C.C. Patio Trigal",
+    postalCode: "2001",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+El+Trigal+Valencia"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Lara",
+    city: "Barquisimeto",
+    officeName: "Este",
+    fullAddress: "Av. Los Leones, Centro Empresarial",
+    postalCode: "3001",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Los+Leones+Barquisimeto"
   },
   {
     carrier: "Liberty Express",
@@ -57,81 +83,104 @@ export const logisticsData: CourierOffice[] = [
     postalCode: "4002",
     mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+5+de+Julio+Maracaibo"
   },
-
-  // ZOOM
   {
-    carrier: "Zoom",
-    state: "Distrito Capital",
-    city: "Caracas",
-    officeName: "La Urbina",
-    fullAddress: "Av. Principal de La Urbina, Edificio Zoom, Caracas",
-    postalCode: "1073",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Zoom+La+Urbina+Caracas"
+    carrier: "Liberty Express",
+    state: "Anzoátegui",
+    city: "Lechería",
+    officeName: "Principal",
+    fullAddress: "Av. Principal de Lechería, Centro Comercial",
+    postalCode: "6016",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Lecheria"
   },
   {
-    carrier: "Zoom",
-    state: "Miranda",
-    city: "Guarenas",
-    officeName: "Guarenas Centro",
-    fullAddress: "Calle Comercio, Edificio Don Bosco, Planta Baja, Guarenas",
-    postalCode: "1220",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Zoom+Guarenas+Centro"
+    carrier: "Liberty Express",
+    state: "Bolívar",
+    city: "Puerto Ordaz",
+    officeName: "Alta Vista",
+    fullAddress: "Carrera Guri, Sector Alta Vista Sur",
+    postalCode: "8050",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Alta+Vista+Puerto+Ordaz"
   },
   {
-    carrier: "Zoom",
-    state: "Miranda",
-    city: "San Antonio de Los Altos",
-    officeName: "San Antonio",
-    fullAddress: "Av. Perimetral, C.C. Galerías Las Américas, Nivel PB, San Antonio de los Altos",
-    postalCode: "1204",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Zoom+Galerias+Las+Americas+San+Antonio+de+Los+Altos"
+    carrier: "Liberty Express",
+    state: "Monagas",
+    city: "Maturín",
+    officeName: "Juanico",
+    fullAddress: "Av. Alirio Ugarte Pelayo, C.C. Monagas Plaza",
+    postalCode: "6201",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Maturin"
   },
   {
-    carrier: "Zoom",
-    state: "Zulia",
-    city: "Maracaibo",
-    officeName: "Delicias",
-    fullAddress: "Av. 15 Delicias con Calle 78, Maracaibo",
-    postalCode: "4001",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Zoom+Delicias+Maracaibo"
-  },
-
-  // TEALCA
-  {
-    carrier: "Tealca",
-    state: "Distrito Capital",
-    city: "Caracas",
-    officeName: "Sabanagrande",
-    fullAddress: "Av. Casanova, Sabana Grande, Caracas",
-    postalCode: "1050",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Tealca+Sabana+Grande+Caracas"
+    carrier: "Liberty Express",
+    state: "Nueva Esparta",
+    city: "Porlamar",
+    officeName: "Sigo",
+    fullAddress: "Av. Juan Bautista Arismendi, C.C. Sigo",
+    postalCode: "6301",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Porlamar"
   },
   {
-    carrier: "Tealca",
-    state: "Miranda",
-    city: "Los Teques",
-    officeName: "Centro Los Teques",
-    fullAddress: "Av. La Hoyada, Centro Comercial La Hoyada, Los Teques",
-    postalCode: "1201",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Tealca+Los+Teques"
+    carrier: "Liberty Express",
+    state: "Táchira",
+    city: "San Cristóbal",
+    officeName: "Barrio Obrero",
+    fullAddress: "Carrera 22 con Calle 10, Barrio Obrero",
+    postalCode: "5001",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+San+Cristobal"
   },
   {
-    carrier: "Tealca",
-    state: "Miranda",
-    city: "San Antonio de Los Altos",
-    officeName: "Perimetral San Antonio",
-    fullAddress: "Av. Perimetral Francisco Salias, Sector El Pico, San Antonio de Los Altos",
-    postalCode: "1204",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Tealca+San+Antonio+de+Los+Altos"
+    carrier: "Liberty Express",
+    state: "Mérida",
+    city: "Mérida",
+    officeName: "Las Américas",
+    fullAddress: "Av. Las Américas, C.C. Plaza Mayor",
+    postalCode: "5101",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Merida"
   },
   {
-    carrier: "Tealca",
-    state: "Zulia",
-    city: "Maracaibo",
-    officeName: "Bella Vista",
-    fullAddress: "Av. 4 Bella Vista, Sector La Lago, Maracaibo",
-    postalCode: "4002",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Tealca+Bella+Vista+Maracaibo"
+    carrier: "Liberty Express",
+    state: "Falcón",
+    city: "Punto Fijo",
+    officeName: "Sambil",
+    fullAddress: "Av. Intercomunal Alí Primera, C.C. Sambil Paraguaná",
+    postalCode: "4102",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Punto+Fijo"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Portuguesa",
+    city: "Acarigua",
+    officeName: "Centro",
+    fullAddress: "Av. Libertador, Edificio Central",
+    postalCode: "3301",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Acarigua"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Barinas",
+    city: "Barinas",
+    officeName: "Alto Barinas",
+    fullAddress: "Av. Los Andes, C.C. Cima",
+    postalCode: "5201",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Barinas"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Yaracuy",
+    city: "San Felipe",
+    officeName: "Independencia",
+    fullAddress: "5ta Avenida con Calle 31",
+    postalCode: "3201",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+San+Felipe"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "La Guaira",
+    city: "Maiquetía",
+    officeName: "Centro",
+    fullAddress: "Calle Los Baños, Centro Comercial Maiquetía Plaza",
+    postalCode: "1160",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Maiquetia"
   }
 ];
 
