@@ -56,6 +56,20 @@ export async function Header() {
                   </Link>
                 </DropdownMenuItem>
 
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="#" className="flex w-full items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link href="/orders" className="flex w-full items-center">
+                    <Box className="mr-2 h-4 w-4" />
+                    <span>Notifications</span>
+                  </Link>
+                </DropdownMenuItem>
+
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem asChild className="cursor-pointer text-destructive focus:text-destructive">

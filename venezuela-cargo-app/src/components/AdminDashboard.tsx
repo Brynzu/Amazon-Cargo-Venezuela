@@ -33,6 +33,7 @@ type Order = {
   total_price_usd: number
   exchange_rate: number | null
   status: string
+  rejection_reason: string | null
   office: string
   office_map_url: string | null
   receipt_url: string | null
@@ -44,6 +45,11 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [exchangeRate, setExchangeRate] = useState<string>(initialExchangeRate.toString())
   const [isSavingRate, setIsSavingRate] = useState(false)
+
+  // Rejection State
+  const [rejectOrderId, setRejectOrderId] = useState<string | null>(null)
+  const [rejectReason, setRejectReason] = useState<string>("")
+
   const supabase = createClient()
 
   const handleSaveRate = async () => {
@@ -62,18 +68,25 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
     setIsSavingRate(false)
   }
 
-  const handleStatusChange = async (orderId: string, newStatus: string) => {
+  const handleStatusChange = async (orderId: string, newStatus: string, additionalPayload: any = {}) => {
     const { error } = await supabase
       .from('orders')
-      .update({ status: newStatus })
+      .update({ status: newStatus, ...additionalPayload })
       .eq('id', orderId)
 
     if (error) {
       alert("Error updating order status.")
       console.error(error)
     } else {
-      setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus } : o))
+      setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, ...additionalPayload } : o))
     }
+  }
+
+  const confirmRejection = async () => {
+    if (!rejectOrderId) return;
+    await handleStatusChange(rejectOrderId, 'rejected', { rejection_reason: rejectReason });
+    setRejectOrderId(null);
+    setRejectReason("");
   }
 
   const getWhatsAppLink = (order: Order) => {
@@ -121,21 +134,34 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                 <TableCell>{order.client_name}</TableCell>
                 <TableCell>${order.total_price_usd.toFixed(2)}</TableCell>
                 <TableCell>
-                  <Select
-                    value={order.status}
-                    onValueChange={(val) => handleStatusChange(order.id, val)}
-                  >
-                    <SelectTrigger className="w-[160px]">
-                      <SelectValue placeholder="Status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="pending_payment">Pending Verification</SelectItem>
-                      <SelectItem value="processing">Processing</SelectItem>
-                      <SelectItem value="in_miami">Received in Miami</SelectItem>
-                      <SelectItem value="shipped_to_vzla">In Transit to VZLA</SelectItem>
-                      <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {order.status === 'awaiting_approval' ? (
+                    <div className="flex space-x-2">
+                      <Button size="sm" className="h-8" onClick={() => handleStatusChange(order.id, 'pending_payment')}>
+                        Approve
+                      </Button>
+                      <Button size="sm" variant="destructive" className="h-8" onClick={() => setRejectOrderId(order.id)}>
+                        Reject
+                      </Button>
+                    </div>
+                  ) : (
+                    <Select
+                      value={order.status}
+                      onValueChange={(val) => handleStatusChange(order.id, val)}
+                    >
+                      <SelectTrigger className="w-[160px]">
+                        <SelectValue placeholder="Status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="awaiting_approval">Awaiting Approval</SelectItem>
+                        <SelectItem value="rejected">Rejected</SelectItem>
+                        <SelectItem value="pending_payment">Pending Verification</SelectItem>
+                        <SelectItem value="processing">Processing</SelectItem>
+                        <SelectItem value="in_miami">Received in Miami</SelectItem>
+                        <SelectItem value="shipped_to_vzla">In Transit to VZLA</SelectItem>
+                        <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
                 </TableCell>
                 <TableCell className="text-right space-x-2 whitespace-nowrap">
                   {order.whatsapp ? (
@@ -166,6 +192,28 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={!!rejectOrderId} onOpenChange={(open) => !open && setRejectOrderId(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Reject Order</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label>Reason for rejection (Visible to client)</Label>
+              <Input
+                value={rejectReason}
+                onChange={(e) => setRejectReason(e.target.value)}
+                placeholder="e.g., Links are invalid, prohibited item..."
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" onClick={() => setRejectOrderId(null)}>Cancel</Button>
+              <Button variant="destructive" onClick={confirmRejection} disabled={!rejectReason}>Confirm Rejection</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!selectedOrder} onOpenChange={(open) => !open && setSelectedOrder(null)}>
         <DialogContent className="max-w-xl">

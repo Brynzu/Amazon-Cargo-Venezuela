@@ -68,9 +68,15 @@ export function Calculator({ user }: { user: any }) {
 
   useEffect(() => {
     async function fetchRate() {
-      const { data } = await supabase.from('settings').select('exchange_rate').eq('id', 1).single();
-      if (data) {
-        setExchangeRate(data.exchange_rate);
+      try {
+        const { data, error } = await supabase.from('settings').select('exchange_rate').eq('id', 1).single();
+        if (data && !error) {
+          setExchangeRate(data.exchange_rate);
+        } else {
+          console.warn("Settings table might not exist yet or lacks RLS. Fallback to 710.", error);
+        }
+      } catch (err) {
+        console.error("Fetch rate error:", err);
       }
     }
     fetchRate();
@@ -91,36 +97,14 @@ export function Calculator({ user }: { user: any }) {
     e.preventDefault();
     const hasInvalidItems = items.some(i => !i.url || !i.price || isNaN(parseFloat(i.price)));
 
-    if (!breakdown || hasInvalidItems || !file || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
-      alert("Please ensure all item fields, logistics details, and receipt are filled out correctly.");
+    if (!breakdown || hasInvalidItems || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
+      alert("Please ensure all item fields and logistics details are filled out correctly.");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      console.log('Starting upload...');
-
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
-      const filePath = `${fileName}`;
-
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from('receipts')
-        .upload(filePath, file);
-
-      if (uploadError) {
-        console.error('Upload failed:', uploadError);
-        alert('Failed to upload receipt. Check console for details.');
-        throw uploadError;
-      }
-
-      console.log('Upload success!');
       console.log('Creating database record...');
-
-      // Get public URL for the receipt
-      const { data: { publicUrl } } = supabase.storage
-        .from('receipts')
-        .getPublicUrl(filePath);
 
       // Insert Order
       const fullOfficeString = `${selectedOfficeDetails.carrier} - ${selectedOfficeDetails.officeName} - ${selectedOfficeDetails.fullAddress}`;
@@ -140,9 +124,8 @@ export function Calculator({ user }: { user: any }) {
           city: selectedOfficeDetails.city,
           office: fullOfficeString,
           office_map_url: selectedOfficeDetails.mapUrl,
-          receipt_url: publicUrl,
           exchange_rate: exchangeRate,
-          status: 'pending_payment',
+          status: 'awaiting_approval',
         })
         .select()
         .single();
@@ -151,22 +134,6 @@ export function Calculator({ user }: { user: any }) {
         console.error('Order creation failed:', orderError);
         alert('Failed to create order. Check console for details.');
         throw orderError;
-      }
-
-      // Insert Payment
-      const { error: paymentError } = await supabase
-        .from('payments')
-        .insert({
-          order_id: orderData.id,
-          method: paymentMethod,
-          receipt_screenshot_url: publicUrl,
-          amount_paid: breakdown.totalCost,
-        });
-
-      if (paymentError) {
-        console.error('Payment creation failed:', paymentError);
-        alert('Failed to create payment record. Check console for details.');
-        throw paymentError;
       }
 
       // Optionally update user's preferred courier to the new office logic
@@ -188,18 +155,20 @@ export function Calculator({ user }: { user: any }) {
   if (submittedOrderId) {
     return (
       <div className="w-full max-w-lg mx-auto space-y-8 text-center p-6 bg-white rounded-xl border shadow-sm">
-        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-blue-100 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
         </div>
-        <h2 className="text-2xl font-bold text-gray-900">Order Submitted!</h2>
-        <p className="text-gray-600">We are verifying your payment. Your shipment will be processed shortly.</p>
+        <h2 className="text-2xl font-bold text-gray-900">Order Submitted for Approval!</h2>
+        <p className="text-gray-600 mt-2">
+          Your request has been sent successfully. Once an Admin approves your items, you'll be able to process the payment in the 'My Orders' tab.
+        </p>
 
         <div className="mt-8 flex flex-col space-y-3">
-          <Link href={`/receipt/${submittedOrderId}`} target="_blank" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-8 w-full">
-            Download / View Receipt
+          <Link href="/orders" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-8 w-full">
+            Go to My Orders
           </Link>
           <Button variant="outline" className="w-full" onClick={() => window.location.reload()}>
-            Create Another Order
+            Submit Another Request
           </Button>
         </div>
       </div>
@@ -387,60 +356,8 @@ export function Calculator({ user }: { user: any }) {
                   )}
                 </div>
 
-                <hr className="my-4"/>
-                <h3 className="text-lg font-bold">2. Payment</h3>
-
-                <div className="space-y-2">
-                  <Label htmlFor="paymentMethod">Payment Method</Label>
-                  <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                    <SelectTrigger id="paymentMethod">
-                      <SelectValue placeholder="Select a payment method" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Zelle">Zelle</SelectItem>
-                      <SelectItem value="Binance">Binance</SelectItem>
-                      <SelectItem value="PagoMovil">PagoMovil</SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  {paymentMethod === 'Zelle' && (
-                    <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
-                      <strong>Send to:</strong> Brynzulino@gmail.com <br/>
-                      <strong>Name:</strong> BRYAN KLUGE
-                    </div>
-                  )}
-
-                  {paymentMethod === 'PagoMovil' && (
-                    <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-blue-800">
-                      <strong>Send to:</strong> <br/>
-                      <strong>Cell:</strong> 04227167657 <br/>
-                      <strong>Cedula:</strong> 30136044 <br/>
-                      <strong>BANCO:</strong> Banco Venezuela
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="receipt">Upload Payment Receipt</Label>
-                  <Input
-                    id="receipt"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setFile(e.target.files?.[0] || null)}
-                  />
-                  {paymentMethod === 'PagoMovil' ? (
-                     <p className="text-sm font-bold text-primary mt-1 border p-2 rounded bg-blue-50 border-blue-200 text-center">
-                      Total a pagar: ${(breakdown.totalCost).toFixed(2)} USD
-                      <br/>
-                      <span className="text-lg">{(breakdown.totalCost * exchangeRate).toLocaleString('es-VE', {minimumFractionDigits: 2})} Bs.</span>
-                     </p>
-                  ) : (
-                     <p className="text-sm font-bold text-primary mt-1 border p-2 rounded bg-blue-50 border-blue-200 text-center">
-                      Total a pagar: ${(breakdown.totalCost).toFixed(2)} USD
-                     </p>
-                  )}
-                </div>
-                <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
-                  {isSubmitting ? "Submitting..." : "Submit Order"}
+                <Button type="submit" className="w-full mt-4" size="lg" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : "Submit for Approval"}
                 </Button>
               </form>
             ) : (

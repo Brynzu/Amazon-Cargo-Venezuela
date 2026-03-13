@@ -1,5 +1,10 @@
 -- Create custom types (Updated)
+-- Run this to update existing enum if needed:
+-- ALTER TYPE order_status ADD VALUE 'awaiting_approval';
+-- ALTER TYPE order_status ADD VALUE 'rejected';
 CREATE TYPE order_status AS ENUM (
+  'awaiting_approval',
+  'rejected',
   'pending_payment',
   'processing',
   'in_miami',
@@ -71,8 +76,9 @@ CREATE TABLE public.orders (
   total_price_usd NUMERIC(10, 2) NOT NULL,
 
   -- Order Status
-  status order_status DEFAULT 'pending_payment' NOT NULL,
+  status order_status DEFAULT 'awaiting_approval' NOT NULL,
   tracking_number TEXT,
+  rejection_reason TEXT,
 
   -- New Logistics Fields
   state TEXT NOT NULL,
