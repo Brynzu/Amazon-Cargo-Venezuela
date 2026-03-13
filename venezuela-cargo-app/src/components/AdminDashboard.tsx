@@ -76,17 +76,18 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   }
 
   const getWhatsAppLink = (order: Order) => {
+    if (!order.whatsapp) return "#";
     const phone = order.whatsapp.replace(/\D/g, '')
     const pdfUrl = typeof window !== 'undefined' ? `${window.location.origin}/receipt/${order.id}` : ''
-    const text = `Hola ${order.client_name}! Te escribimos de *CargoBox*. Recibimos tu orden por $${order.total_price_usd}. Puedes ver tu comprobante aquí: ${pdfUrl}`
+    const text = `Hola ${order.client_name || 'cliente'}! Te escribimos de *CargoBox*. Recibimos tu orden por $${order.total_price_usd}. Puedes ver tu comprobante aquí: ${pdfUrl}`
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
   }
 
   return (
     <div className="container mx-auto py-10">
       <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <div className="flex items-center gap-2 bg-white p-3 rounded-md border shadow-sm">
+        <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
+        <div className="flex items-center gap-2 bg-white p-3 rounded-md border shadow-none">
           <Label htmlFor="rate" className="whitespace-nowrap font-medium">Tasa del día (Bs/USD):</Label>
           <Input
             id="rate"
@@ -101,7 +102,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </Button>
         </div>
       </div>
-      <div className="rounded-md border bg-white">
+      <div className="rounded-md border border-gray-200 bg-white shadow-none">
         <Table>
           <TableHeader>
             <TableRow>
@@ -136,9 +137,15 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                   </Select>
                 </TableCell>
                 <TableCell className="text-right space-x-2 whitespace-nowrap">
-                  <a href={getWhatsAppLink(order)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-green-600 bg-background shadow-sm hover:bg-green-50 hover:text-green-700 h-8 px-3 text-green-600">
-                    WhatsApp
-                  </a>
+                  {order.whatsapp ? (
+                    <a href={getWhatsAppLink(order)} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-green-600 bg-background shadow-sm hover:bg-green-50 hover:text-green-700 h-8 px-3 text-green-600">
+                      WhatsApp
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-gray-300 bg-gray-100 text-gray-400 h-8 px-3 cursor-not-allowed">
+                      No WA
+                    </span>
+                  )}
                   <Link href={`/receipt/${order.id}`} target="_blank" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 px-3">
                     Ticket
                   </Link>

@@ -263,9 +263,9 @@ export function Calculator({ user }: { user: any }) {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             {user ? (
-              <form onSubmit={handleCreateOrder} className="w-full space-y-4 text-left">
-                <hr className="my-4"/>
-                <h3 className="text-lg font-bold">1. Delivery Info</h3>
+              <form onSubmit={handleCreateOrder} className="w-full space-y-5 text-left">
+                <div className="border-t border-primary/10 my-2" />
+                <h3 className="text-md font-bold tracking-tight text-primary">1. Delivery Info</h3>
 
                 <div className="space-y-2">
                   <Label htmlFor="clientName">Full Name</Label>
