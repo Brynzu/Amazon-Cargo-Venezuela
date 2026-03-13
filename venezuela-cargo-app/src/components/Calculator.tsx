@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { logisticsData } from "@/lib/logistics";
+import { logisticsData, getUniqueStates, getCitiesByState, CourierOffice } from "@/lib/logistics";
 import { createClient } from "@/utils/supabase/client";
+import { ExternalLink } from "lucide-react";
 
 export function Calculator({ user }: { user: any }) {
   const [url, setUrl] = useState("");
@@ -17,9 +18,11 @@ export function Calculator({ user }: { user: any }) {
   // Logistics & Client Details
   const [clientName, setClientName] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
+  const [selectedCarrier, setSelectedCarrier] = useState("");
+  const [postalCodeInput, setPostalCodeInput] = useState("");
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-  const [selectedOffice, setSelectedOffice] = useState("");
+  const [selectedOfficeCode, setSelectedOfficeCode] = useState("");
 
   const [paymentMethod, setPaymentMethod] = useState("Zelle");
   const [file, setFile] = useState<File | null>(null);
@@ -27,8 +30,25 @@ export function Calculator({ user }: { user: any }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Computed Options
-  const stateObj = logisticsData.states.find(s => s.name === selectedState);
-  const cityObj = stateObj?.cities.find(c => c.name === selectedCity);
+  const states = getUniqueStates();
+  const cities = selectedState ? getCitiesByState(selectedState) : [];
+
+  let availableOffices = logisticsData.filter(o =>
+    (!selectedCarrier || o.carrier === selectedCarrier) &&
+    (!selectedState || o.state === selectedState) &&
+    (!selectedCity || o.city === selectedCity)
+  );
+
+  // If user entered a postal code, sort matching offices to top
+  if (postalCodeInput.trim().length > 2) {
+    availableOffices = availableOffices.sort((a, b) => {
+      const aMatch = a.postalCode.startsWith(postalCodeInput.trim()) ? 1 : 0;
+      const bMatch = b.postalCode.startsWith(postalCodeInput.trim()) ? 1 : 0;
+      return bMatch - aMatch;
+    });
+  }
+
+  const selectedOfficeDetails = logisticsData.find(o => `${o.carrier}-${o.officeName}` === selectedOfficeCode);
 
   const supabase = createClient();
 
@@ -41,7 +61,7 @@ export function Calculator({ user }: { user: any }) {
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!breakdown || !url || !file || !user || !clientName || !whatsapp || !selectedState || !selectedCity || !selectedOffice) {
+    if (!breakdown || !url || !file || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
       alert("Please fill in all logistics details and upload a receipt.");
       return;
     }
@@ -73,6 +93,8 @@ export function Calculator({ user }: { user: any }) {
         .getPublicUrl(filePath);
 
       // Insert Order
+      const fullOfficeString = `${selectedOfficeDetails.carrier} - ${selectedOfficeDetails.officeName} - ${selectedOfficeDetails.fullAddress}`;
+
       const { data: orderData, error: orderError } = await supabase
         .from('orders')
         .insert({
@@ -83,9 +105,10 @@ export function Calculator({ user }: { user: any }) {
           amazon_price: breakdown.amazonPrice,
           client_name: clientName,
           whatsapp: whatsapp,
-          state: selectedState,
-          city: selectedCity,
-          office: selectedOffice,
+          state: selectedOfficeDetails.state,
+          city: selectedOfficeDetails.city,
+          office: fullOfficeString,
+          office_map_url: selectedOfficeDetails.mapUrl,
           receipt_url: publicUrl,
           status: 'pending_payment',
         })
@@ -117,7 +140,7 @@ export function Calculator({ user }: { user: any }) {
       // Optionally update user's preferred courier to the new office logic
       await supabase
         .from('users')
-        .update({ preferred_courier_office: selectedOffice })
+        .update({ preferred_courier_office: fullOfficeString })
         .eq('id', user.id);
 
       console.log('Database record created!');
@@ -128,9 +151,11 @@ export function Calculator({ user }: { user: any }) {
       setPrice("");
       setClientName("");
       setWhatsapp("");
+      setSelectedCarrier("");
+      setPostalCodeInput("");
       setSelectedState("");
       setSelectedCity("");
-      setSelectedOffice("");
+      setSelectedOfficeCode("");
       setFile(null);
       setBreakdown(null);
 
@@ -218,29 +243,47 @@ export function Calculator({ user }: { user: any }) {
                   <Input id="whatsapp" placeholder="+58 412..." value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                <div className="space-y-2">
+                  <Label>Step 1: Carrier (Optional)</Label>
+                  <Select value={selectedCarrier} onValueChange={(val) => { setSelectedCarrier(val); setSelectedOfficeCode(""); }}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Any Carrier" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Liberty Express">Liberty Express</SelectItem>
+                      <SelectItem value="Zoom">Zoom</SelectItem>
+                      <SelectItem value="Tealca">Tealca</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="space-y-2 col-span-1">
+                    <Label>Zip Code</Label>
+                    <Input placeholder="e.g. 1060" value={postalCodeInput} onChange={e => setPostalCodeInput(e.target.value)} />
+                  </div>
+                  <div className="space-y-2 col-span-1">
                     <Label>State</Label>
-                    <Select value={selectedState} onValueChange={(val) => { setSelectedState(val); setSelectedCity(""); setSelectedOffice(""); }}>
+                    <Select value={selectedState} onValueChange={(val) => { setSelectedState(val); setSelectedCity(""); setSelectedOfficeCode(""); }}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select State" />
+                        <SelectValue placeholder="Any" />
                       </SelectTrigger>
                       <SelectContent>
-                        {logisticsData.states.map(s => (
-                          <SelectItem key={s.name} value={s.name}>{s.name}</SelectItem>
+                        {states.map(s => (
+                          <SelectItem key={s} value={s}>{s}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 col-span-1">
                     <Label>City</Label>
-                    <Select value={selectedCity} onValueChange={(val) => { setSelectedCity(val); setSelectedOffice(""); }} disabled={!selectedState}>
+                    <Select value={selectedCity} onValueChange={(val) => { setSelectedCity(val); setSelectedOfficeCode(""); }} disabled={!selectedState}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select City" />
+                        <SelectValue placeholder="Any" />
                       </SelectTrigger>
                       <SelectContent>
-                        {stateObj?.cities.map(c => (
-                          <SelectItem key={c.name} value={c.name}>{c.name}</SelectItem>
+                        {cities.map(c => (
+                          <SelectItem key={c} value={c}>{c}</SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
@@ -248,19 +291,43 @@ export function Calculator({ user }: { user: any }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Preferred Courier Office</Label>
-                  <Select value={selectedOffice} onValueChange={setSelectedOffice} disabled={!selectedCity}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select Office" />
+                  <Label>Step 3: Select Office Address</Label>
+                  <Select value={selectedOfficeCode} onValueChange={setSelectedOfficeCode}>
+                    <SelectTrigger className="h-auto whitespace-normal text-left py-3">
+                      <SelectValue placeholder="Choose a physical location..." />
                     </SelectTrigger>
-                    <SelectContent>
-                      {cityObj?.offices.map(o => (
-                        <SelectItem key={o} value={o}>
-                          {o.includes('Liberty Express') ? `⭐ ${o} (Recommended)` : o}
-                        </SelectItem>
-                      ))}
+                    <SelectContent className="max-w-[350px]">
+                      {availableOffices.map((o) => {
+                        const val = `${o.carrier}-${o.officeName}`;
+                        return (
+                          <SelectItem key={val} value={val} className="py-2">
+                            <div className="flex flex-col">
+                              <span className="font-bold">{o.carrier} - {o.officeName}</span>
+                              <span className="text-xs text-gray-500 whitespace-normal mt-1 leading-snug">{o.fullAddress}</span>
+                              {postalCodeInput && o.postalCode.startsWith(postalCodeInput.trim()) && (
+                                <span className="text-xs text-green-600 mt-1 font-medium">📍 Zip Match ({o.postalCode})</span>
+                              )}
+                            </div>
+                          </SelectItem>
+                        )
+                      })}
+                      {availableOffices.length === 0 && (
+                        <div className="p-2 text-sm text-gray-500">No offices match criteria.</div>
+                      )}
                     </SelectContent>
                   </Select>
+
+                  {selectedOfficeDetails && (
+                    <a
+                      href={selectedOfficeDetails.mapUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-600 hover:underline flex items-center mt-2"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1 inline shrink-0" />
+                      View Office on Google Maps
+                    </a>
+                  )}
                 </div>
 
                 <hr className="my-4"/>

@@ -28,6 +28,8 @@ type Order = {
   product_name: string
   total_price_usd: number
   status: string
+  office: string
+  office_map_url: string | null
   receipt_url: string | null
   created_at: string
 }
@@ -137,7 +139,23 @@ export function AdminDashboard({ initialOrders }: { initialOrders: Order[] }) {
                 </a>
               </div>
 
-              <div>
+              <div className="pt-2 border-t">
+                <p className="text-sm font-semibold text-gray-500">Destination Office</p>
+                <p className="text-md font-medium">{selectedOrder.office}</p>
+                {selectedOrder.office_map_url && (
+                  <a
+                    href={selectedOrder.office_map_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline flex items-center mt-1"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-1 inline shrink-0" />
+                    View on Google Maps
+                  </a>
+                )}
+              </div>
+
+              <div className="pt-2 border-t">
                 <p className="text-sm font-semibold text-gray-500 mb-2">Payment Receipt</p>
                 {selectedOrder.receipt_url ? (
                   <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-2">

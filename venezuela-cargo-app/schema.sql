@@ -75,6 +75,7 @@ CREATE TABLE public.orders (
   state TEXT NOT NULL,
   city TEXT NOT NULL,
   office TEXT NOT NULL,
+  office_map_url TEXT,
 
   -- New Receipt URL (as requested by user)
   receipt_url TEXT,
