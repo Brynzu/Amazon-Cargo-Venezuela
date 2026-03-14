@@ -12,6 +12,7 @@ import { createClient } from "@/utils/supabase/client";
 import { ExternalLink, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { translations } from '@/lib/translations';
+import toast from 'react-hot-toast';
 
 type Item = { url: string; price: string };
 
@@ -154,14 +155,14 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
     }, 0);
 
     if (itemsTotal < 15) {
-      alert(t.min_order_error || "The minimum total for products must be at least $15.");
+      toast.error(t.min_order_error || "The minimum total for products must be at least $15.");
       return;
     }
 
     const hasInvalidItems = items.some(i => !i.url || !i.price || isNaN(parseFloat(i.price)));
 
     if (!breakdown || hasInvalidItems || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
-      alert("Please ensure all item fields and logistics details are filled out correctly.");
+      toast.error(lang === 'es' ? "Por favor completa todos los campos correctamente." : "Please ensure all item fields and logistics details are filled out correctly.");
       return;
     }
 
@@ -198,7 +199,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
       if (orderError) {
         console.error('Order creation failed:', orderError);
-        alert('Failed to create order. Check console for details.');
+        toast.error(lang === 'es' ? "Falló la creación de la orden." : 'Failed to create order. Check console for details.');
         throw orderError;
       }
 

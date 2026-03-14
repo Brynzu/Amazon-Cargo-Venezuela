@@ -9,8 +9,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { FileText, Package, CheckCircle, Truck, Clock, XCircle } from 'lucide-react'
+import { FileText, Package, CheckCircle, Truck, Clock, XCircle, MessageSquare } from 'lucide-react'
 import { translations } from '@/lib/translations'
+import toast from 'react-hot-toast'
 
 const getStatusDisplay = (status: string, t: any) => {
   switch (status) {
@@ -40,6 +41,7 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
   const [paymentMethod, setPaymentMethod] = useState("Zelle")
   const [file, setFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [viewNoteOrder, setViewNoteOrder] = useState<any>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
 
   const handlePaymentSubmit = async () => {
     if (!file || !payingOrder) {
-      alert("Please upload a receipt.")
+      toast.error("Please upload a receipt.")
       return
     }
 
@@ -102,7 +104,7 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
 
       if (rpcError) throw rpcError;
 
-      alert("Payment submitted successfully!")
+      toast.success(lang === 'es' ? "¡Pago enviado con éxito!" : "Payment submitted successfully!")
 
       // Update local state to reflect payment
       setOrders(orders.map(o => o.id === payingOrder.id ? { ...o, payment_receipt: publicUrl } : o))
@@ -111,7 +113,7 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
 
     } catch (error) {
       console.error(error)
-      alert("Failed to submit payment.")
+      toast.error(lang === 'es' ? "Falló el envío del pago." : "Failed to submit payment.")
     } finally {
       setIsSubmitting(false)
     }
@@ -157,6 +159,12 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
                       <p className="font-bold text-lg leading-none mt-0.5">${order.total_price_usd.toFixed(2)}</p>
                     </div>
 
+                    {order.admin_note && (
+                      <Button variant="outline" size="sm" className="gap-1.5" onClick={() => setViewNoteOrder(order)}>
+                        <MessageSquare className="w-4 h-4" />
+                        {t.view_note}
+                      </Button>
+                    )}
                     {needsPayment ? (
                       <Button size="sm" onClick={() => setPayingOrder(order)}>
                         {t.pay_now}
@@ -174,6 +182,20 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
           )
         })}
       </div>
+
+      <Dialog open={!!viewNoteOrder} onOpenChange={(open) => !open && setViewNoteOrder(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t.note_from_admin}</DialogTitle>
+          </DialogHeader>
+          <div className="pt-4 pb-2 text-gray-700 leading-relaxed whitespace-pre-wrap bg-gray-50 p-4 rounded-md border mt-2">
+            {viewNoteOrder?.admin_note}
+          </div>
+          <div className="flex justify-end mt-4">
+            <Button variant="outline" onClick={() => setViewNoteOrder(null)}>Close</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!payingOrder} onOpenChange={(open) => !open && setPayingOrder(null)}>
         <DialogContent className="max-w-md">

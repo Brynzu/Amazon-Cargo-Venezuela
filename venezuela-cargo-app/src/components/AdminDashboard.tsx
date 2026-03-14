@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ExternalLink } from "lucide-react"
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 type Order = {
   id: string
@@ -107,9 +108,9 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       .eq('id', 1)
 
     if (error) {
-      alert("Failed to update exchange rate.")
+      toast.error("Failed to update exchange rate.")
     } else {
-      alert(`Exchange rate updated to ${newRate} Bs/USD`)
+      toast.success(`Exchange rate updated to ${newRate} Bs/USD`)
     }
     setIsSavingRate(false)
   }
@@ -125,7 +126,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       .select()
 
     if (error) {
-      alert(`Error updating order status: ${error.message}`)
+      toast.error(`Error updating order status: ${error.message}`)
       console.error('Supabase Update Error:', error)
     } else if (data && data.length > 0) {
       console.log('Update successful:', data[0]);
@@ -160,13 +161,15 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
             : "Your order has been approved. You can now proceed to payment.";
         } else {
           message = lang === 'es'
-            ? `El estado de tu orden ahora es: ${readableStatus}`
+            ? `Tu orden fue actualizada a: ${readableStatus}`
             : `Your order status is now: ${readableStatus}`;
         }
 
         if (additionalPayload.admin_note) {
-          const noteLabel = lang === 'es' ? "Nota del Admin" : "Admin Note";
-          message += `\n${noteLabel}: ${additionalPayload.admin_note}`;
+          title = lang === 'es' ? "Actualización de Orden" : "Order Update";
+          message = lang === 'es'
+            ? `Tu orden fue actualizada. Nota: ${additionalPayload.admin_note}`
+            : `Your order was updated. Note: ${additionalPayload.admin_note}`;
         }
 
         await supabase.from('notifications').insert({
@@ -178,7 +181,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
         });
       }
     } else {
-      alert("Update command executed but no rows were returned. RLS policy might be blocking the update.")
+      toast.error("Update command executed but no rows were returned. RLS policy might be blocking the update.")
       console.warn("No rows returned from update.", data);
     }
   }
@@ -188,7 +191,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
     const parsedTotal = parseFloat(finalTotal);
     if (isNaN(parsedTotal) || parsedTotal <= 0) {
-      alert("Please enter a valid final total.");
+      toast.error("Please enter a valid final total.");
       return;
     }
 
@@ -220,7 +223,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       });
       if (notifError) {
         console.error("Notification failed", notifError);
-        alert(`Notification could not be sent: ${notifError.message}`);
+        toast.error(`Notification could not be sent: ${notifError.message}`);
       }
     } else {
        console.warn("Could not send notification: user_id is missing from order data.");

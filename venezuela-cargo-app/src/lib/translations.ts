@@ -69,7 +69,9 @@ export const translations = {
     upload_receipt: "Upload Payment Receipt",
     confirm_payment: "Confirm Payment",
     admin_note: "Admin Note",
-    original_estimate: "Originally estimated at"
+    original_estimate: "Originally estimated at",
+    view_note: "View Note",
+    note_from_admin: "Note from Admin"
   },
   es: {
     dashboard: "Panel de Admin",
@@ -141,6 +143,8 @@ export const translations = {
     upload_receipt: "Subir Recibo de Pago",
     confirm_payment: "Confirmar Pago",
     admin_note: "Nota del Admin",
-    original_estimate: "Estimado original de"
+    original_estimate: "Estimado original de",
+    view_note: "Ver Nota",
+    note_from_admin: "Nota del Administrador"
   }
 }
