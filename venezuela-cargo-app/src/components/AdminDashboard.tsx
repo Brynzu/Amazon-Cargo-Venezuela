@@ -50,6 +50,11 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   const [exchangeRate, setExchangeRate] = useState<string>(initialExchangeRate.toString())
   const [isSavingRate, setIsSavingRate] = useState(false)
 
+  // Approval State
+  const [approveOrder, setApproveOrder] = useState<Order | null>(null)
+  const [finalTotal, setFinalTotal] = useState<string>("")
+  const [adminNote, setAdminNote] = useState<string>("")
+
   // Rejection State
   const [rejectOrderId, setRejectOrderId] = useState<string | null>(null)
   const [rejectReason, setRejectReason] = useState<string>("")
@@ -150,6 +155,10 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           message = `Your order status is now: ${readableStatus}`;
         }
 
+        if (additionalPayload.admin_note) {
+          message += `\nAdmin Note: ${additionalPayload.admin_note}`;
+        }
+
         await supabase.from('notifications').insert({
           user_id: orderToUpdate.user_id || data[0].user_id,
           order_id: orderId,
@@ -162,6 +171,25 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       alert("Update command executed but no rows were returned. RLS policy might be blocking the update.")
       console.warn("No rows returned from update.", data);
     }
+  }
+
+  const confirmApproval = async () => {
+    if (!approveOrder) return;
+
+    const parsedTotal = parseFloat(finalTotal);
+    if (isNaN(parsedTotal) || parsedTotal <= 0) {
+      alert("Please enter a valid final total.");
+      return;
+    }
+
+    await handleStatusChange(approveOrder.id, 'pending_payment', {
+      total_price_usd: parsedTotal,
+      admin_note: adminNote || null
+    });
+
+    setApproveOrder(null);
+    setFinalTotal("");
+    setAdminNote("");
   }
 
   const confirmRejection = async () => {
@@ -359,7 +387,11 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                 <TableCell>
                   {order.status === 'awaiting_approval' ? (
                     <div className="flex space-x-2">
-                      <Button size="sm" className="h-8" onClick={() => handleStatusChange(order.id, 'pending_payment')}>
+                      <Button size="sm" className="h-8" onClick={() => {
+                        setApproveOrder(order);
+                        setFinalTotal(order.total_price_usd.toString());
+                        setAdminNote("");
+                      }}>
                         Approve
                       </Button>
                       <Button size="sm" variant="destructive" className="h-8" onClick={() => setRejectOrderId(order.id)}>
@@ -415,6 +447,40 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={!!approveOrder} onOpenChange={(open) => !open && setApproveOrder(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Approve Order & Finalize Price</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label>Final Total ($)</Label>
+              <Input
+                type="number"
+                step="0.01"
+                value={finalTotal}
+                onChange={(e) => setFinalTotal(e.target.value)}
+                placeholder="0.00"
+              />
+              <p className="text-xs text-gray-500">Originally estimated at ${approveOrder?.total_price_usd.toFixed(2)}</p>
+            </div>
+            <div className="space-y-2">
+              <Label>Admin Note (Optional, visible to client)</Label>
+              <textarea
+                className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                value={adminNote}
+                onChange={(e) => setAdminNote(e.target.value)}
+                placeholder="e.g., Adjusted total due to overweight items..."
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" onClick={() => setApproveOrder(null)}>Cancel</Button>
+              <Button onClick={confirmApproval}>Confirm Approval</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={!!rejectOrderId} onOpenChange={(open) => !open && setRejectOrderId(null)}>
         <DialogContent className="max-w-md">

@@ -6,11 +6,22 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Bell, CheckCircle, XCircle, Info } from 'lucide-react'
 import Link from 'next/link'
+import { translations } from '@/lib/translations'
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [lang, setLang] = useState<'en' | 'es'>('en')
   const supabase = createClient()
+
+  useEffect(() => {
+    const match = document.cookie.match(/(^| )NEXT_LOCALE=([^;]+)/)
+    if (match) {
+      setLang(match[2] as 'en' | 'es')
+    }
+  }, [])
+
+  const t = translations[lang]
 
   useEffect(() => {
     let channel: any;
@@ -97,8 +108,8 @@ export default function NotificationsPage() {
           <div className="flex items-center gap-3">
             <Bell className="w-8 h-8 text-primary" />
             <div>
-              <h1 className="text-3xl font-black tracking-tight text-primary">Notifications</h1>
-              <p className="text-gray-500 mt-1">Updates on your orders and payments.</p>
+              <h1 className="text-3xl font-black tracking-tight text-primary">{t.notifications_title}</h1>
+              <p className="text-gray-500 mt-1">{t.notifications_desc}</p>
             </div>
           </div>
         </div>
@@ -106,8 +117,8 @@ export default function NotificationsPage() {
         {notifications.length === 0 ? (
           <Card className="shadow-none border-dashed bg-transparent p-12 text-center">
             <Bell className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-            <h2 className="text-lg font-medium text-gray-700">You're all caught up!</h2>
-            <p className="text-gray-500">No new notifications right now.</p>
+            <h2 className="text-lg font-medium text-gray-700">{t.all_caught_up}</h2>
+            <p className="text-gray-500">{t.no_new_notifs}</p>
           </Card>
         ) : (
           <div className="space-y-4">
@@ -131,7 +142,7 @@ export default function NotificationsPage() {
                   {notif.order_id && (
                     <div className="mt-3">
                       <Link href="/orders" className="text-sm text-primary font-medium hover:underline">
-                        View Order Details →
+                        {t.view_order_details}
                       </Link>
                     </div>
                   )}

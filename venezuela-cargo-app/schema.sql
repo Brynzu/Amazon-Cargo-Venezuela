@@ -120,6 +120,7 @@ CREATE TABLE public.orders (
   status order_status DEFAULT 'awaiting_approval' NOT NULL,
   tracking_number TEXT,
   rejection_reason TEXT,
+  admin_note TEXT,
 
   -- New Logistics Fields
   state TEXT NOT NULL,

@@ -147,6 +147,17 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const itemsTotal = items.reduce((acc, item) => {
+      const num = parseFloat(item.price);
+      return acc + (isNaN(num) ? 0 : num);
+    }, 0);
+
+    if (itemsTotal < 15) {
+      alert(t.min_order_error || "The minimum total for products must be at least $15.");
+      return;
+    }
+
     const hasInvalidItems = items.some(i => !i.url || !i.price || isNaN(parseFloat(i.price)));
 
     if (!breakdown || hasInvalidItems || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
@@ -315,9 +326,12 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
               <span className="font-medium">${breakdown.handlingFee.toFixed(2)}</span>
             </div>
             <div className="border-t border-primary/10 pt-3 mt-4 flex justify-between font-black text-xl text-primary">
-              <span>{t.total}</span>
+              <span>{t.estimated_total}</span>
               <span>${breakdown.totalCost.toFixed(2)}</span>
             </div>
+            <p className="text-xs text-primary/80 mt-2 text-center font-medium">
+              {t.estimation_disclaimer}
+            </p>
             <p className="text-xs text-primary/80 mt-2">
               {t.pro_tip}
             </p>

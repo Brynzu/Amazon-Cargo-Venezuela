@@ -37,7 +37,21 @@ export const translations = {
     order_submitted: "Order Submitted for Approval!",
     order_success_msg: "Your request has been sent successfully. Once an Admin approves your items, you'll be able to process the payment in the 'My Orders' tab.",
     go_to_orders: "Go to My Orders",
-    submit_another: "Submit Another Request"
+    submit_another: "Submit Another Request",
+    estimated_total: "Estimated Total",
+    estimation_disclaimer: "Estimated total only. Final price confirmed upon admin review.",
+    min_order_error: "The minimum total for products must be at least $15.",
+    notifications_title: "Notifications",
+    notifications_desc: "Updates on your orders and payments.",
+    all_caught_up: "You're all caught up!",
+    no_new_notifs: "No new notifications right now.",
+    view_order_details: "View Order Details →",
+    profile_title: "Profile",
+    profile_desc: "Manage your personal information and default shipping preferences.",
+    personal_info: "Personal Information",
+    save_changes: "Save Changes",
+    saving: "Saving...",
+    my_orders_desc: "Track and manage your shipping requests."
   },
   es: {
     dashboard: "Panel de Admin",
@@ -77,6 +91,20 @@ export const translations = {
     order_submitted: "¡Orden Enviada para Aprobación!",
     order_success_msg: "Tu solicitud ha sido enviada con éxito. Una vez que un Admin apruebe tus artículos, podrás procesar el pago en la pestaña 'Mis Órdenes'.",
     go_to_orders: "Ir a Mis Órdenes",
-    submit_another: "Enviar Otra Solicitud"
+    submit_another: "Enviar Otra Solicitud",
+    estimated_total: "Total Estimado",
+    estimation_disclaimer: "Sólo es un total estimado. El precio final se confirmará tras la revisión del administrador.",
+    min_order_error: "El total mínimo de los productos debe ser de al menos $15.",
+    notifications_title: "Notificaciones",
+    notifications_desc: "Actualizaciones de tus órdenes y pagos.",
+    all_caught_up: "¡Estás al día!",
+    no_new_notifs: "No hay notificaciones nuevas por ahora.",
+    view_order_details: "Ver Detalles de la Orden →",
+    profile_title: "Perfil",
+    profile_desc: "Gestiona tu información personal y preferencias de envío.",
+    personal_info: "Información Personal",
+    save_changes: "Guardar Cambios",
+    saving: "Guardando...",
+    my_orders_desc: "Rastrea y gestiona tus solicitudes de envío."
   }
 }

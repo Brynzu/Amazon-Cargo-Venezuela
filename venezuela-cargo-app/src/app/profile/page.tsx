@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { User, Pencil } from 'lucide-react'
 import { getUniqueStates, getCitiesByState } from '@/lib/logistics'
+import { translations } from '@/lib/translations'
 
 export default function ProfilePage() {
   const states = getUniqueStates()
@@ -23,12 +24,22 @@ export default function ProfilePage() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState("")
+  const [lang, setLang] = useState<'en' | 'es'>('en')
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const supabase = createClient()
 
   const [initialDataLoaded, setInitialDataLoaded] = useState(false)
+
+  useEffect(() => {
+    const match = document.cookie.match(/(^| )NEXT_LOCALE=([^;]+)/)
+    if (match) {
+      setLang(match[2] as 'en' | 'es')
+    }
+  }, [])
+
+  const t = translations[lang]
 
   useEffect(() => {
     async function loadProfile() {
@@ -113,7 +124,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <Card className="max-w-xl mx-auto shadow-sm border-gray-200">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-primary">My Profile</CardTitle>
+          <CardTitle className="text-2xl font-bold text-primary">{t.profile_title}</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSave} className="space-y-6">
@@ -147,26 +158,26 @@ export default function ProfilePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
+                <Label htmlFor="fullName">{t.full_name}</Label>
                 <Input id="fullName" value={fullName} onChange={e => setFullName(e.target.value)} placeholder="John Doe" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">WhatsApp / Phone</Label>
+                <Label htmlFor="phone">{t.whatsapp_number}</Label>
                 <Input id="phone" value={phone} onChange={e => setPhone(e.target.value)} placeholder="+1 234 567 890" />
               </div>
             </div>
 
             <div className="space-y-2">
-              <h3 className="font-bold text-gray-700 pt-4 border-t">Default Destination Address</h3>
-              <p className="text-sm text-gray-500 pb-2">Save time when creating new orders by pre-filling this data.</p>
+              <h3 className="font-bold text-gray-700 pt-4 border-t">{t.delivery_info}</h3>
+              <p className="text-sm text-gray-500 pb-2">{t.profile_desc}</p>
             </div>
 
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="state">State</Label>
+                <Label htmlFor="state">{t.state}</Label>
                 <Select value={state} onValueChange={(val) => { setState(val); setCity(""); }}>
                   <SelectTrigger id="state">
-                    <SelectValue placeholder="Select state" />
+                    <SelectValue placeholder={t.state} />
                   </SelectTrigger>
                   <SelectContent>
                     {states.map(s => (
@@ -176,10 +187,10 @@ export default function ProfilePage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="city">City</Label>
+                <Label htmlFor="city">{t.city}</Label>
                 <Select value={city} onValueChange={setCity} disabled={!state}>
                   <SelectTrigger id="city">
-                    <SelectValue placeholder="Select city" />
+                    <SelectValue placeholder={t.city} />
                   </SelectTrigger>
                   <SelectContent>
                     {getCitiesByState(state).map(c => (
@@ -189,7 +200,7 @@ export default function ProfilePage() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="zipCode">Zip Code</Label>
+                <Label htmlFor="zipCode">{t.zip_code}</Label>
                 <Input id="zipCode" value={zipCode} onChange={e => setZipCode(e.target.value)} placeholder="1060" />
               </div>
             </div>
@@ -197,7 +208,7 @@ export default function ProfilePage() {
             {message && <p className={`text-sm font-medium ${message.includes('Error') ? 'text-red-500' : 'text-green-600'}`}>{message}</p>}
 
             <Button type="submit" disabled={isSaving} className="w-full h-11">
-              {isSaving ? "Saving..." : "Save Profile"}
+              {isSaving ? t.saving : t.save_changes}
             </Button>
           </form>
         </CardContent>
