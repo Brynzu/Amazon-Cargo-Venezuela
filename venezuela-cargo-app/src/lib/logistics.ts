@@ -31,6 +31,42 @@ export const logisticsData: CourierOffice[] = [
   },
   {
     carrier: "Liberty Express",
+    state: "Miranda",
+    city: "Los Teques",
+    officeName: "Centro",
+    fullAddress: "Calle Miquilén, Edificio Centro Comercial Luz, Los Teques",
+    postalCode: "1201",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Los+Teques"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Miranda",
+    city: "Guatire",
+    officeName: "Castillejo",
+    fullAddress: "Centro Comercial Castillejo, Nivel Planta Baja, Guatire",
+    postalCode: "1221",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Guatire"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Miranda",
+    city: "Charallave",
+    officeName: "Matalinda",
+    fullAddress: "Centro Comercial Matalinda, Charallave",
+    postalCode: "1210",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Charallave"
+  },
+  {
+    carrier: "Liberty Express",
+    state: "Miranda",
+    city: "Cúa",
+    officeName: "Centro",
+    fullAddress: "Centro Comercial Colonial, Nivel Planta Baja, Cúa",
+    postalCode: "1211",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Cua"
+  },
+  {
+    carrier: "Liberty Express",
     state: "Distrito Capital",
     city: "Caracas",
     officeName: "Chacao",

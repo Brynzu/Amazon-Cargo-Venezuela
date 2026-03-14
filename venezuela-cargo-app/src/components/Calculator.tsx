@@ -102,13 +102,14 @@ export function Calculator({ user }: { user: any }) {
           // When state changes, we need to wait for cities to populate
           // We can use a small timeout to let React re-render with the new cities array
           if (savedProfile.city) {
+            // Need a slight delay to allow the state update (which re-renders and thus 'enables' the City Select field) to complete
             setTimeout(() => {
               // Ensure the city actually exists in the newly computed cities array
               const validCities = getCitiesByState(savedProfile.state);
               if (validCities.includes(savedProfile.city)) {
                 setSelectedCity(savedProfile.city);
               }
-            }, 0);
+            }, 50); // Increased slightly to ensure re-render occurs so field is no longer disabled
           }
         }
       }

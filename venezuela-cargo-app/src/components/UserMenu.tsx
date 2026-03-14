@@ -36,8 +36,14 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
         schema: 'public',
         table: 'notifications',
         filter: `user_id=eq.${userId}`
-      }, () => {
-        fetchUnread() // Re-check whenever the table changes
+      }, (payload) => {
+        // Optimistically update based on the event
+        if (payload.eventType === 'INSERT') {
+          setHasNotifications(true)
+          setShowOuterBadge(true)
+        } else {
+          fetchUnread() // Fallback to fetching for UPDATE/DELETE
+        }
       })
       .subscribe()
 
