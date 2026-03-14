@@ -52,7 +52,7 @@ export default async function OrdersPage() {
             </Link>
           </Card>
         ) : (
-          <ClientOrderList initialOrders={orders || []} user={user} />
+          <ClientOrderList initialOrders={orders || []} user={user} lang={locale} />
         )}
       </div>
     </div>

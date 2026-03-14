@@ -131,7 +131,7 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
                 <div>
                   <p className="text-xs font-mono text-gray-400">{t.order_hash}{order.id.split('-')[0].toUpperCase()}</p>
                   <CardTitle className="text-base font-bold mt-1">
-                    {new Date(order.created_at).toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    {new Date(order.created_at).toLocaleDateString(lang === 'es' ? 'es-VE' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                   </CardTitle>
                 </div>
                 <div className={`px-3 py-1.5 rounded-md border text-xs font-semibold flex items-center gap-1.5 ${statusData.bg} ${statusData.color}`}>
