@@ -4,23 +4,53 @@ import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { User, LogOut, Box, Menu, PlusCircle, ListOrdered } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { createClient } from '@/utils/supabase/client'
 
-export function UserMenu({ email, hasNotifications }: { email: string | undefined, hasNotifications?: boolean }) {
+export function UserMenu({ email, userId }: { email: string | undefined, userId: string }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [hasNotifications, setHasNotifications] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
+  const supabase = createClient()
 
-  // Close menu when clicking outside
+  // Realtime Notifications Listener & Outside Click
   useEffect(() => {
+    // 1. Fetch initial unread count
+    async function fetchUnread() {
+      const { count } = await supabase
+        .from('notifications')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .eq('read', false)
+
+      setHasNotifications(!!count && count > 0)
+    }
+    fetchUnread()
+
+    // 2. Subscribe to realtime inserts/updates
+    const channel = supabase.channel('realtime_notifications_header')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'notifications',
+        filter: `user_id=eq.${userId}`
+      }, () => {
+        fetchUnread() // Re-check whenever the table changes
+      })
+      .subscribe()
+
+    // 3. Close menu when clicking outside
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsOpen(false)
       }
     }
     document.addEventListener("mousedown", handleClickOutside)
+
     return () => {
+      supabase.removeChannel(channel)
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [menuRef])
+  }, [supabase, userId, menuRef])
 
   return (
     <div className="relative" ref={menuRef}>

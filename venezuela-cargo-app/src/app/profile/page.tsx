@@ -28,6 +28,8 @@ export default function ProfilePage() {
 
   const supabase = createClient()
 
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false)
+
   useEffect(() => {
     async function loadProfile() {
       const { data: { user } } = await supabase.auth.getUser()
@@ -38,11 +40,17 @@ export default function ProfilePage() {
           setFullName(data.full_name || "")
           setPhone(data.phone || "")
           setState(data.state || "")
-          setCity(data.city || "")
           setZipCode(data.zip_code || "")
           setAvatarUrl(data.avatar_url || "")
+
+          // Delay setting city slightly to ensure State dropdown options have populated
+          // allowing Radix UI Select to match the incoming string to a rendered SelectItem.
+          if (data.city) {
+            setTimeout(() => setCity(data.city), 50)
+          }
         }
       }
+      setInitialDataLoaded(true)
     }
     loadProfile()
   }, [supabase])
