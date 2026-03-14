@@ -90,6 +90,19 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
             )}
           </div>
 
+          {order.receipt_url && (
+            <div className="mb-8 print:hidden">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">Payment Capture</p>
+              <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-4">
+                <img
+                  src={order.receipt_url}
+                  alt="Uploaded Payment Receipt"
+                  className="max-w-full max-h-[500px] object-contain"
+                />
+              </div>
+            </div>
+          )}
+
           <div className="text-center text-sm text-gray-400 mt-16 pt-8 border-t border-gray-100">
             <p className="font-medium text-gray-900 mb-1">Thank you for shipping with CargoBox.</p>
             <p>Please keep this invoice for your records.</p>

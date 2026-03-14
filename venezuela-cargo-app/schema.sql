@@ -30,6 +30,7 @@ CREATE TABLE public.users (
   city TEXT,
   zip_code TEXT,
   avatar_url TEXT,
+  preferred_language TEXT DEFAULT 'en',
 
   -- Legacy fields
   address_in_venezuela TEXT,
@@ -149,11 +150,20 @@ CREATE POLICY "Users can insert own orders"
 ON public.orders FOR INSERT
 WITH CHECK (auth.uid() = user_id);
 
--- Users can update their own orders (e.g. attaching receipt url)
-CREATE POLICY "Users can update own orders"
-ON public.orders FOR UPDATE
-USING (auth.uid() = user_id)
-WITH CHECK (auth.uid() = user_id);
+-- Secure RPC to let users attach receipts without granting raw UPDATE access
+CREATE OR REPLACE FUNCTION public.attach_payment_receipt(p_order_id UUID, p_receipt_url TEXT)
+RETURNS VOID AS $$
+BEGIN
+  -- Verify the user owns this order before updating
+  UPDATE public.orders
+  SET receipt_url = p_receipt_url,
+      status = 'pending_payment',
+      updated_at = NOW()
+  WHERE id = p_order_id
+    AND user_id = auth.uid()
+    AND status = 'pending_payment'; -- Only allow if awaiting payment or already pending verification
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 
 -- Payments Table
@@ -241,3 +251,22 @@ WITH CHECK (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
 CREATE POLICY "Admin can view all payments"
 ON public.payments FOR SELECT
 USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+
+-- ==========================================
+-- STORAGE POLICIES
+-- ==========================================
+
+-- Insert this into Supabase SQL Editor if buckets are created:
+-- insert into storage.buckets (id, name, public) values ('payment_receipts', 'payment_receipts', true);
+
+-- Allow authenticated users to upload files to payment_receipts bucket
+CREATE POLICY "Authenticated users can upload payment receipts"
+ON storage.objects FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'payment_receipts');
+
+-- Allow anyone to read payment receipts (or just authenticated, but public simplifies viewing)
+CREATE POLICY "Anyone can view payment receipts"
+ON storage.objects FOR SELECT
+TO public
+USING (bucket_id = 'payment_receipts');

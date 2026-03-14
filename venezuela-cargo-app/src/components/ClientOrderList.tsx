@@ -71,13 +71,13 @@ export function ClientOrderList({ initialOrders, user }: { initialOrders: any[],
       const filePath = `${fileName}`;
 
       const { error: uploadError } = await supabase.storage
-        .from('receipts')
+        .from('payment_receipts')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
       const { data: { publicUrl } } = supabase.storage
-        .from('receipts')
+        .from('payment_receipts')
         .getPublicUrl(filePath);
 
       // Insert payment record
@@ -92,11 +92,13 @@ export function ClientOrderList({ initialOrders, user }: { initialOrders: any[],
 
       if (paymentError) throw paymentError;
 
-      // Update Order to ensure receipt URL is cached for admin ease
-      await supabase
-        .from('orders')
-        .update({ receipt_url: publicUrl })
-        .eq('id', payingOrder.id)
+      // Securely update order's receipt_url via RPC
+      const { error: rpcError } = await supabase.rpc('attach_payment_receipt', {
+        p_order_id: payingOrder.id,
+        p_receipt_url: publicUrl
+      });
+
+      if (rpcError) throw rpcError;
 
       alert("Payment submitted successfully!")
 

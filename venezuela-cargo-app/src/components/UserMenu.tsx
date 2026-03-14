@@ -5,13 +5,21 @@ import Link from 'next/link'
 import { User, LogOut, Box, Menu, PlusCircle, ListOrdered } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/utils/supabase/client'
+import { translations } from '@/lib/translations'
 
-export function UserMenu({ email, userId }: { email: string | undefined, userId: string }) {
+export function UserMenu({ email, userId, defaultLang = 'en' }: { email: string | undefined, userId: string, defaultLang?: 'en' | 'es' }) {
   const [isOpen, setIsOpen] = useState(false)
   const [hasNotifications, setHasNotifications] = useState(false)
   const [showOuterBadge, setShowOuterBadge] = useState(false)
+
+  // Local state synced from props (which is driven by cookies via Header)
+  const [lang, setLang] = useState<'en' | 'es'>(defaultLang)
+  useEffect(() => setLang(defaultLang), [defaultLang])
+
   const menuRef = useRef<HTMLDivElement>(null)
   const supabase = createClient()
+
+  const t = translations[lang]
 
   // Realtime Notifications Listener & Outside Click
   useEffect(() => {
@@ -99,7 +107,7 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
               onClick={() => setIsOpen(false)}
             >
               <PlusCircle className="mr-2 h-4 w-4" />
-              <span>New Order</span>
+              <span>{t.new_order}</span>
             </Link>
 
             <Link
@@ -108,7 +116,7 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
               onClick={() => setIsOpen(false)}
             >
               <ListOrdered className="mr-2 h-4 w-4" />
-              <span>My Orders</span>
+              <span>{t.my_orders}</span>
             </Link>
 
             <Link
@@ -117,7 +125,7 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
               onClick={() => setIsOpen(false)}
             >
               <User className="mr-2 h-4 w-4" />
-              <span>Profile</span>
+              <span>{t.profile}</span>
             </Link>
 
             <Link
@@ -130,7 +138,7 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
             >
               <div className="flex items-center">
                 <Box className="mr-2 h-4 w-4" />
-                <span>Notifications</span>
+                <span>{t.notifications}</span>
               </div>
               {hasNotifications && (
                 <span className="h-2 w-2 rounded-full bg-red-500"></span>
@@ -145,7 +153,7 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
                 className="flex w-full items-center px-2 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md transition-colors"
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Sign Out</span>
+                <span>{t.sign_out}</span>
               </button>
             </form>
           </div>

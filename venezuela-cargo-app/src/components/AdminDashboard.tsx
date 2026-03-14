@@ -126,14 +126,36 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       console.log('Update successful:', data[0]);
       setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, ...additionalPayload } : o))
 
-      // Trigger notifications for crucial status changes
-      if (newStatus === 'pending_payment' && orderToUpdate) {
+      // Trigger notifications for ALL status changes
+      if (orderToUpdate && newStatus !== 'rejected') { // Rejections are handled separately
+        let title = "Order Update";
+        let message = `Your order status is now: ${newStatus}`;
+
+        // Friendly mapping for common statuses
+        const statusMap: Record<string, string> = {
+          'awaiting_approval': 'Awaiting Approval',
+          'pending_payment': 'Pending Verification (Please Upload Payment)',
+          'processing': 'Processing',
+          'in_miami': 'Received in Miami',
+          'shipped_to_vzla': 'In Transit to Venezuela',
+          'ready_for_pickup': 'Ready for Pickup'
+        };
+
+        const readableStatus = statusMap[newStatus] || newStatus;
+
+        if (newStatus === 'pending_payment') {
+          title = "Order Approved!";
+          message = "Your order has been approved. You can now proceed to payment.";
+        } else {
+          message = `Your order status is now: ${readableStatus}`;
+        }
+
         await supabase.from('notifications').insert({
           user_id: orderToUpdate.user_id || data[0].user_id,
           order_id: orderId,
-          title: "Order Approved!",
-          message: "Your order has been approved. You can now proceed to payment.",
-          type: "success"
+          title: title,
+          message: message,
+          type: newStatus === 'pending_payment' ? "success" : "info"
         });
       }
     } else {

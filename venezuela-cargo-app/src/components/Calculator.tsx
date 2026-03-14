@@ -11,10 +11,13 @@ import { logisticsData, getUniqueStates, getCitiesByState, CourierOffice } from 
 import { createClient } from "@/utils/supabase/client";
 import { ExternalLink, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { translations } from '@/lib/translations';
 
 type Item = { url: string; price: string };
 
-export function Calculator({ user }: { user: any }) {
+export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLang?: 'en' | 'es' }) {
+  const [lang, setLang] = useState<'en' | 'es'>(defaultLang);
+  useEffect(() => setLang(defaultLang), [defaultLang]);
   const [items, setItems] = useState<Item[]>([{ url: "", price: "" }]);
 
   // Logistics & Client Details
@@ -96,10 +99,15 @@ export function Calculator({ user }: { user: any }) {
         if (data && (data.full_name || data.phone || data.zip_code)) {
           setSavedProfile(data);
         }
+        if (data && data.preferred_language === 'es') {
+          setLang('es');
+        }
       }
     }
     fetchInitialData();
   }, [supabase, user]);
+
+  const t = translations[lang];
 
   const handleAutoFill = () => {
     if (savedProfile) {
@@ -205,17 +213,17 @@ export function Calculator({ user }: { user: any }) {
         <div className="w-16 h-16 bg-blue-100 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
         </div>
-        <h2 className="text-2xl font-bold text-gray-900">Order Submitted for Approval!</h2>
+        <h2 className="text-2xl font-bold text-gray-900">{t.order_submitted}</h2>
         <p className="text-gray-600 mt-2">
-          Your request has been sent successfully. Once an Admin approves your items, you'll be able to process the payment in the 'My Orders' tab.
+          {t.order_success_msg}
         </p>
 
         <div className="mt-8 flex flex-col space-y-3">
           <Link href="/orders" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-11 rounded-md px-8 w-full">
-            Go to My Orders
+            {t.go_to_orders}
           </Link>
           <Button variant="outline" className="w-full" onClick={() => window.location.reload()}>
-            Submit Another Request
+            {t.submit_another}
           </Button>
         </div>
       </div>
@@ -226,8 +234,8 @@ export function Calculator({ user }: { user: any }) {
     <div className="w-full max-w-lg mx-auto space-y-8">
       <Card className="shadow-none border-gray-200">
         <CardHeader className="pb-4">
-          <CardTitle className="text-2xl font-bold tracking-tight">Calculate Shipping</CardTitle>
-          <CardDescription className="text-sm">Enter your product links and prices in USD.</CardDescription>
+          <CardTitle className="text-2xl font-bold tracking-tight">{t.calculate_shipping}</CardTitle>
+          <CardDescription className="text-sm">{t.enter_links}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {items.map((item, index) => (
@@ -242,7 +250,7 @@ export function Calculator({ user }: { user: any }) {
                 </button>
               )}
               <div className="space-y-2 pr-6">
-                <Label>Amazon Product URL</Label>
+                <Label>{t.amazon_url}</Label>
                 <Input
                   placeholder="https://amazon.com/dp/..."
                   value={item.url}
@@ -254,7 +262,7 @@ export function Calculator({ user }: { user: any }) {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Product Price ($)</Label>
+                <Label>{t.price}</Label>
                 <Input
                   type="number"
                   step="0.01"
@@ -275,11 +283,11 @@ export function Calculator({ user }: { user: any }) {
             className="w-full border-dashed"
             onClick={() => setItems([...items, { url: "", price: "" }])}
           >
-            <Plus className="w-4 h-4 mr-2" /> Add another item
+            <Plus className="w-4 h-4 mr-2" /> {t.add_item}
           </Button>
 
           <Button onClick={handleCalculate} className="w-full text-md h-12 mt-4">
-            Calculate Total Cost
+            {t.calc_total}
           </Button>
         </CardContent>
       </Card>
@@ -287,31 +295,31 @@ export function Calculator({ user }: { user: any }) {
       {breakdown && (
         <Card className="shadow-none border-primary/20 bg-primary/5">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Cost Breakdown</CardTitle>
+            <CardTitle className="text-lg">{t.cost_breakdown}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Items Total</span>
+              <span className="text-muted-foreground">{t.items_total}</span>
               <span className="font-medium">${breakdown.amazonPrice.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">US Sales Tax (7%)</span>
+              <span className="text-muted-foreground">{t.us_tax}</span>
               <span className="font-medium">${breakdown.usTax.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Service Commission (15%)</span>
+              <span className="text-muted-foreground">{t.service_commission}</span>
               <span className="font-medium">${breakdown.serviceCommission.toFixed(2)}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Handling Fee</span>
+              <span className="text-muted-foreground">{t.handling_fee}</span>
               <span className="font-medium">${breakdown.handlingFee.toFixed(2)}</span>
             </div>
             <div className="border-t border-primary/10 pt-3 mt-4 flex justify-between font-black text-xl text-primary">
-              <span>Total</span>
+              <span>{t.total}</span>
               <span>${breakdown.totalCost.toFixed(2)}</span>
             </div>
             <p className="text-xs text-primary/80 mt-2">
-              <strong>Pro Tip:</strong> Para artículos de bajo costo, recuerda que el manejo mínimo es de $5 por orden para garantizar la seguridad de tu carga.
+              {t.pro_tip}
             </p>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
@@ -319,34 +327,34 @@ export function Calculator({ user }: { user: any }) {
               <form onSubmit={handleCreateOrder} className="w-full space-y-5 text-left">
                 <div className="border-t border-primary/10 my-2" />
                 <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-md font-bold tracking-tight text-primary">1. Delivery Info</h3>
+                  <h3 className="text-md font-bold tracking-tight text-primary">{t.delivery_info}</h3>
                   {savedProfile && (
                     <Button type="button" variant="outline" size="sm" onClick={handleAutoFill} className="h-8 text-xs">
-                      Use saved info
+                      {t.use_saved_info}
                     </Button>
                   )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="clientName">Full Name</Label>
+                  <Label htmlFor="clientName">{t.full_name}</Label>
                   <Input id="clientName" placeholder="John Doe" value={clientName} onChange={e => setClientName(e.target.value)} required />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="whatsapp">WhatsApp Number</Label>
+                  <Label htmlFor="whatsapp">{t.whatsapp_number}</Label>
                   <Input id="whatsapp" placeholder="+58 412..." value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
                 </div>
 
                 <div className="grid grid-cols-3 gap-2 mt-4">
                   <div className="space-y-2 col-span-1">
-                    <Label>Zip Code</Label>
+                    <Label>{t.zip_code}</Label>
                     <Input placeholder="e.g. 1060" value={postalCodeInput} onChange={e => setPostalCodeInput(e.target.value)} />
                   </div>
                   <div className="space-y-2 col-span-1">
-                    <Label>State</Label>
+                    <Label>{t.state}</Label>
                     <Select value={selectedState} onValueChange={(val) => { setSelectedState(val); setSelectedCity(""); setSelectedOfficeCode(""); }}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Any" />
+                        <SelectValue placeholder={t.any} />
                       </SelectTrigger>
                       <SelectContent>
                         {states.map(s => (
@@ -356,10 +364,10 @@ export function Calculator({ user }: { user: any }) {
                     </Select>
                   </div>
                   <div className="space-y-2 col-span-1">
-                    <Label>City</Label>
+                    <Label>{t.city}</Label>
                     <Select value={selectedCity} onValueChange={(val) => { setSelectedCity(val); setSelectedOfficeCode(""); }} disabled={!selectedState}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Any" />
+                        <SelectValue placeholder={t.any} />
                       </SelectTrigger>
                       <SelectContent>
                         {cities.map(c => (
@@ -371,10 +379,10 @@ export function Calculator({ user }: { user: any }) {
                 </div>
 
                 <div className="space-y-2">
-                  <Label>Select Office Address (Liberty Express)</Label>
+                  <Label>{t.select_office}</Label>
                   <Select value={selectedOfficeCode} onValueChange={setSelectedOfficeCode}>
                     <SelectTrigger className="h-auto whitespace-normal text-left py-3">
-                      <SelectValue placeholder="Choose a Liberty Express location..." />
+                      <SelectValue placeholder={t.choose_office} />
                     </SelectTrigger>
                     <SelectContent className="max-w-[350px]">
                       {availableOffices.map((o) => {
@@ -405,21 +413,21 @@ export function Calculator({ user }: { user: any }) {
                       className="text-sm text-blue-600 hover:underline flex items-center mt-2"
                     >
                       <ExternalLink className="h-4 w-4 mr-1 inline shrink-0" />
-                      View Office on Google Maps
+                      {t.view_map}
                     </a>
                   )}
                 </div>
 
                 <Button type="submit" className="w-full mt-4" size="lg" disabled={isSubmitting}>
-                  {isSubmitting ? "Submitting..." : "Submit for Approval"}
+                  {isSubmitting ? t.submitting : t.submit_approval}
                 </Button>
               </form>
             ) : (
               <div className="text-center w-full">
-                <p className="text-sm text-gray-500 mb-2">Please log in to place an order</p>
+                <p className="text-sm text-gray-500 mb-2">{t.please_login}</p>
                 <a href="/login" className="w-full">
                   <Button variant="outline" className="w-full">
-                    Log In / Sign Up
+                    {t.login_signup}
                   </Button>
                 </a>
               </div>
