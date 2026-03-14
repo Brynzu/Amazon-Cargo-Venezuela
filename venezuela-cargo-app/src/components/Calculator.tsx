@@ -32,6 +32,9 @@ export function Calculator({ user }: { user: any }) {
   const [exchangeRate, setExchangeRate] = useState<number>(710.00);
   const [submittedOrderId, setSubmittedOrderId] = useState<string | null>(null);
 
+  // Profile Data Auto-fill
+  const [savedProfile, setSavedProfile] = useState<any>(null);
+
   // Computed Options
   const states = getUniqueStates();
 
@@ -67,20 +70,33 @@ export function Calculator({ user }: { user: any }) {
   const supabase = createClient();
 
   useEffect(() => {
-    async function fetchRate() {
+    async function fetchInitialData() {
       try {
         const { data, error } = await supabase.from('settings').select('exchange_rate').eq('id', 1).single();
         if (data && !error) {
           setExchangeRate(data.exchange_rate);
-        } else {
-          console.warn("Settings table might not exist yet or lacks RLS. Fallback to 710.", error);
         }
       } catch (err) {
         console.error("Fetch rate error:", err);
       }
+
+      if (user) {
+        const { data } = await supabase.from('users').select('*').eq('id', user.id).single();
+        if (data && (data.full_name || data.phone || data.zip_code)) {
+          setSavedProfile(data);
+        }
+      }
     }
-    fetchRate();
-  }, [supabase]);
+    fetchInitialData();
+  }, [supabase, user]);
+
+  const handleAutoFill = () => {
+    if (savedProfile) {
+      if (savedProfile.full_name) setClientName(savedProfile.full_name);
+      if (savedProfile.phone) setWhatsapp(savedProfile.phone);
+      if (savedProfile.zip_code) setPostalCodeInput(savedProfile.zip_code);
+    }
+  };
 
   const handleCalculate = () => {
     const total = items.reduce((acc, item) => {
@@ -274,7 +290,14 @@ export function Calculator({ user }: { user: any }) {
             {user ? (
               <form onSubmit={handleCreateOrder} className="w-full space-y-5 text-left">
                 <div className="border-t border-primary/10 my-2" />
-                <h3 className="text-md font-bold tracking-tight text-primary">1. Delivery Info</h3>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-md font-bold tracking-tight text-primary">1. Delivery Info</h3>
+                  {savedProfile && (
+                    <Button type="button" variant="outline" size="sm" onClick={handleAutoFill} className="h-8 text-xs">
+                      Use saved info
+                    </Button>
+                  )}
+                </div>
 
                 <div className="space-y-2">
                   <Label htmlFor="clientName">Full Name</Label>

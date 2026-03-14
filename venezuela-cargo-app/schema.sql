@@ -22,12 +22,52 @@ CREATE TYPE payment_method AS ENUM (
 CREATE TABLE public.users (
   id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
   email TEXT NOT NULL,
+
+  -- Profile Fields
+  full_name TEXT,
   phone TEXT,
+  state TEXT,
+  city TEXT,
+  zip_code TEXT,
+  avatar_url TEXT,
+
+  -- Legacy fields
   address_in_venezuela TEXT,
   preferred_courier_office TEXT,
+
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Notifications Table
+CREATE TABLE public.notifications (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE NOT NULL,
+  order_id UUID REFERENCES public.orders(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  type TEXT DEFAULT 'info' NOT NULL,
+  read BOOLEAN DEFAULT FALSE NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable RLS for Notifications
+ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
+
+-- Users can read their own notifications
+CREATE POLICY "Users can view own notifications"
+ON public.notifications FOR SELECT
+USING (auth.uid() = user_id);
+
+-- Users can update their own notifications (to mark as read)
+CREATE POLICY "Users can update own notifications"
+ON public.notifications FOR UPDATE
+USING (auth.uid() = user_id);
+
+-- Admin can insert notifications
+CREATE POLICY "Admin can insert notifications"
+ON public.notifications FOR INSERT
+WITH CHECK (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
 
 -- Enable RLS for Users
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
@@ -109,6 +149,12 @@ CREATE POLICY "Users can insert own orders"
 ON public.orders FOR INSERT
 WITH CHECK (auth.uid() = user_id);
 
+-- Users can update their own orders (e.g. attaching receipt url)
+CREATE POLICY "Users can update own orders"
+ON public.orders FOR UPDATE
+USING (auth.uid() = user_id)
+WITH CHECK (auth.uid() = user_id);
+
 
 -- Payments Table
 CREATE TABLE public.payments (
@@ -188,7 +234,8 @@ USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
 -- Admin can update all orders (e.g., status)
 CREATE POLICY "Admin can update all orders"
 ON public.orders FOR UPDATE
-USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com')
+WITH CHECK (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
 
 -- Admin can read all payments
 CREATE POLICY "Admin can view all payments"

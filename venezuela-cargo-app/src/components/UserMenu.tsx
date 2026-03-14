@@ -70,7 +70,7 @@ export function UserMenu({ email, hasNotifications }: { email: string | undefine
             </Link>
 
             <Link
-              href="#"
+              href="/profile"
               className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors"
               onClick={() => setIsOpen(false)}
             >
@@ -79,7 +79,7 @@ export function UserMenu({ email, hasNotifications }: { email: string | undefine
             </Link>
 
             <Link
-              href="/orders"
+              href="/notifications"
               className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors justify-between"
               onClick={() => setIsOpen(false)}
             >

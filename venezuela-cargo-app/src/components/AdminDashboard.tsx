@@ -25,6 +25,7 @@ import Link from 'next/link'
 
 type Order = {
   id: string
+  user_id?: string
   client_name: string
   whatsapp: string
   amazon_url?: string
@@ -69,7 +70,9 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   }
 
   const handleStatusChange = async (orderId: string, newStatus: string, additionalPayload: any = {}) => {
+    const orderToUpdate = orders.find(o => o.id === orderId);
     console.log(`Attempting to update order ${orderId} to status: ${newStatus}`, additionalPayload);
+
     const { data, error } = await supabase
       .from('orders')
       .update({ status: newStatus, ...additionalPayload })
@@ -82,6 +85,17 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
     } else if (data && data.length > 0) {
       console.log('Update successful:', data[0]);
       setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, ...additionalPayload } : o))
+
+      // Trigger notifications for crucial status changes
+      if (newStatus === 'pending_payment' && orderToUpdate) {
+        await supabase.from('notifications').insert({
+          user_id: orderToUpdate.user_id || data[0].user_id,
+          order_id: orderId,
+          title: "Order Approved!",
+          message: "Your order has been approved. You can now proceed to payment.",
+          type: "success"
+        });
+      }
     } else {
       alert("Update command executed but no rows were returned. RLS policy might be blocking the update.")
       console.warn("No rows returned from update.", data);
@@ -90,7 +104,23 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
   const confirmRejection = async () => {
     if (!rejectOrderId) return;
+    const orderToUpdate = orders.find(o => o.id === rejectOrderId);
+
     await handleStatusChange(rejectOrderId, 'rejected', { rejection_reason: rejectReason });
+
+    if (orderToUpdate) {
+      // Look up user_id either from local state or trust it was caught in handleStatusChange.
+      // Doing it explicitly here to guarantee the message is tailored.
+      const { error: notifError } = await supabase.from('notifications').insert({
+        user_id: orderToUpdate.user_id, // ensure user_id exists on order object
+        order_id: rejectOrderId,
+        title: "Order Rejected",
+        message: `Your order was rejected. Reason: ${rejectReason}`,
+        type: "error"
+      });
+      if (notifError) console.error("Notification failed", notifError);
+    }
+
     setRejectOrderId(null);
     setRejectReason("");
   }

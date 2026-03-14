@@ -12,10 +12,10 @@ export async function Header() {
 
   if (user) {
     const { count, error } = await supabase
-      .from('orders')
+      .from('notifications')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', user.id)
-      .in('status', ['pending_payment', 'rejected']);
+      .eq('read', false);
 
     if (!error && count && count > 0) {
       hasNotifications = true;
