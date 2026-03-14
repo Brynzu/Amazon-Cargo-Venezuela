@@ -69,16 +69,22 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   }
 
   const handleStatusChange = async (orderId: string, newStatus: string, additionalPayload: any = {}) => {
-    const { error } = await supabase
+    console.log(`Attempting to update order ${orderId} to status: ${newStatus}`, additionalPayload);
+    const { data, error } = await supabase
       .from('orders')
       .update({ status: newStatus, ...additionalPayload })
       .eq('id', orderId)
+      .select()
 
     if (error) {
-      alert("Error updating order status.")
-      console.error(error)
-    } else {
+      alert(`Error updating order status: ${error.message}`)
+      console.error('Supabase Update Error:', error)
+    } else if (data && data.length > 0) {
+      console.log('Update successful:', data[0]);
       setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, ...additionalPayload } : o))
+    } else {
+      alert("Update command executed but no rows were returned. RLS policy might be blocking the update.")
+      console.warn("No rows returned from update.", data);
     }
   }
 

@@ -8,6 +8,20 @@ export async function Header() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
+  let hasNotifications = false;
+
+  if (user) {
+    const { count, error } = await supabase
+      .from('orders')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .in('status', ['pending_payment', 'rejected']);
+
+    if (!error && count && count > 0) {
+      hasNotifications = true;
+    }
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -17,7 +31,7 @@ export async function Header() {
         </Link>
         <div className="flex items-center gap-4">
           {user ? (
-            <UserMenu email={user.email} />
+            <UserMenu email={user.email} hasNotifications={hasNotifications} />
           ) : (
             <Link href="/login">
               <Button variant="default">Log In / Sign Up</Button>

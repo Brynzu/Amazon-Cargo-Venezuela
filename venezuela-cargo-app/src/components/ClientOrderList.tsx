@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/utils/supabase/client'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -39,6 +39,24 @@ export function ClientOrderList({ initialOrders, user }: { initialOrders: any[],
   const [file, setFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const supabase = createClient()
+
+  useEffect(() => {
+    const channel = supabase.channel('realtime_orders')
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'orders',
+        filter: `user_id=eq.${user.id}`
+      }, (payload) => {
+        const updatedOrder = payload.new;
+        setOrders(prevOrders => prevOrders.map(o => o.id === updatedOrder.id ? updatedOrder : o));
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    }
+  }, [supabase, user.id])
 
   const handlePaymentSubmit = async () => {
     if (!file || !payingOrder) {

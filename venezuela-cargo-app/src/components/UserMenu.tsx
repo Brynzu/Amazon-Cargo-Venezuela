@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { User, LogOut, Box, Menu, PlusCircle, ListOrdered } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
-export function UserMenu({ email }: { email: string | undefined }) {
+export function UserMenu({ email, hasNotifications }: { email: string | undefined, hasNotifications?: boolean }) {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -24,14 +24,22 @@ export function UserMenu({ email }: { email: string | undefined }) {
 
   return (
     <div className="relative" ref={menuRef}>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-10 w-10 rounded-full border border-gray-200"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <Menu className="h-5 w-5 text-primary" />
-      </Button>
+      <div className="relative">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-10 w-10 rounded-full border border-gray-200"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <Menu className="h-5 w-5 text-primary" />
+        </Button>
+        {hasNotifications && (
+          <span className="absolute top-0 right-0 flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span>
+          </span>
+        )}
+      </div>
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-md shadow-lg z-[100] overflow-hidden">
@@ -72,11 +80,16 @@ export function UserMenu({ email }: { email: string | undefined }) {
 
             <Link
               href="/orders"
-              className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors"
+              className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors justify-between"
               onClick={() => setIsOpen(false)}
             >
-              <Box className="mr-2 h-4 w-4" />
-              <span>Notifications</span>
+              <div className="flex items-center">
+                <Box className="mr-2 h-4 w-4" />
+                <span>Notifications</span>
+              </div>
+              {hasNotifications && (
+                <span className="h-2 w-2 rounded-full bg-red-500"></span>
+              )}
             </Link>
           </div>
 
