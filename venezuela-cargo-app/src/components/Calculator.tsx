@@ -42,17 +42,25 @@ export function Calculator({ user }: { user: any }) {
   useEffect(() => {
     if (postalCodeInput.trim().length >= 4) {
       const match = logisticsData.find(o => o.postalCode === postalCodeInput.trim());
-      if (match) {
+      // Only auto-fill from zip code if the state/city are NOT already populated
+      if (match && !selectedState && !selectedCity) {
         setSelectedState(match.state);
-        // Add timeout sequence here as well to ensure City dropdown unlocks before setting value
         setTimeout(() => {
           setSelectedCity(match.city);
         }, 500);
       }
     }
-  }, [postalCodeInput]);
+  }, [postalCodeInput, selectedState, selectedCity]);
 
-  const cities = selectedState ? getCitiesByState(selectedState) : [];
+  const validCitiesForState = selectedState ? getCitiesByState(selectedState) : [];
+
+  // If a zip code is entered, filter the available cities to only those that match the zip code
+  const cities = validCitiesForState.filter(city => {
+    if (postalCodeInput.trim().length >= 3) {
+      return logisticsData.some(o => o.state === selectedState && o.city === city && o.postalCode.startsWith(postalCodeInput.trim()));
+    }
+    return true;
+  });
 
   let availableOffices = logisticsData.filter(o =>
     (!selectedState || o.state === selectedState) &&
@@ -99,21 +107,20 @@ export function Calculator({ user }: { user: any }) {
       if (savedProfile.phone) setWhatsapp(savedProfile.phone);
       if (savedProfile.zip_code) {
         setPostalCodeInput(savedProfile.zip_code);
-      } else {
-        if (savedProfile.state) {
-          setSelectedState(savedProfile.state);
-          // When state changes, we need to wait for cities to populate
-          // We can use a timeout to let React re-render with the new cities array and unlock the field
-          if (savedProfile.city) {
-            // Wait 500ms to allow the state update (which re-renders and thus 'enables' the City Select field) to complete
-            setTimeout(() => {
-              // Ensure the city actually exists in the newly computed cities array
-              const validCities = getCitiesByState(savedProfile.state);
-              if (validCities.includes(savedProfile.city)) {
-                setSelectedCity(savedProfile.city);
-              }
-            }, 500);
-          }
+      }
+      if (savedProfile.state) {
+        setSelectedState(savedProfile.state);
+        // When state changes, we need to wait for cities to populate
+        // We can use a timeout to let React re-render with the new cities array and unlock the field
+        if (savedProfile.city) {
+          // Wait 500ms to allow the state update (which re-renders and thus 'enables' the City Select field) to complete
+          setTimeout(() => {
+            // Ensure the city actually exists in the newly computed cities array
+            const validCities = getCitiesByState(savedProfile.state);
+            if (validCities.includes(savedProfile.city)) {
+              setSelectedCity(savedProfile.city);
+            }
+          }, 500);
         }
       }
     }
