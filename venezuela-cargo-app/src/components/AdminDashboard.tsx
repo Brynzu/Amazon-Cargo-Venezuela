@@ -108,7 +108,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
     await handleStatusChange(rejectOrderId, 'rejected', { rejection_reason: rejectReason });
 
-    if (orderToUpdate) {
+    if (orderToUpdate && orderToUpdate.user_id) {
       // Look up user_id either from local state or trust it was caught in handleStatusChange.
       // Doing it explicitly here to guarantee the message is tailored.
       const { error: notifError } = await supabase.from('notifications').insert({
@@ -118,7 +118,12 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
         message: `Your order was rejected. Reason: ${rejectReason}`,
         type: "error"
       });
-      if (notifError) console.error("Notification failed", notifError);
+      if (notifError) {
+        console.error("Notification failed", notifError);
+        alert(`Notification could not be sent: ${notifError.message}`);
+      }
+    } else {
+       console.warn("Could not send notification: user_id is missing from order data.");
     }
 
     setRejectOrderId(null);

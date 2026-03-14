@@ -1,14 +1,17 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { User } from 'lucide-react'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { User, Pencil } from 'lucide-react'
+import { getUniqueStates } from '@/lib/logistics'
 
 export default function ProfilePage() {
+  const states = getUniqueStates()
   const [user, setUser] = useState<any>(null)
   const [fullName, setFullName] = useState("")
   const [phone, setPhone] = useState("")
@@ -17,8 +20,11 @@ export default function ProfilePage() {
   const [zipCode, setZipCode] = useState("")
   const [avatarUrl, setAvatarUrl] = useState("")
   const [file, setFile] = useState<File | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState("")
+
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const supabase = createClient()
 
@@ -41,6 +47,14 @@ export default function ProfilePage() {
     loadProfile()
   }, [supabase])
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0]
+    if (selectedFile) {
+      setFile(selectedFile)
+      setPreviewUrl(URL.createObjectURL(selectedFile))
+    }
+  }
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user) return
@@ -53,6 +67,7 @@ export default function ProfilePage() {
       if (file) {
         const fileExt = file.name.split('.').pop()
         const filePath = `${user.id}-${Date.now()}.${fileExt}`
+        // Ensure bucket is lowercase 'avatars'
         const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
         if (uploadError) throw uploadError
 
@@ -90,17 +105,31 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSave} className="space-y-6">
-            <div className="flex items-center space-x-4">
-              <div className="h-16 w-16 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center border">
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
-                ) : (
-                  <User className="h-8 w-8 text-gray-400" />
-                )}
-              </div>
-              <div className="flex-1">
-                <Label htmlFor="avatar">Profile Picture</Label>
-                <Input id="avatar" type="file" accept="image/*" onChange={e => setFile(e.target.files?.[0] || null)} className="mt-1" />
+            <div className="flex items-center justify-center mb-6">
+              <div className="relative h-24 w-24 group">
+                <div className="h-24 w-24 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center border-2 border-gray-200">
+                  {previewUrl || avatarUrl ? (
+                    <img src={previewUrl || avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
+                  ) : (
+                    <User className="h-12 w-12 text-gray-400" />
+                  )}
+                </div>
+
+                {/* Hover overlay with pencil */}
+                <div
+                  className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <Pencil className="h-6 w-6 text-white" />
+                </div>
+
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
               </div>
             </div>
 
@@ -123,7 +152,16 @@ export default function ProfilePage() {
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="state">State</Label>
-                <Input id="state" value={state} onChange={e => setState(e.target.value)} placeholder="Miranda" />
+                <Select value={state} onValueChange={setState}>
+                  <SelectTrigger id="state">
+                    <SelectValue placeholder="Select state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {states.map(s => (
+                      <SelectItem key={s} value={s}>{s}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
