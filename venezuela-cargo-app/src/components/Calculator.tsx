@@ -44,7 +44,10 @@ export function Calculator({ user }: { user: any }) {
       const match = logisticsData.find(o => o.postalCode === postalCodeInput.trim());
       if (match) {
         setSelectedState(match.state);
-        setSelectedCity(match.city);
+        // Add timeout sequence here as well to ensure City dropdown unlocks before setting value
+        setTimeout(() => {
+          setSelectedCity(match.city);
+        }, 500);
       }
     }
   }, [postalCodeInput]);
@@ -100,16 +103,16 @@ export function Calculator({ user }: { user: any }) {
         if (savedProfile.state) {
           setSelectedState(savedProfile.state);
           // When state changes, we need to wait for cities to populate
-          // We can use a small timeout to let React re-render with the new cities array
+          // We can use a timeout to let React re-render with the new cities array and unlock the field
           if (savedProfile.city) {
-            // Need a slight delay to allow the state update (which re-renders and thus 'enables' the City Select field) to complete
+            // Wait 500ms to allow the state update (which re-renders and thus 'enables' the City Select field) to complete
             setTimeout(() => {
               // Ensure the city actually exists in the newly computed cities array
               const validCities = getCitiesByState(savedProfile.state);
               if (validCities.includes(savedProfile.city)) {
                 setSelectedCity(savedProfile.city);
               }
-            }, 50); // Increased slightly to ensure re-render occurs so field is no longer disabled
+            }, 500);
           }
         }
       }

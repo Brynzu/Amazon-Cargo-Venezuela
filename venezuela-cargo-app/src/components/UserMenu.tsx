@@ -30,7 +30,7 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
     fetchUnread()
 
     // 2. Subscribe to realtime inserts/updates
-    const channel = supabase.channel('realtime_notifications_header')
+    const channel = supabase.channel('public:notifications')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
