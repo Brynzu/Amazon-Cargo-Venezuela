@@ -9,6 +9,7 @@ import { createClient } from '@/utils/supabase/client'
 export function UserMenu({ email, userId }: { email: string | undefined, userId: string }) {
   const [isOpen, setIsOpen] = useState(false)
   const [hasNotifications, setHasNotifications] = useState(false)
+  const [showOuterBadge, setShowOuterBadge] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
   const supabase = createClient()
 
@@ -22,7 +23,9 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
         .eq('user_id', userId)
         .eq('read', false)
 
-      setHasNotifications(!!count && count > 0)
+      const hasUnread = !!count && count > 0;
+      setHasNotifications(hasUnread)
+      setShowOuterBadge(hasUnread)
     }
     fetchUnread()
 
@@ -59,11 +62,14 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
           variant="ghost"
           size="icon"
           className="h-10 w-10 rounded-full border border-gray-200"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => {
+            setIsOpen(!isOpen)
+            setShowOuterBadge(false) // Optimistically clear outer badge when menu is opened
+          }}
         >
           <Menu className="h-5 w-5 text-primary" />
         </Button>
-        {hasNotifications && (
+        {showOuterBadge && (
           <span className="absolute top-0 right-0 flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span>
@@ -111,7 +117,10 @@ export function UserMenu({ email, userId }: { email: string | undefined, userId:
             <Link
               href="/notifications"
               className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 rounded-md transition-colors justify-between"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false)
+                setHasNotifications(false) // Optimistically clear inner badge when navigating
+              }}
             >
               <div className="flex items-center">
                 <Box className="mr-2 h-4 w-4" />

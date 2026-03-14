@@ -97,8 +97,20 @@ export function Calculator({ user }: { user: any }) {
       if (savedProfile.zip_code) {
         setPostalCodeInput(savedProfile.zip_code);
       } else {
-        if (savedProfile.state) setSelectedState(savedProfile.state);
-        if (savedProfile.city) setSelectedCity(savedProfile.city);
+        if (savedProfile.state) {
+          setSelectedState(savedProfile.state);
+          // When state changes, we need to wait for cities to populate
+          // We can use a small timeout to let React re-render with the new cities array
+          if (savedProfile.city) {
+            setTimeout(() => {
+              // Ensure the city actually exists in the newly computed cities array
+              const validCities = getCitiesByState(savedProfile.state);
+              if (validCities.includes(savedProfile.city)) {
+                setSelectedCity(savedProfile.city);
+              }
+            }, 0);
+          }
+        }
       }
     }
   };

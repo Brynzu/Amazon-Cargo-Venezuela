@@ -35,9 +35,10 @@ export default function NotificationsPage() {
               .eq('read', false)
 
             // Give the user a brief moment to see what was "new" before graying them out
+            // Reduce timeout for snappier UI response
             setTimeout(() => {
               setNotifications(prev => prev.map(n => ({ ...n, read: true })))
-            }, 3000)
+            }, 1000)
           }
         }
       }
