@@ -13,7 +13,7 @@ export default function NotificationsPage() {
   const supabase = createClient()
 
   useEffect(() => {
-    async function loadNotifications() {
+    async function loadAndClearNotifications() {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         const { data, error } = await supabase
@@ -22,25 +22,29 @@ export default function NotificationsPage() {
           .eq('user_id', user.id)
           .order('created_at', { ascending: false })
 
-        if (data) setNotifications(data)
+        if (data) {
+          setNotifications(data)
+
+          // Automatically mark all as read upon viewing the page
+          const hasUnread = data.some(n => !n.read)
+          if (hasUnread) {
+            await supabase
+              .from('notifications')
+              .update({ read: true })
+              .eq('user_id', user.id)
+              .eq('read', false)
+
+            // Give the user a brief moment to see what was "new" before graying them out
+            setTimeout(() => {
+              setNotifications(prev => prev.map(n => ({ ...n, read: true })))
+            }, 3000)
+          }
+        }
       }
       setLoading(false)
     }
-    loadNotifications()
+    loadAndClearNotifications()
   }, [supabase])
-
-  const markAllAsRead = async () => {
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) {
-      await supabase
-        .from('notifications')
-        .update({ read: true })
-        .eq('user_id', user.id)
-        .eq('read', false)
-
-      setNotifications(notifications.map(n => ({ ...n, read: true })))
-    }
-  }
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -63,11 +67,6 @@ export default function NotificationsPage() {
               <p className="text-gray-500 mt-1">Updates on your orders and payments.</p>
             </div>
           </div>
-          {notifications.some(n => !n.read) && (
-            <Button variant="outline" size="sm" onClick={markAllAsRead}>
-              Mark all as read
-            </Button>
-          )}
         </div>
 
         {notifications.length === 0 ? (

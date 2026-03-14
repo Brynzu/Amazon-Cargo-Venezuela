@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { User, Pencil } from 'lucide-react'
-import { getUniqueStates } from '@/lib/logistics'
+import { getUniqueStates, getCitiesByState } from '@/lib/logistics'
 
 export default function ProfilePage() {
   const states = getUniqueStates()
@@ -156,7 +156,7 @@ export default function ProfilePage() {
             <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="state">State</Label>
-                <Select value={state} onValueChange={setState}>
+                <Select value={state} onValueChange={(val) => { setState(val); setCity(""); }}>
                   <SelectTrigger id="state">
                     <SelectValue placeholder="Select state" />
                   </SelectTrigger>
@@ -169,7 +169,16 @@ export default function ProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
-                <Input id="city" value={city} onChange={e => setCity(e.target.value)} placeholder="Caracas" />
+                <Select value={city} onValueChange={setCity} disabled={!state}>
+                  <SelectTrigger id="city">
+                    <SelectValue placeholder="Select city" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {getCitiesByState(state).map(c => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="zipCode">Zip Code</Label>
