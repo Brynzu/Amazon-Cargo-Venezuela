@@ -94,7 +94,12 @@ export function Calculator({ user }: { user: any }) {
     if (savedProfile) {
       if (savedProfile.full_name) setClientName(savedProfile.full_name);
       if (savedProfile.phone) setWhatsapp(savedProfile.phone);
-      if (savedProfile.zip_code) setPostalCodeInput(savedProfile.zip_code);
+      if (savedProfile.zip_code) {
+        setPostalCodeInput(savedProfile.zip_code);
+      } else {
+        if (savedProfile.state) setSelectedState(savedProfile.state);
+        if (savedProfile.city) setSelectedCity(savedProfile.city);
+      }
     }
   };
 

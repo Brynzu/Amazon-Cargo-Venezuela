@@ -51,6 +51,12 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   const [rejectOrderId, setRejectOrderId] = useState<string | null>(null)
   const [rejectReason, setRejectReason] = useState<string>("")
 
+  // Advanced Filters State
+  const [searchQuery, setSearchQuery] = useState("")
+  const [statusFilter, setStatusFilter] = useState("all")
+  const [costSort, setCostSort] = useState("none")
+  const [dateFilter, setDateFilter] = useState("all")
+
   const supabase = createClient()
 
   const handleSaveRate = async () => {
@@ -138,10 +144,57 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
   }
 
+  // Real-time stats
+  const pendingApprovals = orders.filter(o => o.status === 'awaiting_approval').length;
+  const unverifiedPayments = orders.filter(o => o.status === 'pending_payment' && o.receipt_url).length;
+
+  // Compute Filtered & Sorted Orders
+  let filteredOrders = orders.filter(o => {
+    const matchesSearch = o.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          o.client_name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || o.status === statusFilter;
+
+    let matchesDate = true;
+    if (dateFilter !== "all") {
+      const orderDate = new Date(o.created_at);
+      const now = new Date();
+      const diffTime = Math.abs(now.getTime() - orderDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (dateFilter === "today") matchesDate = diffDays <= 1;
+      if (dateFilter === "week") matchesDate = diffDays <= 7;
+      if (dateFilter === "month") matchesDate = diffDays <= 30;
+    }
+
+    return matchesSearch && matchesStatus && matchesDate;
+  });
+
+  if (costSort === 'high') {
+    filteredOrders.sort((a, b) => b.total_price_usd - a.total_price_usd);
+  } else if (costSort === 'low') {
+    filteredOrders.sort((a, b) => a.total_price_usd - b.total_price_usd);
+  } else {
+    // Default chronological
+    filteredOrders.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }
+
   return (
-    <div className="container mx-auto py-10">
-      <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-        <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
+    <div className="container mx-auto py-10 space-y-6">
+
+      {/* Header and Stats */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
+          <div className="flex gap-4 mt-2">
+            <span className="text-sm px-2 py-1 bg-amber-100 text-amber-800 rounded-md font-medium border border-amber-200">
+              {pendingApprovals} Pending Approvals
+            </span>
+            <span className="text-sm px-2 py-1 bg-blue-100 text-blue-800 rounded-md font-medium border border-blue-200">
+              {unverifiedPayments} Unverified Payments
+            </span>
+          </div>
+        </div>
+
         <div className="flex items-center gap-2 bg-white p-3 rounded-md border shadow-none">
           <Label htmlFor="rate" className="whitespace-nowrap font-medium">Tasa del día (Bs/USD):</Label>
           <Input
@@ -157,11 +210,69 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </Button>
         </div>
       </div>
+
+      {/* Advanced Filters */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-md border">
+        <div className="space-y-1">
+          <Label>Search Orders</Label>
+          <Input
+            placeholder="Search by ID or Client Name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <div className="space-y-1">
+          <Label>Filter by Status</Label>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger>
+              <SelectValue placeholder="All Statuses" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Statuses</SelectItem>
+              <SelectItem value="awaiting_approval">Awaiting Approval</SelectItem>
+              <SelectItem value="pending_payment">Pending Verification</SelectItem>
+              <SelectItem value="processing">Processing</SelectItem>
+              <SelectItem value="in_miami">Received in Miami</SelectItem>
+              <SelectItem value="shipped_to_vzla">Shipped to Vzla</SelectItem>
+              <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
+              <SelectItem value="rejected">Rejected</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1">
+          <Label>Date Range</Label>
+          <Select value={dateFilter} onValueChange={setDateFilter}>
+            <SelectTrigger>
+              <SelectValue placeholder="All Time" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Time</SelectItem>
+              <SelectItem value="today">Today</SelectItem>
+              <SelectItem value="week">Past 7 Days</SelectItem>
+              <SelectItem value="month">Past 30 Days</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1">
+          <Label>Sort by Cost</Label>
+          <Select value={costSort} onValueChange={setCostSort}>
+            <SelectTrigger>
+              <SelectValue placeholder="Chronological (Default)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">Chronological (Default)</SelectItem>
+              <SelectItem value="high">Highest Cost First</SelectItem>
+              <SelectItem value="low">Lowest Cost First</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       <div className="rounded-md border border-gray-200 bg-white shadow-none">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Date</TableHead>
+              <TableHead>Date & ID</TableHead>
               <TableHead>Client</TableHead>
               <TableHead>Total ($)</TableHead>
               <TableHead>Status</TableHead>
@@ -169,11 +280,22 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
             </TableRow>
           </TableHeader>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{new Date(order.created_at).toLocaleDateString()}</TableCell>
-                <TableCell>{order.client_name}</TableCell>
-                <TableCell>${order.total_price_usd.toFixed(2)}</TableCell>
+            {filteredOrders.map((order) => (
+              <TableRow key={order.id} className={order.status === 'pending_payment' && order.receipt_url ? 'bg-blue-50/40' : ''}>
+                <TableCell>
+                  <p className="font-medium">{new Date(order.created_at).toLocaleDateString()}</p>
+                  <p className="text-xs text-gray-500 font-mono">#{order.id.split('-')[0].toUpperCase()}</p>
+                </TableCell>
+                <TableCell>
+                  <p className="font-medium">{order.client_name}</p>
+                  {order.status === 'pending_payment' && order.receipt_url && (
+                    <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1 animate-pulse"></span>
+                      Payment Uploaded
+                    </span>
+                  )}
+                </TableCell>
+                <TableCell className="font-semibold">${order.total_price_usd.toFixed(2)}</TableCell>
                 <TableCell>
                   {order.status === 'awaiting_approval' ? (
                     <div className="flex space-x-2">
