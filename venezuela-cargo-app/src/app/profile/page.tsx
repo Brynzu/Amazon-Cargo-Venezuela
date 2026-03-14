@@ -66,9 +66,13 @@ export default function ProfilePage() {
 
       if (file) {
         const fileExt = file.name.split('.').pop()
-        const filePath = `${user.id}-${Date.now()}.${fileExt}`
-        // Ensure bucket is lowercase 'avatars'
-        const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file)
+        // Use user.id as a folder to satisfy Storage RLS policies
+        const filePath = `${user.id}/${Date.now()}.${fileExt}`
+
+        const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file, {
+          upsert: true
+        })
+
         if (uploadError) throw uploadError
 
         const { data: { publicUrl } } = supabase.storage.from('avatars').getPublicUrl(filePath)
