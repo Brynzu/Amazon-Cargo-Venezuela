@@ -150,8 +150,8 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
   // Compute Filtered & Sorted Orders
   let filteredOrders = orders.filter(o => {
-    const matchesSearch = o.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          o.client_name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = (o.id || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          (o.client_name || "").toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || o.status === statusFilter;
 
     let matchesDate = true;
