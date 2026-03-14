@@ -129,7 +129,7 @@ CREATE TABLE public.orders (
   office_map_url TEXT,
 
   -- New Receipt URL (as requested by user)
-  receipt_url TEXT,
+  payment_receipt TEXT,
 
   -- Frozen Exchange Rate at time of purchase
   exchange_rate NUMERIC(10, 2),
@@ -157,7 +157,7 @@ RETURNS VOID AS $$
 BEGIN
   -- Verify the user owns this order before updating
   UPDATE public.orders
-  SET receipt_url = p_receipt_url,
+  SET payment_receipt = p_receipt_url,
       status = 'pending_payment',
       updated_at = NOW()
   WHERE id = p_order_id

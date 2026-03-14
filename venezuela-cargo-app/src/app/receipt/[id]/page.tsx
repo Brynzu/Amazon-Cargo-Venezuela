@@ -90,12 +90,12 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
             )}
           </div>
 
-          {order.receipt_url && (
+          {order.payment_receipt && (
             <div className="mb-8 print:hidden">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">Payment Capture</p>
               <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-4">
                 <img
-                  src={order.receipt_url}
+                  src={order.payment_receipt}
                   alt="Uploaded Payment Receipt"
                   className="max-w-full max-h-[500px] object-contain"
                 />

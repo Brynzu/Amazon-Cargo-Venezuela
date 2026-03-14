@@ -37,7 +37,7 @@ type Order = {
   rejection_reason: string | null
   office: string
   office_map_url: string | null
-  receipt_url: string | null
+  payment_receipt: string | null
   created_at: string
 }
 
@@ -133,30 +133,40 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
       // Trigger notifications for ALL status changes
       if (orderToUpdate && newStatus !== 'rejected') { // Rejections are handled separately
-        let title = "Order Update";
-        let message = `Your order status is now: ${newStatus}`;
+
+        // Check user's preferred language to send the notification in their language
+        const { data: userData } = await supabase.from('users').select('preferred_language').eq('id', orderToUpdate.user_id).single();
+        const lang = userData?.preferred_language === 'es' ? 'es' : 'en';
+
+        let title = lang === 'es' ? "Actualización de Orden" : "Order Update";
 
         // Friendly mapping for common statuses
-        const statusMap: Record<string, string> = {
-          'awaiting_approval': 'Awaiting Approval',
-          'pending_payment': 'Pending Verification (Please Upload Payment)',
-          'processing': 'Processing',
-          'in_miami': 'Received in Miami',
-          'shipped_to_vzla': 'In Transit to Venezuela',
-          'ready_for_pickup': 'Ready for Pickup'
+        const statusMap: Record<string, {en: string, es: string}> = {
+          'awaiting_approval': {en: 'Awaiting Approval', es: 'Esperando Aprobación'},
+          'pending_payment': {en: 'Pending Verification (Please Upload Payment)', es: 'Verificación Pendiente (Por favor sube tu pago)'},
+          'processing': {en: 'Processing', es: 'Procesando'},
+          'in_miami': {en: 'Received in Miami', es: 'Recibido en Miami'},
+          'shipped_to_vzla': {en: 'In Transit to Venezuela', es: 'En Tránsito a Venezuela'},
+          'ready_for_pickup': {en: 'Ready for Pickup', es: 'Listo para Retirar'}
         };
 
-        const readableStatus = statusMap[newStatus] || newStatus;
+        const readableStatus = statusMap[newStatus] ? statusMap[newStatus][lang] : newStatus;
+        let message = "";
 
         if (newStatus === 'pending_payment') {
-          title = "Order Approved!";
-          message = "Your order has been approved. You can now proceed to payment.";
+          title = lang === 'es' ? "¡Orden Aprobada!" : "Order Approved!";
+          message = lang === 'es'
+            ? "Tu orden ha sido aprobada. Ahora puedes proceder con el pago."
+            : "Your order has been approved. You can now proceed to payment.";
         } else {
-          message = `Your order status is now: ${readableStatus}`;
+          message = lang === 'es'
+            ? `El estado de tu orden ahora es: ${readableStatus}`
+            : `Your order status is now: ${readableStatus}`;
         }
 
         if (additionalPayload.admin_note) {
-          message += `\nAdmin Note: ${additionalPayload.admin_note}`;
+          const noteLabel = lang === 'es' ? "Nota del Admin" : "Admin Note";
+          message += `\n${noteLabel}: ${additionalPayload.admin_note}`;
         }
 
         await supabase.from('notifications').insert({
@@ -230,7 +240,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
   // Real-time stats
   const pendingApprovals = orders.filter(o => o.status === 'awaiting_approval').length;
-  const unverifiedPayments = orders.filter(o => o.status === 'pending_payment' && o.receipt_url).length;
+  const unverifiedPayments = orders.filter(o => o.status === 'pending_payment' && o.payment_receipt).length;
 
   // Compute Filtered & Sorted Orders
   let filteredOrders = orders.filter(o => {
@@ -369,14 +379,14 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </TableHeader>
           <TableBody>
             {filteredOrders.map((order) => (
-              <TableRow key={order.id} className={order.status === 'pending_payment' && order.receipt_url ? 'bg-blue-50/40' : ''}>
+              <TableRow key={order.id} className={order.status === 'pending_payment' && order.payment_receipt ? 'bg-blue-50/40' : ''}>
                 <TableCell>
                   <p className="font-medium">{new Date(order.created_at).toLocaleDateString()}</p>
                   <p className="text-xs text-gray-500 font-mono">#{order.id.split('-')[0].toUpperCase()}</p>
                 </TableCell>
                 <TableCell>
                   <p className="font-medium">{order.client_name}</p>
-                  {order.status === 'pending_payment' && order.receipt_url && (
+                  {order.status === 'pending_payment' && order.payment_receipt && (
                     <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1 animate-pulse"></span>
                       Payment Uploaded
@@ -587,10 +597,10 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
               <div className="pt-2 border-t">
                 <p className="text-sm font-semibold text-gray-500 mb-2">Payment Receipt</p>
-                {selectedOrder.receipt_url ? (
+                {selectedOrder.payment_receipt ? (
                   <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-2">
                     <img
-                      src={selectedOrder.receipt_url}
+                      src={selectedOrder.payment_receipt}
                       alt="Receipt Preview"
                       className="max-w-full max-h-[300px] object-contain"
                     />
