@@ -13,6 +13,8 @@ export default function NotificationsPage() {
   const supabase = createClient()
 
   useEffect(() => {
+    let channel: any;
+
     async function loadAndClearNotifications() {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
@@ -41,10 +43,41 @@ export default function NotificationsPage() {
             }, 1000)
           }
         }
+
+        // Subscribe to real-time inserts
+        channel = supabase.channel(`public:notifications:page`)
+          .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${user.id}`
+          }, (payload) => {
+            const newNotif = payload.new;
+            // Prepend the new notification. It arrives as unread.
+            setNotifications(prev => {
+              if (prev.find(n => n.id === newNotif.id)) return prev;
+              return [newNotif, ...prev];
+            });
+
+            // Optimistically mark it as read shortly after receiving it while on this page
+            supabase.from('notifications').update({ read: true }).eq('id', newNotif.id).then(() => {
+              setTimeout(() => {
+                setNotifications(prev => prev.map(n => n.id === newNotif.id ? { ...n, read: true } : n));
+              }, 2000);
+            });
+          })
+          .subscribe()
       }
       setLoading(false)
     }
+
     loadAndClearNotifications()
+
+    return () => {
+      if (channel) {
+        supabase.removeChannel(channel)
+      }
+    }
   }, [supabase])
 
   const getIcon = (type: string) => {

@@ -41,7 +41,10 @@ type Order = {
   created_at: string
 }
 
+import { useEffect } from 'react'
+
 export function AdminDashboard({ initialOrders, initialExchangeRate }: { initialOrders: Order[], initialExchangeRate: number }) {
+  const [isMounted, setIsMounted] = useState(false)
   const [orders, setOrders] = useState<Order[]>(initialOrders)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [exchangeRate, setExchangeRate] = useState<string>(initialExchangeRate.toString())
@@ -58,6 +61,37 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   const [dateFilter, setDateFilter] = useState("all")
 
   const supabase = createClient()
+
+  useEffect(() => {
+    setIsMounted(true)
+
+    const channel = supabase.channel('public:orders')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'orders'
+      }, (payload) => {
+        if (payload.eventType === 'INSERT') {
+          const newOrder = payload.new as Order;
+          setOrders(prev => {
+            // Check if it already exists to prevent duplicates
+            if (prev.find(o => o.id === newOrder.id)) return prev;
+            return [newOrder, ...prev];
+          });
+        } else if (payload.eventType === 'UPDATE') {
+          const updatedOrder = payload.new as Order;
+          setOrders(prev => prev.map(o => o.id === updatedOrder.id ? updatedOrder : o));
+        } else if (payload.eventType === 'DELETE') {
+          const oldRecord = payload.old;
+          setOrders(prev => prev.filter(o => o.id !== oldRecord.id));
+        }
+      })
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [supabase])
 
   const handleSaveRate = async () => {
     setIsSavingRate(true)
@@ -176,6 +210,10 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   } else {
     // Default chronological
     filteredOrders.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+  }
+
+  if (!isMounted) {
+    return <div className="p-8 text-center text-gray-500">Loading Dashboard...</div>
   }
 
   return (
