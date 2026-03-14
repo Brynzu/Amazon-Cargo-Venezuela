@@ -54,5 +54,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Safeguard to ensure body is always clickable if Radix UI crashes or orphans a scroll lock */
+    pointer-events: auto !important;
   }
 }
