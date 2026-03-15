@@ -53,31 +53,35 @@ export async function POST(req: Request) {
       image = $('#landingImage').attr('src') || '';
     }
 
-    // Attempt to scrape Amazon price, prioritizing the actual 'buy box' price
+    // Attempt to scrape Amazon price, prioritizing the actual 'buy box' price within the center column
+    // This prevents scraping prices from "Sponsored" carousels or "Customers also bought"
     let rawPrice = '';
 
+    const centerCol = $('#centerCol, #corePrice_desktop, #desktop_buybox');
+
     // Sometimes the DOM renders corePriceDisplay_desktop_feature_div but empty, so we must check text length
-    const desktopWhole = $('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text().trim();
-    const desktopFraction = $('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text().trim();
-    const genericWhole = $('.a-price-whole').first().text().trim();
-    const genericFraction = $('.a-price-fraction').first().text().trim();
+    const desktopWhole = centerCol.find('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text().trim();
+    const desktopFraction = centerCol.find('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text().trim();
+
+    const genericWhole = centerCol.find('.a-price-whole').first().text().trim();
+    const genericFraction = centerCol.find('.a-price-fraction').first().text().trim();
 
     // 1. Try Desktop Buy Box Price First (Most accurate for active price)
     if (desktopWhole) {
       rawPrice = desktopWhole + '.' + desktopFraction;
     }
-    // 2. Try Generic Buy Box Price
+    // 2. Try Generic Buy Box Price scoped to center column
     else if (genericWhole) {
       rawPrice = genericWhole + '.' + genericFraction;
     }
-    // 3. Fallback Selectors (Offscreen text, legacy blocks, kindle prices)
+    // 3. Fallback Selectors scoped to center column (Offscreen text, legacy blocks, kindle prices)
     else {
-      rawPrice = $('#corePrice_feature_div .a-offscreen').first().text() ||
-                 $('.a-price .a-offscreen').first().text() ||
-                 $('#priceblock_ourprice').text() ||
+      rawPrice = centerCol.find('#corePrice_feature_div .a-offscreen').first().text() ||
+                 centerCol.find('.a-price .a-offscreen').first().text() ||
+                 $('#priceblock_ourprice').text() || // ID selectors are globally unique usually
                  $('#priceblock_dealprice').text() ||
                  $('#kindle-price').text() ||
-                 $('.a-color-price').first().text();
+                 centerCol.find('.a-color-price').first().text();
     }
 
     if (rawPrice && rawPrice !== '.') {
