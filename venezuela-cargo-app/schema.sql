@@ -158,7 +158,7 @@ BEGIN
   -- Verify the user owns this order before updating
   UPDATE public.orders
   SET payment_receipt = p_receipt_url,
-      status = 'pending_payment',
+      status = 'processing',
       updated_at = NOW()
   WHERE id = p_order_id
     AND user_id = auth.uid()

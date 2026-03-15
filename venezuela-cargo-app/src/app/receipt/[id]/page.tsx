@@ -26,9 +26,13 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
 
         <div id="receipt-card" className="print:w-full">
           <div className="flex justify-between items-start border-b-2 border-black pb-8 mb-8">
-            <div className="flex items-center space-x-3 text-primary">
-              <Box className="h-10 w-10 stroke-[1.5]" />
-              <h1 className="text-3xl font-black tracking-tight">CargoBox</h1>
+            <div className="flex items-center text-primary group">
+              <span className="font-black text-3xl tracking-tighter">D</span>
+              <svg className="w-8 h-8 mx-0.5 text-orange-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 14c3.5 3 9.5 3 13 0" />
+                <path d="M17 14l3-1.5-1.5-3" />
+              </svg>
+              <span className="font-black text-3xl tracking-tighter">Fyo</span>
             </div>
             <div className="text-right">
               <p className="text-sm font-bold uppercase tracking-widest text-gray-500">Invoice / Ticket</p>
@@ -104,7 +108,7 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
           )}
 
           <div className="text-center text-sm text-gray-400 mt-16 pt-8 border-t border-gray-100">
-            <p className="font-medium text-gray-900 mb-1">Thank you for shipping with CargoBox.</p>
+            <p className="font-medium text-gray-900 mb-1">Thank you for shipping with D-Fyo.</p>
             <p>Please keep this invoice for your records.</p>
           </div>
         </div>

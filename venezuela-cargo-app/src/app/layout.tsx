@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'CargoBox - Envíos de Amazon a Venezuela (San Antonio de los Altos)',
+  title: 'D-Fyo - Envíos de Amazon a Venezuela',
   description: 'Calcula tu envío desde USA a Venezuela de forma transparente y segura. Manejo mínimo de $5 por orden.',
 }
 

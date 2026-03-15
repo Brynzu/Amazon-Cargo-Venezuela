@@ -106,8 +106,8 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
 
       toast.success(lang === 'es' ? "¡Pago enviado con éxito!" : "Payment submitted successfully!")
 
-      // Update local state to reflect payment
-      setOrders(orders.map(o => o.id === payingOrder.id ? { ...o, payment_receipt: publicUrl } : o))
+      // Update local state to reflect payment and status transition
+      setOrders(orders.map(o => o.id === payingOrder.id ? { ...o, payment_receipt: publicUrl, status: 'processing' } : o))
       setPayingOrder(null)
       setFile(null)
 

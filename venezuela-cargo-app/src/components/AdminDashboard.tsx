@@ -212,13 +212,20 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
     await handleStatusChange(rejectOrderId, 'rejected', { rejection_reason: rejectReason });
 
     if (orderToUpdate && orderToUpdate.user_id) {
-      // Look up user_id either from local state or trust it was caught in handleStatusChange.
-      // Doing it explicitly here to guarantee the message is tailored.
+      // Fetch user's preferred language
+      const { data: userData } = await supabase.from('users').select('preferred_language').eq('id', orderToUpdate.user_id).single();
+      const lang = userData?.preferred_language === 'es' ? 'es' : 'en';
+
+      const title = lang === 'es' ? "Orden Rechazada" : "Order Rejected";
+      const message = lang === 'es'
+        ? `Tu orden fue rechazada. Motivo: ${rejectReason}`
+        : `Your order was rejected. Reason: ${rejectReason}`;
+
       const { error: notifError } = await supabase.from('notifications').insert({
-        user_id: orderToUpdate.user_id, // ensure user_id exists on order object
+        user_id: orderToUpdate.user_id,
         order_id: rejectOrderId,
-        title: "Order Rejected",
-        message: `Your order was rejected. Reason: ${rejectReason}`,
+        title: title,
+        message: message,
         type: "error"
       });
       if (notifError) {
@@ -237,13 +244,13 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
     if (!order.whatsapp) return "#";
     const phone = order.whatsapp.replace(/\D/g, '')
     const pdfUrl = typeof window !== 'undefined' ? `${window.location.origin}/receipt/${order.id}` : ''
-    const text = `Hola ${order.client_name || 'cliente'}! Te escribimos de *CargoBox*. Recibimos tu orden por $${order.total_price_usd}. Puedes ver tu comprobante aquí: ${pdfUrl}`
+    const text = `Hola ${order.client_name || 'cliente'}! Te escribimos de *D-Fyo*. Recibimos tu orden por $${order.total_price_usd}. Puedes ver tu comprobante aquí: ${pdfUrl}`
     return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`
   }
 
   // Real-time stats
   const pendingApprovals = orders.filter(o => o.status === 'awaiting_approval').length;
-  const unverifiedPayments = orders.filter(o => o.status === 'pending_payment' && o.payment_receipt).length;
+  const unverifiedPayments = orders.filter(o => (o.status === 'pending_payment' || o.status === 'processing') && o.payment_receipt).length;
 
   // Compute Filtered & Sorted Orders
   let filteredOrders = orders.filter(o => {
@@ -382,17 +389,17 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </TableHeader>
           <TableBody>
             {filteredOrders.map((order) => (
-              <TableRow key={order.id} className={order.status === 'pending_payment' && order.payment_receipt ? 'bg-blue-50/40' : ''}>
+              <TableRow key={order.id} className={(order.status === 'pending_payment' || order.status === 'processing') && order.payment_receipt ? 'bg-blue-50/40' : ''}>
                 <TableCell>
                   <p className="font-medium">{new Date(order.created_at).toLocaleDateString()}</p>
                   <p className="text-xs text-gray-500 font-mono">#{order.id.split('-')[0].toUpperCase()}</p>
                 </TableCell>
                 <TableCell>
                   <p className="font-medium">{order.client_name}</p>
-                  {order.status === 'pending_payment' && order.payment_receipt && (
+                  {(order.status === 'pending_payment' || order.status === 'processing') && order.payment_receipt && (
                     <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1 animate-pulse"></span>
-                      Payment Uploaded
+                      Payment Uploaded / Pago Enviado
                     </span>
                   )}
                 </TableCell>

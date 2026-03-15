@@ -17,8 +17,8 @@ export default function TermsPage() {
           </h2>
           <p>
             {locale === 'es'
-              ? 'CargoBox actúa exclusivamente como un intermediario entre el usuario, la plataforma de compras (ej. Amazon), y el courier internacional final (Liberty Express). CargoBox no es responsable por retrasos, daños o pérdidas causadas por servicios de terceros.'
-              : 'CargoBox acts exclusively as an intermediary between the user, the purchasing platform (e.g., Amazon), and the final international courier (Liberty Express, etc.). CargoBox is not liable for delays, damages, or losses caused by third-party services.'}
+              ? 'D-Fyo actúa exclusivamente como un intermediario entre el usuario, la plataforma de compras (ej. Amazon), y el courier internacional final (Liberty Express). D-Fyo no es responsable por retrasos, daños o pérdidas causadas por servicios de terceros.'
+              : 'D-Fyo acts exclusively as an intermediary between the user, the purchasing platform (e.g., Amazon), and the final international courier (Liberty Express, etc.). D-Fyo is not liable for delays, damages, or losses caused by third-party services.'}
           </p>
         </section>
 
@@ -50,8 +50,8 @@ export default function TermsPage() {
           </h2>
           <p>
             {locale === 'es'
-              ? 'CargoBox cumple con las leyes internacionales de envío. Los siguientes artículos están estrictamente prohibidos y no serán enviados: Líquidos inflamables, explosivos, materiales corrosivos, armas de fuego, municiones, efectivo, y cualquier bien ilegal bajo la ley de EE.UU. o Venezuela.'
-              : 'CargoBox complies with international shipping laws. The following items are strictly prohibited and will not be shipped: Flammable liquids, explosives, corrosive materials, firearms, ammunition, cash, and any illegal goods under US or Venezuelan law.'}
+              ? 'D-Fyo cumple con las leyes internacionales de envío. Los siguientes artículos están estrictamente prohibidos y no serán enviados: Líquidos inflamables, explosivos, materiales corrosivos, armas de fuego, municiones, efectivo, y cualquier bien ilegal bajo la ley de EE.UU. o Venezuela.'
+              : 'D-Fyo complies with international shipping laws. The following items are strictly prohibited and will not be shipped: Flammable liquids, explosives, corrosive materials, firearms, ammunition, cash, and any illegal goods under US or Venezuelan law.'}
           </p>
         </section>
       </div>
