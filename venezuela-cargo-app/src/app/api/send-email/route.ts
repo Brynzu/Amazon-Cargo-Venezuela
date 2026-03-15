@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     const sanitizedNote = adminNote ? adminNote.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
 
     const noteHtml = sanitizedNote
-      ? `<div style="margin-top: 20px; padding: 15px; background-color: #f3f4f6; border-left: 4px solid #f97316; color: #374151;">
+      ? `<div style="margin-top: 20px; padding: 15px; background-color: #f3f4f6; border-left: 4px solid #00CED1; color: #374151;">
           <strong>${lang === 'es' ? 'Nota del Administrador' : 'Admin Note'}:</strong><br/>
           ${sanitizedNote}
          </div>`
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     const htmlContent = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 30px;">
-          <h1 style="color: #111827; margin: 0;">D<span style="color: #f97316;">-</span>Fyo</h1>
+          <h1 style="color: #111827; margin: 0;">D<span style="color: #00CED1;">-</span>Fyo</h1>
           <p style="color: #6b7280; font-size: 14px; margin-top: 5px;">Concierge Shipping Service</p>
         </div>
 

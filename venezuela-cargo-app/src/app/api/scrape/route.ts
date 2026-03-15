@@ -54,17 +54,34 @@ export async function POST(req: Request) {
     }
 
     // Attempt to scrape Amazon price, prioritizing the actual 'buy box' price
-    const rawPrice = $('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text() + $('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text() ||
-                     $('#corePrice_feature_div .a-offscreen').first().text() ||
-                     $('.a-price .a-offscreen').first().text() ||
-                     $('#priceblock_ourprice').text() ||
-                     $('#priceblock_dealprice').text();
+    let rawPrice = '';
+    const genericWhole = $('.a-price-whole').first().text();
+    const genericFraction = $('.a-price-fraction').first().text();
+    const desktopWhole = $('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text();
+    const desktopFraction = $('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text();
 
-    if (rawPrice) {
+    if (genericWhole) {
+      rawPrice = genericWhole + '.' + genericFraction;
+    } else if (desktopWhole) {
+      rawPrice = desktopWhole + '.' + desktopFraction;
+    } else {
+      rawPrice = $('#corePrice_feature_div .a-offscreen').first().text() ||
+                 $('.a-price .a-offscreen').first().text() ||
+                 $('#priceblock_ourprice').text() ||
+                 $('#priceblock_dealprice').text() ||
+                 $('#kindle-price').text() ||
+                 $('.a-color-price').first().text();
+    }
+
+    if (rawPrice && rawPrice !== '.') {
       // Extract numeric value from string like "$19.99"
       const priceMatch = rawPrice.match(/[\d,]+(?:\.\d+)?/);
       if (priceMatch) {
-        price = priceMatch[0].replace(/,/g, '');
+        // Parse it to ensure it's a valid float string before sending to calculator
+        const parsed = parseFloat(priceMatch[0].replace(/,/g, ''));
+        if (!isNaN(parsed) && parsed > 0) {
+          price = parsed.toString();
+        }
       }
     }
 
