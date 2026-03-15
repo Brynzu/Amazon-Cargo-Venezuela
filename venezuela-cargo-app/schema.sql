@@ -254,11 +254,51 @@ ON public.payments FOR SELECT
 USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
 
 -- ==========================================
+-- SUPPORT MODULE
+-- ==========================================
+CREATE TABLE public.support_tickets (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  phone TEXT NOT NULL,
+  message TEXT NOT NULL,
+  attachment_url TEXT,
+  status TEXT DEFAULT 'open',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Enable RLS for Support Tickets
+ALTER TABLE public.support_tickets ENABLE ROW LEVEL SECURITY;
+
+-- Users can insert their own support tickets
+CREATE POLICY "Users can insert own support tickets"
+ON public.support_tickets FOR INSERT
+WITH CHECK (auth.uid() = user_id OR auth.uid() IS NULL); -- Allow anonymous if needed, or enforce auth
+
+-- Users can read their own support tickets
+CREATE POLICY "Users can view own support tickets"
+ON public.support_tickets FOR SELECT
+USING (auth.uid() = user_id);
+
+-- Admin can read all support tickets
+CREATE POLICY "Admin can view all support tickets"
+ON public.support_tickets FOR SELECT
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+
+-- Admin can update all support tickets (e.g. resolve them)
+CREATE POLICY "Admin can update all support tickets"
+ON public.support_tickets FOR UPDATE
+USING (auth.jwt() ->> 'email' = 'brynzulino@gmail.com');
+
+-- ==========================================
 -- STORAGE POLICIES
 -- ==========================================
 
 -- Insert this into Supabase SQL Editor if buckets are created:
 -- insert into storage.buckets (id, name, public) values ('payment_receipts', 'payment_receipts', true);
+-- insert into storage.buckets (id, name, public) values ('support_attachments', 'support_attachments', true);
 
 -- Allow authenticated users to upload files to payment_receipts bucket
 CREATE POLICY "Authenticated users can upload payment receipts"
@@ -266,8 +306,21 @@ ON storage.objects FOR INSERT
 TO authenticated
 WITH CHECK (bucket_id = 'payment_receipts');
 
--- Allow anyone to read payment receipts (or just authenticated, but public simplifies viewing)
+-- Allow anyone to read payment receipts
 CREATE POLICY "Anyone can view payment receipts"
 ON storage.objects FOR SELECT
 TO public
 USING (bucket_id = 'payment_receipts');
+
+-- Allow users to upload files to support_attachments bucket
+-- Allow users to upload files to support_attachments bucket (public access since form is on landing page)
+CREATE POLICY "Anyone can upload support attachments"
+ON storage.objects FOR INSERT
+TO public
+WITH CHECK (bucket_id = 'support_attachments');
+
+-- Allow anyone to read support attachments
+CREATE POLICY "Anyone can view support attachments"
+ON storage.objects FOR SELECT
+TO public
+USING (bucket_id = 'support_attachments');

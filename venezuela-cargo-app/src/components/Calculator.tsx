@@ -275,6 +275,22 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
       console.log('Database record created!');
       setSubmittedOrderId(orderData.id);
 
+      // Attempt to notify admin asynchronously (don't block the UI)
+      try {
+        fetch('/api/notify-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: orderData.id,
+            clientName: clientName,
+            price: breakdown.totalCost.toFixed(2),
+            items: cleanItems
+          })
+        });
+      } catch (notifyErr) {
+        console.error('Failed to send admin notification:', notifyErr);
+      }
+
     } catch (error) {
       console.error('Error in submission process:', error);
     } finally {

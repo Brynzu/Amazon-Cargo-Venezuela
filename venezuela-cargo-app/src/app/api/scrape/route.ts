@@ -86,7 +86,8 @@ export async function POST(req: Request) {
     // This prevents scraping prices from "Sponsored" carousels or "Customers also bought"
     let rawPrice = '';
 
-    const centerCol = $('#centerCol, #corePrice_desktop, #desktop_buybox');
+    // The buy box and core price feature divs are the most reliable for the currently selected variant
+    const centerCol = $('#centerCol, #corePrice_desktop, #desktop_buybox, #corePrice_feature_div, #price_inside_buybox, #buyNewSection');
 
     // Sometimes the DOM renders corePriceDisplay_desktop_feature_div but empty, so we must check text length
     const desktopWhole = centerCol.find('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text().trim();
@@ -105,15 +106,17 @@ export async function POST(req: Request) {
     }
     // 3. Fallback Selectors scoped to center column (Offscreen text, legacy blocks, kindle prices)
     else {
-      rawPrice = centerCol.find('#corePrice_feature_div .a-offscreen').first().text() ||
+      rawPrice = $('#corePrice_feature_div .a-offscreen').first().text() ||
+                 $('#price_inside_buybox').text() ||
                  centerCol.find('.a-price .a-offscreen').first().text() ||
                  $('#priceblock_ourprice').text() || // ID selectors are globally unique usually
                  $('#priceblock_dealprice').text() ||
                  $('#kindle-price').text() ||
+                 $('.apexPriceToPay .a-offscreen').first().text() ||
                  centerCol.find('.a-color-price').first().text();
     }
 
-    if (rawPrice && rawPrice !== '.') {
+    if (rawPrice && rawPrice !== '.' && rawPrice !== '') {
       // Extract numeric value from string like "$19.99", "$1,099.00", or "19.99"
       // Remove all commas first, then match digits and optional decimals
       const cleanString = rawPrice.replace(/,/g, '');

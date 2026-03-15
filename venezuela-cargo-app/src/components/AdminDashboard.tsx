@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import {
   Table,
@@ -42,7 +42,16 @@ type Order = {
   created_at: string
 }
 
-import { useEffect } from 'react'
+type SupportTicket = {
+  id: string
+  name: string
+  email: string
+  phone: string
+  message: string
+  attachment_url: string | null
+  status: string
+  created_at: string
+}
 
 export function AdminDashboard({ initialOrders, initialExchangeRate }: { initialOrders: Order[], initialExchangeRate: number }) {
   const [isMounted, setIsMounted] = useState(false)
@@ -69,6 +78,10 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   const [statusFilter, setStatusFilter] = useState("all")
   const [costSort, setCostSort] = useState("none")
   const [dateFilter, setDateFilter] = useState("all")
+
+  // Support Tickets State
+  const [tickets, setTickets] = useState<SupportTicket[]>([])
+  const [viewMode, setViewMode] = useState<"orders" | "support">("orders")
 
   const supabase = createClient()
 
@@ -98,8 +111,25 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       })
       .subscribe()
 
+    const fetchTickets = async () => {
+      const { data } = await supabase.from('support_tickets').select('*').order('created_at', { ascending: false })
+      if (data) setTickets(data)
+    }
+
+    fetchTickets()
+
+    const ticketChannel = supabase.channel('public:support_tickets')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'support_tickets' }, (payload) => {
+        if (payload.eventType === 'INSERT') {
+          setTickets(prev => [payload.new as SupportTicket, ...prev])
+        } else if (payload.eventType === 'UPDATE') {
+          setTickets(prev => prev.map(t => t.id === payload.new.id ? payload.new as SupportTicket : t))
+        }
+      }).subscribe()
+
     return () => {
       supabase.removeChannel(channel)
+      supabase.removeChannel(ticketChannel)
     }
   }, [supabase])
 
@@ -333,13 +363,13 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Admin Dashboard</h1>
-          <div className="flex gap-4 mt-2">
-            <span className="text-sm px-2 py-1 bg-amber-100 text-amber-800 rounded-md font-medium border border-amber-200">
-              {pendingApprovals} Pending Approvals
-            </span>
-            <span className="text-sm px-2 py-1 bg-blue-100 text-blue-800 rounded-md font-medium border border-blue-200">
-              {unverifiedPayments} Unverified Payments
-            </span>
+          <div className="flex gap-4 mt-2 mb-4">
+            <Button variant={viewMode === 'orders' ? 'default' : 'outline'} size="sm" onClick={() => setViewMode('orders')}>
+              Orders ({pendingApprovals} Pending)
+            </Button>
+            <Button variant={viewMode === 'support' ? 'default' : 'outline'} size="sm" onClick={() => setViewMode('support')}>
+              Support Tickets ({tickets.filter(t => t.status === 'open').length} Open)
+            </Button>
           </div>
         </div>
 
@@ -359,6 +389,8 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
         </div>
       </div>
 
+      {viewMode === 'orders' ? (
+        <>
       {/* Advanced Filters */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-white p-4 rounded-md border">
         <div className="space-y-1">
@@ -510,6 +542,57 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </TableBody>
         </Table>
       </div>
+      </>
+      ) : (
+        <div className="rounded-md border border-gray-200 bg-white shadow-none">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Date</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>Message</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {tickets.map(ticket => (
+                <TableRow key={ticket.id}>
+                  <TableCell>{new Date(ticket.created_at).toLocaleDateString()}</TableCell>
+                  <TableCell>
+                    <p className="font-semibold">{ticket.name}</p>
+                    <p className="text-xs text-gray-500">{ticket.email}</p>
+                    <p className="text-xs text-gray-500">{ticket.phone}</p>
+                  </TableCell>
+                  <TableCell>
+                    <p className="text-sm line-clamp-2 max-w-xs">{ticket.message}</p>
+                    {ticket.attachment_url && (
+                      <a href={ticket.attachment_url} target="_blank" className="text-xs text-blue-500 hover:underline flex items-center mt-1">
+                        <ExternalLink className="w-3 h-3 mr-1" /> View Image
+                      </a>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <span className={`px-2 py-1 rounded text-xs font-semibold ${ticket.status === 'open' ? 'bg-amber-100 text-amber-800' : 'bg-green-100 text-green-800'}`}>
+                      {ticket.status.toUpperCase()}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    {ticket.status === 'open' && (
+                      <Button size="sm" onClick={async () => {
+                        await supabase.from('support_tickets').update({ status: 'resolved' }).eq('id', ticket.id);
+                      }}>Mark Resolved</Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+              {tickets.length === 0 && (
+                <TableRow><TableCell colSpan={5} className="text-center py-6 text-gray-500">No support tickets.</TableCell></TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      )}
 
       <Dialog open={!!approveOrder} onOpenChange={(open) => !open && setApproveOrder(null)}>
         <DialogContent className="max-w-md">

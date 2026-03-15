@@ -10,11 +10,12 @@ export const metadata: Metadata = {
   title: 'D-Fyo - Tu Concierge de Compras en USA',
   description: 'Servicio de courier premium y concierge de compras desde Estados Unidos a Venezuela. Obtén cotizaciones exactas y en tiempo real para tus productos de Amazon y más, sin comisiones ocultas.',
   verification: {
-    google: 'ws6t5DhLN0GNd09VNsZ-RssROSNvyr5HJ',
+    google: 'llrOSRzO12V5FSF65-11btmB0mS43LtgfmI5-3E0fKk',
   },
 }
 
 import Link from 'next/link'
+import { SupportModal } from '@/components/SupportModal'
 
 export default function RootLayout({
   children,
@@ -26,10 +27,12 @@ export default function RootLayout({
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header />
         <main className="flex-1">{children}</main>
-        <footer className="w-full border-t py-6 bg-white text-center">
+        <footer className="w-full border-t py-6 bg-white text-center flex flex-col items-center justify-center space-y-4 sm:space-y-0 sm:flex-row sm:space-x-4">
           <Link href="/terms" className="text-sm text-gray-500 hover:text-primary transition-colors">
             Terms & Conditions / Términos y Condiciones
           </Link>
+          <span className="hidden sm:inline text-gray-300">|</span>
+          <SupportModal lang="en" />
         </footer>
         <Toaster position="bottom-center" />
       </body>
