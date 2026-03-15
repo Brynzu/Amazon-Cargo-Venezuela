@@ -280,7 +280,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
   // Real-time stats
   const pendingApprovals = orders.filter(o => o.status === 'awaiting_approval').length;
-  const unverifiedPayments = orders.filter(o => (o.status === 'pending_payment' || o.status === 'processing') && o.payment_receipt).length;
+  const unverifiedPayments = orders.filter(o => o.payment_receipt !== null).length;
 
   // Compute Filtered & Sorted Orders
   let filteredOrders = orders.filter(o => {
@@ -419,14 +419,14 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           </TableHeader>
           <TableBody>
             {filteredOrders.map((order) => (
-              <TableRow key={order.id} className={(order.status === 'pending_payment' || order.status === 'processing') && order.payment_receipt ? 'bg-blue-50/40' : ''}>
+              <TableRow key={order.id} className={order.payment_receipt ? 'bg-blue-50/40' : ''}>
                 <TableCell>
                   <p className="font-medium">{new Date(order.created_at).toLocaleDateString()}</p>
                   <p className="text-xs text-gray-500 font-mono">#{order.id.split('-')[0].toUpperCase()}</p>
                 </TableCell>
                 <TableCell>
                   <p className="font-medium">{order.client_name}</p>
-                  {(order.status === 'pending_payment' || order.status === 'processing') && order.payment_receipt && (
+                  {order.payment_receipt && (
                     <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-1 animate-pulse"></span>
                       Payment Uploaded / Pago Enviado

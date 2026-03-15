@@ -34,7 +34,7 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
           <div className="flex justify-between items-start border-b-2 border-black pb-8 mb-8">
             <div className="flex items-center text-primary group">
               <span className="font-black text-3xl tracking-tighter">D</span>
-              <svg className="w-8 h-8 mx-0.5 text-orange-500 mt-2" viewBox="0 0 100 50" fill="none">
+              <svg className="w-8 h-8 mx-0.5 text-primary mt-2" viewBox="0 0 100 50" fill="none">
                 <path d="M10,20 Q50,45 85,15" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
                 <path d="M70,10 L88,12 L85,30" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

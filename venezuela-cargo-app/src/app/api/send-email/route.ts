@@ -70,17 +70,22 @@ export async function POST(req: Request) {
       </div>
     `;
 
-    // Uncomment this when you have a Resend Domain verified
-    // await resend.emails.send({
-    //   from: 'D-Fyo Updates <updates@d-fyo.com>',
-    //   to: emailAddress,
-    //   subject: title,
-    //   html: htmlContent,
-    // });
+    if (!emailAddress) {
+      throw new Error("Resolved email address is empty.");
+    }
 
-    // Mock response for now to indicate success since user doesn't have Resend API Key configured yet
-    console.log("Email would have been sent to:", emailAddress);
-    console.log("Content:", htmlContent);
+    // Use a generic sender address if a custom domain isn't fully configured, though Resend prefers verified domains.
+    // If this fails due to domain verification, Resend provides 'onboarding@resend.dev' for testing to verified emails.
+    const senderEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+
+    await resend.emails.send({
+      from: `D-Fyo Updates <${senderEmail}>`,
+      to: emailAddress,
+      subject: title,
+      html: htmlContent,
+    });
+
+    console.log("Email dispatched to:", emailAddress);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

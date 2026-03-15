@@ -29,11 +29,31 @@ export async function POST(req: Request) {
     let image = $('meta[property="og:image"]').attr('content') || '';
 
     // Fallbacks for Amazon specific structures
-    if (!title) {
+    if (!title || title.includes("Amazon.com")) {
       title = $('#productTitle').text().trim();
     }
     if (!image) {
       image = $('#landingImage').attr('src') || '';
+    }
+
+    // Ultimate fallback for Amazon URLs since they block basic fetch requests
+    if (url.includes('amazon.com') && (!title || title.includes('Amazon.com') || !image)) {
+      const match = url.match(/\/([A-Z0-9]{10})(?:[/?]|$)/);
+      if (match && match[1]) {
+        const asin = match[1];
+        if (!image) {
+          image = `https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL250_&ASIN=${asin}&MarketPlace=US&ID=AsinImage&WS=1&ServiceVersion=20070822`;
+        }
+        if (!title || title.includes('Amazon.com')) {
+          // Try to extract product name from URL slug
+          const slugMatch = url.match(/amazon\.com\/(.*?)\/dp\//);
+          if (slugMatch && slugMatch[1]) {
+            title = slugMatch[1].replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
+          } else {
+            title = `Amazon Product (ASIN: ${asin})`;
+          }
+        }
+      }
     }
 
     return NextResponse.json({ title, image });
