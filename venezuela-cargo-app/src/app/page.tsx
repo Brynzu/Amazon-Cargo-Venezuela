@@ -13,7 +13,7 @@ export default async function Home() {
       <header className="mb-12 text-center w-full max-w-xl flex flex-col items-center">
         <div className="flex items-center text-primary group mb-2">
           <span className="font-black text-5xl md:text-6xl tracking-tighter">D</span>
-          <svg className="w-12 h-12 md:w-16 md:h-16 mx-1 text-[#000080] group-hover:scale-110 transition-transform mt-4 md:mt-6" viewBox="0 0 100 50" fill="none">
+          <svg className="w-12 h-12 md:w-16 md:h-16 mx-1 text-[#00CED1] group-hover:scale-110 transition-transform mt-4 md:mt-6" viewBox="0 0 100 50" fill="none">
             <path d="M10,20 Q50,45 85,15" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
             <path d="M70,10 L88,12 L85,30" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>

@@ -23,10 +23,14 @@ export async function POST(req: Request) {
     }
 
     // Use Service Role to bypass RLS and fetch user email
-    const supabaseAdmin = createSupabaseClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY || ''
-    );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      return NextResponse.json({ error: 'Supabase credentials missing on server. Check Vercel environment variables.' }, { status: 500 });
+    }
+
+    const supabaseAdmin = createSupabaseClient(supabaseUrl, serviceRoleKey);
 
     // Fetch user email to send to
     const { data: user, error } = await supabaseAdmin.auth.admin.getUserById(userId);

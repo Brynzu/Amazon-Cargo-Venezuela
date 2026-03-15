@@ -14,18 +14,29 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid URL protocol' }, { status: 400 });
     }
 
+    // Resolve shortened links (like a.co or amzn.to)
+    let finalUrl = url;
+    if (url.includes('a.co') || url.includes('amzn.to')) {
+      try {
+        const preflight = await fetch(url, { method: 'HEAD', redirect: 'follow' });
+        finalUrl = preflight.url;
+      } catch (e) {
+        console.warn('Could not resolve shortened URL, proceeding with original');
+      }
+    }
+
     // Attempt to fetch the URL using a standard User-Agent to avoid immediate blocking
-    const response = await fetch(url, {
+    const response = await fetch(finalUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept-Language': 'en-US,en;q=0.9',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
       },
     });
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch URL: ${response.status}`);
-    }
-
+    // We don't strictly throw on !response.ok for Amazon because sometimes a 503 still returns the title/html
     const html = await response.text();
     const $ = cheerio.load(html);
 
@@ -57,18 +68,21 @@ export async function POST(req: Request) {
     }
 
     // Ultimate fallback for Amazon URLs since they block basic fetch requests
-    if (url.includes('amazon.com') && (!title || title.includes('Amazon.com') || !image || !price)) {
-      const match = url.match(/\/([A-Z0-9]{10})(?:[/?]|$)/);
+    if (finalUrl.includes('amazon') && (!title || title.includes('Amazon.com') || title.includes('Amazon.es') || !image || !price)) {
+      // Look for a 10-character alphanumeric ASIN
+      const match = finalUrl.match(/(?:\/dp\/|\/product\/|\/asin\/|\/aw\/d\/|asin=)([A-Z0-9]{10})(?:[/?]|$)/i) || finalUrl.match(/\/([A-Z0-9]{10})(?:[/?]|$)/i);
+
       if (match && match[1]) {
-        const asin = match[1];
+        const asin = match[1].toUpperCase();
         if (!image) {
+          // Fallback image using Amazon AdSystem
           image = `https://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&Format=_SL250_&ASIN=${asin}&MarketPlace=US&ID=AsinImage&WS=1&ServiceVersion=20070822`;
         }
-        if (!title || title.includes('Amazon.com')) {
+        if (!title || title.includes('Amazon')) {
           // Try to extract product name from URL slug
-          const slugMatch = url.match(/amazon\.com\/(.*?)\/dp\//);
+          const slugMatch = finalUrl.match(/amazon\.[a-z.]+\/(.*?)\/(?:dp|product)\//);
           if (slugMatch && slugMatch[1]) {
-            title = slugMatch[1].replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
+            title = decodeURIComponent(slugMatch[1]).replace(/-/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase());
           } else {
             title = `Amazon Product (ASIN: ${asin})`;
           }
