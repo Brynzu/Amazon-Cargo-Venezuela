@@ -14,12 +14,12 @@ import Link from "next/link";
 import { translations } from '@/lib/translations';
 import toast from 'react-hot-toast';
 
-type Item = { url: string; price: string };
+type Item = { url: string; price: string; name?: string; image?: string; loading?: boolean };
 
 export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLang?: 'en' | 'es' }) {
   const [lang, setLang] = useState<'en' | 'es'>(defaultLang);
   useEffect(() => setLang(defaultLang), [defaultLang]);
-  const [items, setItems] = useState<Item[]>([{ url: "", price: "" }]);
+  const [items, setItems] = useState<Item[]>([{ url: "", price: "", loading: false }]);
 
   // Logistics & Client Details
   const [clientName, setClientName] = useState("");
@@ -173,8 +173,13 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
       // Insert Order
       const fullOfficeString = `${selectedOfficeDetails.carrier} - ${selectedOfficeDetails.officeName} - ${selectedOfficeDetails.fullAddress}`;
 
-      // Store clean numbers in DB
-      const cleanItems = items.map(i => ({ url: i.url, price: parseFloat(i.price) }));
+      // Store clean numbers and metadata in DB
+      const cleanItems = items.map(i => ({
+        url: i.url,
+        price: parseFloat(i.price),
+        name: i.name || null,
+        image: i.image || null
+      }));
 
       const { data: orderData, error: orderError } = await supabase
         .from('orders')
@@ -271,8 +276,51 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                     newItems[index].url = e.target.value;
                     setItems(newItems);
                   }}
+                  onBlur={async (e) => {
+                    const url = e.target.value;
+                    if (url && url.startsWith('http')) {
+                      const newItems = [...items];
+                      newItems[index].loading = true;
+                      setItems(newItems);
+                      try {
+                        const res = await fetch('/api/scrape', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ url })
+                        });
+                        const data = await res.json();
+
+                        setItems(currentItems => {
+                          const updated = [...currentItems];
+                          if (data.title) updated[index].name = data.title.substring(0, 100);
+                          if (data.image) updated[index].image = data.image;
+                          updated[index].loading = false;
+                          return updated;
+                        });
+                      } catch (err) {
+                        setItems(currentItems => {
+                          const updated = [...currentItems];
+                          updated[index].loading = false;
+                          return updated;
+                        });
+                      }
+                    }
+                  }}
                 />
               </div>
+
+              {item.name && (
+                <div className="flex items-center gap-3 bg-white p-2 rounded border border-gray-100">
+                  {item.image ? (
+                    <img src={item.image} alt="Product" className="w-12 h-12 object-cover rounded" />
+                  ) : (
+                    <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">No Img</div>
+                  )}
+                  <p className="text-xs text-gray-600 line-clamp-2 leading-tight flex-1">{item.name}</p>
+                </div>
+              )}
+              {item.loading && <p className="text-xs text-blue-500 animate-pulse">Fetching product details...</p>}
+
               <div className="space-y-2">
                 <Label>{t.price}</Label>
                 <Input

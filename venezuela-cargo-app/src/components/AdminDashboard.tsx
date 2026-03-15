@@ -54,6 +54,10 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
   // Approval State
   const [approveOrder, setApproveOrder] = useState<Order | null>(null)
   const [finalTotal, setFinalTotal] = useState<string>("")
+
+  // General Status Update State
+  const [updateOrder, setUpdateOrder] = useState<Order | null>(null)
+  const [newStatus, setNewStatus] = useState<string>("")
   const [adminNote, setAdminNote] = useState<string>("")
 
   // Rejection State
@@ -115,13 +119,13 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
     setIsSavingRate(false)
   }
 
-  const handleStatusChange = async (orderId: string, newStatus: string, additionalPayload: any = {}) => {
+  const handleStatusChange = async (orderId: string, newStatusUpdate: string, additionalPayload: any = {}) => {
     const orderToUpdate = orders.find(o => o.id === orderId);
-    console.log(`Attempting to update order ${orderId} to status: ${newStatus}`, additionalPayload);
+    console.log(`Attempting to update order ${orderId} to status: ${newStatusUpdate}`, additionalPayload);
 
     const { data, error } = await supabase
       .from('orders')
-      .update({ status: newStatus, ...additionalPayload })
+      .update({ status: newStatusUpdate, ...additionalPayload })
       .eq('id', orderId)
       .select()
 
@@ -133,7 +137,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
       setOrders(orders.map(o => o.id === orderId ? { ...o, status: newStatus, ...additionalPayload } : o))
 
       // Trigger notifications for ALL status changes
-      if (orderToUpdate && newStatus !== 'rejected') { // Rejections are handled separately
+      if (orderToUpdate && newStatusUpdate !== 'rejected') { // Rejections are handled separately
 
         // Check user's preferred language to send the notification in their language
         const { data: userData } = await supabase.from('users').select('preferred_language').eq('id', orderToUpdate.user_id).single();
@@ -151,10 +155,10 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           'ready_for_pickup': {en: 'Ready for Pickup', es: 'Listo para Retirar'}
         };
 
-        const readableStatus = statusMap[newStatus] ? statusMap[newStatus][lang] : newStatus;
+        const readableStatus = statusMap[newStatusUpdate] ? statusMap[newStatusUpdate][lang] : newStatusUpdate;
         let message = "";
 
-        if (newStatus === 'pending_payment') {
+        if (newStatusUpdate === 'pending_payment') {
           title = lang === 'es' ? "¡Orden Aprobada!" : "Order Approved!";
           message = lang === 'es'
             ? "Tu orden ha sido aprobada. Ahora puedes proceder con el pago."
@@ -177,8 +181,22 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
           order_id: orderId,
           title: title,
           message: message,
-          type: newStatus === 'pending_payment' ? "success" : "info"
+          type: newStatusUpdate === 'pending_payment' ? "success" : "info"
         });
+
+        // --- SEND EMAIL NOTIFICATION HERE ---
+        // Fire and forget email via API
+        fetch('/api/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: orderId,
+            userId: orderToUpdate.user_id || data[0].user_id,
+            status: readableStatus,
+            adminNote: additionalPayload.admin_note || "",
+            lang: lang,
+          })
+        }).catch(err => console.error("Email API failed:", err));
       }
     } else {
       toast.error("Update command executed but no rows were returned. RLS policy might be blocking the update.")
@@ -202,6 +220,18 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
     setApproveOrder(null);
     setFinalTotal("");
+    setAdminNote("");
+  }
+
+  const confirmStatusUpdate = async () => {
+    if (!updateOrder || !newStatus) return;
+
+    await handleStatusChange(updateOrder.id, newStatus, {
+      admin_note: adminNote || null
+    });
+
+    setUpdateOrder(null);
+    setNewStatus("");
     setAdminNote("");
   }
 
@@ -419,23 +449,26 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                       </Button>
                     </div>
                   ) : (
-                    <Select
-                      value={order.status}
-                      onValueChange={(val) => handleStatusChange(order.id, val)}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-[160px] justify-between font-normal"
+                      onClick={() => {
+                        setUpdateOrder(order);
+                        setNewStatus(order.status);
+                        setAdminNote("");
+                      }}
                     >
-                      <SelectTrigger className="w-[160px]">
-                        <SelectValue placeholder="Status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="awaiting_approval">Awaiting Approval</SelectItem>
-                        <SelectItem value="rejected">Rejected</SelectItem>
-                        <SelectItem value="pending_payment">Pending Verification</SelectItem>
-                        <SelectItem value="processing">Processing</SelectItem>
-                        <SelectItem value="in_miami">Received in Miami</SelectItem>
-                        <SelectItem value="shipped_to_vzla">In Transit to VZLA</SelectItem>
-                        <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <span className="truncate">
+                        {order.status === 'pending_payment' ? 'Pending Verification' :
+                         order.status === 'processing' ? 'Processing' :
+                         order.status === 'in_miami' ? 'Received in Miami' :
+                         order.status === 'shipped_to_vzla' ? 'In Transit to VZLA' :
+                         order.status === 'ready_for_pickup' ? 'Ready for Pickup' :
+                         order.status === 'rejected' ? 'Rejected' : order.status}
+                      </span>
+                      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 opacity-50"><path d="M4.93179 5.43179C4.75605 5.60753 4.75605 5.89245 4.93179 6.06819L7.43179 8.56819C7.60753 8.74392 7.89245 8.74392 8.06819 8.56819L10.5682 6.06819C10.7439 5.89245 10.7439 5.60753 10.5682 5.43179C10.3924 5.25605 10.1075 5.25605 9.93179 5.43179L7.75 7.61358L5.56819 5.43179C5.39245 5.25605 5.10753 5.25605 4.93179 5.43179Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
+                    </Button>
                   )}
                 </TableCell>
                 <TableCell className="text-right space-x-2 whitespace-nowrap">
@@ -502,6 +535,44 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
         </DialogContent>
       </Dialog>
 
+      <Dialog open={!!updateOrder} onOpenChange={(open) => !open && setUpdateOrder(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Update Order Status</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 pt-4">
+            <div className="space-y-2">
+              <Label>Select New Status</Label>
+              <Select value={newStatus} onValueChange={setNewStatus}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="pending_payment">Pending Verification</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                  <SelectItem value="in_miami">Received in Miami</SelectItem>
+                  <SelectItem value="shipped_to_vzla">In Transit to VZLA</SelectItem>
+                  <SelectItem value="ready_for_pickup">Ready for Pickup</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Admin Note (Optional, visible to client)</Label>
+              <textarea
+                className="flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                value={adminNote}
+                onChange={(e) => setAdminNote(e.target.value)}
+                placeholder="e.g., Order packaged and left facility..."
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button variant="outline" onClick={() => setUpdateOrder(null)}>Cancel</Button>
+              <Button onClick={confirmStatusUpdate} disabled={!newStatus}>Update Status</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <Dialog open={!!rejectOrderId} onOpenChange={(open) => !open && setRejectOrderId(null)}>
         <DialogContent className="max-w-md">
           <DialogHeader>
@@ -558,16 +629,23 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                     if (Array.isArray(parsedItems) && parsedItems.length > 0) {
                       return parsedItems.map((item: any, idx: number) => (
                         <div key={idx} className="flex justify-between items-center text-sm border-b last:border-0 pb-2 last:pb-0">
-                          <a
-                            href={item?.url || "#"}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline truncate max-w-[80%]"
-                            title={item?.url || "Link"}
-                          >
-                            Item {idx + 1}
-                          </a>
-                          <span className="font-semibold text-gray-700">${Number(item?.price || 0).toFixed(2)}</span>
+                          <div className="flex items-center gap-3 overflow-hidden pr-4">
+                            {item?.image ? (
+                              <img src={item.image} alt="Product" className="w-10 h-10 object-cover rounded bg-white border" />
+                            ) : (
+                              <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-[10px] text-gray-400">No Img</div>
+                            )}
+                            <a
+                              href={item?.url || "#"}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:underline truncate"
+                              title={item?.name || item?.url || "Link"}
+                            >
+                              {item?.name || `Item ${idx + 1}`}
+                            </a>
+                          </div>
+                          <span className="font-semibold text-gray-700 whitespace-nowrap">${Number(item?.price || 0).toFixed(2)}</span>
                         </div>
                       ));
                     } else {

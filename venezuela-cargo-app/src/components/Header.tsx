@@ -17,9 +17,9 @@ export async function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center text-primary group">
           <span className="font-black text-2xl tracking-tighter">D</span>
-          <svg className="w-6 h-6 mx-0.5 text-orange-500 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M4 14c3.5 3 9.5 3 13 0" />
-            <path d="M17 14l3-1.5-1.5-3" />
+          <svg className="w-6 h-6 mx-0.5 text-orange-500 group-hover:scale-110 transition-transform mt-2" viewBox="0 0 100 50" fill="none">
+            <path d="M10,20 Q50,45 85,15" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
+            <path d="M70,10 L88,12 L85,30" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <span className="font-black text-2xl tracking-tighter">Fyo</span>
         </Link>

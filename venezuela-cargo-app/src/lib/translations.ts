@@ -71,7 +71,17 @@ export const translations = {
     admin_note: "Admin Note",
     original_estimate: "Originally estimated at",
     view_note: "View Note",
-    note_from_admin: "Note from Admin"
+    note_from_admin: "Note from Admin",
+    invoice_ticket: "Invoice / Ticket",
+    billed_to: "Billed To",
+    items_included: "Items Included",
+    total_usd: "Total USD",
+    total_ves: "Total VES",
+    rate: "Rate",
+    thank_you: "Thank you for shipping with D-Fyo.",
+    keep_invoice: "Please keep this invoice for your records.",
+    payment_capture: "Payment Capture",
+    amazon_item: "Amazon Item"
   },
   es: {
     dashboard: "Panel de Admin",
@@ -145,6 +155,16 @@ export const translations = {
     admin_note: "Nota del Admin",
     original_estimate: "Estimado original de",
     view_note: "Ver Nota",
-    note_from_admin: "Nota del Administrador"
+    note_from_admin: "Nota del Administrador",
+    invoice_ticket: "Factura / Recibo",
+    billed_to: "Cobrado a",
+    items_included: "Artículos Incluidos",
+    total_usd: "Total USD",
+    total_ves: "Total VES",
+    rate: "Tasa",
+    thank_you: "Gracias por realizar tus envíos con D-Fyo.",
+    keep_invoice: "Por favor, guarda este recibo para tus registros.",
+    payment_capture: "Captura de Pago",
+    amazon_item: "Artículo de Amazon"
   }
 }
