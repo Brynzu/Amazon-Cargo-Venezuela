@@ -356,6 +356,9 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                     setItems(newItems);
                   }}
                 />
+                <p className="text-[11px] text-amber-600/90 font-medium leading-tight">
+                  {lang === 'es' ? 'Por favor, verifica y ajusta el precio para que coincida con el monto actual de la variante seleccionada en Amazon.' : 'Please verify and manually adjust the price to match the actual amount of the selected variant on Amazon.'}
+                </p>
               </div>
 
               {item.name && (

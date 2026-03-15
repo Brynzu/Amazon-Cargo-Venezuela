@@ -7,8 +7,12 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.d-fyo.com'),
   title: 'D-Fyo - Tu Concierge de Compras en USA',
   description: 'Servicio de courier premium y concierge de compras desde Estados Unidos a Venezuela. Obtén cotizaciones exactas y en tiempo real para tus productos de Amazon y más, sin comisiones ocultas.',
+  verification: {
+    google: 'llrOSRzO12V5FSF65-11btmB0mS43LtgfmI5-3E0fKk',
+  },
 }
 
 import Link from 'next/link'
@@ -21,9 +25,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <meta name="google-site-verification" content="llrOSRzO12V5FSF65-11btmB0mS43LtgfmI5-3E0fKk" />
-      </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header />
         <main className="flex-1">{children}</main>
