@@ -25,19 +25,31 @@ export async function POST(req: Request) {
       }
     }
 
-    // Attempt to fetch the URL using a standard User-Agent to avoid immediate blocking
-    const response = await fetch(finalUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-      },
-    });
+    let html = '';
+    const scrapeDoKey = process.env.SCRAPEDO_API_KEY;
 
-    // We don't strictly throw on !response.ok for Amazon because sometimes a 503 still returns the title/html
-    const html = await response.text();
+    if (scrapeDoKey && finalUrl.includes('amazon')) {
+      // Use Scrape.do to bypass Amazon bot protection
+      const scrapeUrl = `http://api.scrape.do?token=${scrapeDoKey}&url=${encodeURIComponent(finalUrl)}`;
+      const response = await fetch(scrapeUrl);
+      if (response.ok) {
+        html = await response.text();
+      } else {
+        console.warn('Scrape.do failed, falling back to direct fetch', response.status);
+      }
+    }
+
+    if (!html) {
+      // Attempt to fetch the URL directly as fallback
+      const response = await fetch(finalUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/121.0',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+        },
+      });
+      html = await response.text();
+    }
     const $ = cheerio.load(html);
 
     // Common metadata tags
