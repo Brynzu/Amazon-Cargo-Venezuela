@@ -9,6 +9,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 });
     }
 
+    // Basic SSRF prevention: ensure URL is HTTP/HTTPS
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      return NextResponse.json({ error: 'Invalid URL protocol' }, { status: 400 });
+    }
+
     // Attempt to fetch the URL using a standard User-Agent to avoid immediate blocking
     const response = await fetch(url, {
       headers: {
@@ -27,6 +32,7 @@ export async function POST(req: Request) {
     // Common metadata tags
     let title = $('meta[property="og:title"]').attr('content') || $('title').text() || '';
     let image = $('meta[property="og:image"]').attr('content') || '';
+    let price = '';
 
     // Fallbacks for Amazon specific structures
     if (!title || title.includes("Amazon.com")) {
@@ -36,8 +42,22 @@ export async function POST(req: Request) {
       image = $('#landingImage').attr('src') || '';
     }
 
+    // Attempt to scrape Amazon price
+    const rawPrice = $('.a-price .a-offscreen').first().text() ||
+                     $('#corePrice_feature_div .a-offscreen').first().text() ||
+                     $('#priceblock_ourprice').text() ||
+                     $('#priceblock_dealprice').text();
+
+    if (rawPrice) {
+      // Extract numeric value from string like "$19.99"
+      const priceMatch = rawPrice.match(/[\d,]+(?:\.\d+)?/);
+      if (priceMatch) {
+        price = priceMatch[0].replace(/,/g, '');
+      }
+    }
+
     // Ultimate fallback for Amazon URLs since they block basic fetch requests
-    if (url.includes('amazon.com') && (!title || title.includes('Amazon.com') || !image)) {
+    if (url.includes('amazon.com') && (!title || title.includes('Amazon.com') || !image || !price)) {
       const match = url.match(/\/([A-Z0-9]{10})(?:[/?]|$)/);
       if (match && match[1]) {
         const asin = match[1];
@@ -56,9 +76,9 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ title, image });
+    return NextResponse.json({ title, image, price });
   } catch (error: any) {
     console.error('Scraping error:', error);
-    return NextResponse.json({ title: '', image: '', error: error.message }, { status: 500 });
+    return NextResponse.json({ title: '', image: '', price: '', error: error.message }, { status: 500 });
   }
 }

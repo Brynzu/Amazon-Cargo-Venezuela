@@ -185,7 +185,6 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
         });
 
         // --- SEND EMAIL NOTIFICATION HERE ---
-        // Fire and forget email via API
         fetch('/api/send-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -196,7 +195,18 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
             adminNote: additionalPayload.admin_note || "",
             lang: lang,
           })
-        }).catch(err => console.error("Email API failed:", err));
+        })
+        .then(async (res) => {
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || "Email sending failed");
+          }
+          toast.success("Status updated and email sent!");
+        })
+        .catch(err => {
+          console.error("Email API failed:", err);
+          toast.error(`Status updated, but email failed: ${err.message}. Check API keys.`);
+        });
       }
     } else {
       toast.error("Update command executed but no rows were returned. RLS policy might be blocking the update.")
@@ -639,13 +649,13 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                               href={item?.url || "#"}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline truncate"
+                              className="text-blue-600 hover:underline line-clamp-2 break-words"
                               title={item?.name || item?.url || "Link"}
                             >
                               {item?.name || `Item ${idx + 1}`}
                             </a>
                           </div>
-                          <span className="font-semibold text-gray-700 whitespace-nowrap">${Number(item?.price || 0).toFixed(2)}</span>
+                          <span className="font-semibold text-gray-700 whitespace-nowrap shrink-0">${Number(item?.price || 0).toFixed(2)}</span>
                         </div>
                       ));
                     } else {
@@ -659,7 +669,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
                           >
                             {selectedOrder.amazon_url || "Link missing"}
                           </a>
-                          <span className="font-semibold text-gray-700">Legacy Item</span>
+                          <span className="font-semibold text-gray-700 shrink-0">Legacy Item</span>
                         </div>
                       );
                     }
@@ -669,7 +679,7 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
 
               <div className="pt-2 border-t">
                 <p className="text-sm font-semibold text-gray-500">Destination Office</p>
-                <p className="text-md font-medium">{selectedOrder.office}</p>
+                <p className="text-md font-medium break-words">{selectedOrder.office}</p>
                 {selectedOrder.office_map_url && (
                   <a
                     href={selectedOrder.office_map_url}
@@ -686,11 +696,11 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
               <div className="pt-2 border-t">
                 <p className="text-sm font-semibold text-gray-500 mb-2">Payment Receipt</p>
                 {selectedOrder.payment_receipt ? (
-                  <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-2">
+                  <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-2 max-h-[400px]">
                     <img
                       src={selectedOrder.payment_receipt}
                       alt="Receipt Preview"
-                      className="max-w-full max-h-[300px] object-contain"
+                      className="max-w-full h-full object-contain"
                     />
                   </div>
                 ) : (

@@ -1,27 +1,41 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { createClient } from '@/utils/supabase/server';
+import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 
 // Initialize with a dummy key so the build doesn't fail if the env var is missing
 const resend = new Resend(process.env.RESEND_API_KEY || 're_dummy_key_to_pass_build');
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createClient();
+
+    // Authenticate requester as admin
+    const { data: authData, error: authError } = await supabase.auth.getUser();
+    if (authError || !authData.user || authData.user.email !== 'brynzulino@gmail.com') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { orderId, userId, status, adminNote, lang } = await req.json();
 
     if (!orderId || !userId) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Use Service Role to bypass RLS and fetch user email
+    const supabaseAdmin = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY || ''
+    );
+
     // Fetch user email to send to
-    const supabase = await createClient();
-    const { data: user, error } = await supabase.auth.admin.getUserById(userId);
+    const { data: user, error } = await supabaseAdmin.auth.admin.getUserById(userId);
 
     let emailAddress = user?.user?.email;
 
     if (error || !emailAddress) {
       // Fallback: Check if they are in public.users just in case we can't use admin api
-      const { data: publicUser } = await supabase.from('users').select('email').eq('id', userId).single();
+      const { data: publicUser } = await supabaseAdmin.from('users').select('email').eq('id', userId).single();
       if (!publicUser?.email) {
         return NextResponse.json({ error: 'User email not found' }, { status: 404 });
       }
@@ -35,10 +49,13 @@ export async function POST(req: Request) {
       ? `El estado de tu orden <strong>#${shortOrderId}</strong> ha sido actualizado a: <strong>${status}</strong>.`
       : `Your order <strong>#${shortOrderId}</strong> status has been updated to: <strong>${status}</strong>.`;
 
-    const noteHtml = adminNote
+    // Sanitize HTML from adminNote
+    const sanitizedNote = adminNote ? adminNote.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+
+    const noteHtml = sanitizedNote
       ? `<div style="margin-top: 20px; padding: 15px; background-color: #f3f4f6; border-left: 4px solid #f97316; color: #374151;">
           <strong>${lang === 'es' ? 'Nota del Administrador' : 'Admin Note'}:</strong><br/>
-          ${adminNote}
+          ${sanitizedNote}
          </div>`
       : '';
 
@@ -78,18 +95,22 @@ export async function POST(req: Request) {
     // If this fails due to domain verification, Resend provides 'onboarding@resend.dev' for testing to verified emails.
     const senderEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 
-    await resend.emails.send({
+    const { data, error: sendError } = await resend.emails.send({
       from: `D-Fyo Updates <${senderEmail}>`,
       to: emailAddress,
       subject: title,
       html: htmlContent,
     });
 
-    console.log("Email dispatched to:", emailAddress);
+    if (sendError) {
+      console.error('Resend API Error:', sendError);
+      return NextResponse.json({ error: sendError.message }, { status: 500 });
+    }
 
-    return NextResponse.json({ success: true });
+    console.log("Email dispatched to:", emailAddress);
+    return NextResponse.json({ success: true, data });
   } catch (error: any) {
-    console.error('Email error:', error);
+    console.error('System Email error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

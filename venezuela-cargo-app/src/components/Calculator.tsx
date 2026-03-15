@@ -294,6 +294,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                           const updated = [...currentItems];
                           if (data.title) updated[index].name = data.title.substring(0, 100);
                           if (data.image) updated[index].image = data.image;
+                          if (data.price && !updated[index].price) updated[index].price = data.price;
                           updated[index].loading = false;
                           return updated;
                         });

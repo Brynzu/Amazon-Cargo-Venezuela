@@ -34,7 +34,7 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
           <div className="flex justify-between items-start border-b-2 border-black pb-8 mb-8">
             <div className="flex items-center text-primary group">
               <span className="font-black text-3xl tracking-tighter">D</span>
-              <svg className="w-8 h-8 mx-0.5 text-primary mt-2" viewBox="0 0 100 50" fill="none">
+              <svg className="w-8 h-8 mx-0.5 text-[#000080] mt-2" viewBox="0 0 100 50" fill="none">
                 <path d="M10,20 Q50,45 85,15" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
                 <path d="M70,10 L88,12 L85,30" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -70,23 +70,23 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
 
                 if (Array.isArray(parsedItems) && parsedItems.length > 0) {
                   return parsedItems.map((item: any, idx: number) => (
-                    <div key={idx} className="flex items-center justify-between text-sm border-b border-dashed pb-2 last:border-0 last:pb-0">
-                      <div className="flex items-center gap-3 overflow-hidden pr-4">
+                    <div key={idx} className="flex items-start justify-between text-sm border-b border-dashed pb-2 last:border-0 last:pb-0">
+                      <div className="flex items-start gap-3 overflow-hidden pr-4">
                         {item?.image && (
-                          <img src={item.image} alt="Item" className="w-8 h-8 object-cover rounded bg-white border" />
+                          <img src={item.image} alt="Item" className="w-8 h-8 object-cover rounded bg-white border shrink-0 mt-0.5" />
                         )}
-                        <span className="text-gray-700 truncate font-medium">
+                        <span className="text-gray-700 line-clamp-3 font-medium break-words leading-tight">
                           {item?.name || item?.url || 'Item'}
                         </span>
                       </div>
-                      <span className="font-bold whitespace-nowrap">${Number(item?.price || 0).toFixed(2)}</span>
+                      <span className="font-bold whitespace-nowrap shrink-0">${Number(item?.price || 0).toFixed(2)}</span>
                     </div>
                   ));
                 } else {
                   return (
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600 truncate max-w-[80%] pr-4">{order.amazon_url || t.amazon_item}</span>
-                      <span className="font-medium whitespace-nowrap">${Number(order.amazon_price || order.total_price_usd || 0).toFixed(2)}</span>
+                      <span className="text-gray-600 line-clamp-2 max-w-[80%] pr-4 break-words">{order.amazon_url || t.amazon_item}</span>
+                      <span className="font-medium whitespace-nowrap shrink-0">${Number(order.amazon_price || order.total_price_usd || 0).toFixed(2)}</span>
                     </div>
                   );
                 }
@@ -110,11 +110,11 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
           {order.payment_receipt && (
             <div className="mb-8 print:hidden">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4 border-b pb-2">{t.payment_capture}</p>
-              <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-4">
+              <div className="border rounded-lg overflow-hidden bg-gray-50 flex justify-center p-4 max-h-[400px]">
                 <img
                   src={order.payment_receipt}
                   alt="Uploaded Payment Receipt"
-                  className="max-w-full max-h-[500px] object-contain"
+                  className="max-w-full h-full object-contain"
                 />
               </div>
             </div>
