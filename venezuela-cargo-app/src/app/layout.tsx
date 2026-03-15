@@ -7,8 +7,8 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'D-Fyo - Envíos de Amazon a Venezuela',
-  description: 'Calcula tu envío desde USA a Venezuela de forma transparente y segura. Manejo mínimo de $5 por orden.',
+  title: 'D-Fyo - Tu Concierge de Compras en USA',
+  description: 'Servicio de courier premium y concierge de compras desde Estados Unidos a Venezuela. Obtén cotizaciones exactas y en tiempo real para tus productos de Amazon y más, sin comisiones ocultas.',
 }
 
 import Link from 'next/link'
