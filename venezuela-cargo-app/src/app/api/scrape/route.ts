@@ -18,25 +18,42 @@ export async function POST(req: Request) {
     let finalUrl = url;
     if (url.includes('a.co') || url.includes('amzn.to')) {
       try {
-        const preflight = await fetch(url, { method: 'HEAD', redirect: 'follow' });
+        console.log(`[Scraper] Resolving shortlink: ${url}`);
+        // HEAD doesn't always redirect correctly on some node fetch versions/Amazon configs
+        const preflight = await fetch(url, { method: 'GET', redirect: 'follow' });
         finalUrl = preflight.url;
+        console.log(`[Scraper] Resolved to: ${finalUrl}`);
       } catch (e) {
-        console.warn('Could not resolve shortened URL, proceeding with original');
+        console.error('[Scraper] Could not resolve shortened URL, proceeding with original:', e);
       }
     }
 
     let html = '';
     const scrapeDoKey = process.env.SCRAPEDO_API_KEY;
 
-    if (scrapeDoKey && finalUrl.includes('amazon')) {
+    if (!scrapeDoKey) {
+      console.warn('[Scraper] SCRAPEDO_API_KEY is not set in environment variables');
+    }
+
+    const isAmazonLink = finalUrl.includes('amazon') || finalUrl.includes('a.co') || finalUrl.includes('amzn.to');
+
+    if (scrapeDoKey && isAmazonLink) {
       // Use Scrape.do to bypass Amazon bot protection
+      console.log(`[Scraper] Using Scrape.do for URL: ${finalUrl}`);
       const scrapeUrl = `http://api.scrape.do?token=${scrapeDoKey}&url=${encodeURIComponent(finalUrl)}`;
-      const response = await fetch(scrapeUrl);
-      if (response.ok) {
-        html = await response.text();
-      } else {
-        console.warn('Scrape.do failed, falling back to direct fetch', response.status);
+      try {
+        const response = await fetch(scrapeUrl);
+        if (response.ok) {
+          html = await response.text();
+          console.log('[Scraper] Scrape.do request successful');
+        } else {
+          console.error(`[Scraper] Scrape.do failed with status ${response.status}:`, await response.text());
+        }
+      } catch (e) {
+        console.error('[Scraper] Error calling Scrape.do API:', e);
       }
+    } else if (isAmazonLink) {
+       console.log('[Scraper] Attempting direct fetch for Amazon link (Scrape.do not configured)');
     }
 
     if (!html) {

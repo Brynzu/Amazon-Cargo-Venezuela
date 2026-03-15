@@ -9,6 +9,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'D-Fyo - Tu Concierge de Compras en USA',
   description: 'Servicio de courier premium y concierge de compras desde Estados Unidos a Venezuela. Obtén cotizaciones exactas y en tiempo real para tus productos de Amazon y más, sin comisiones ocultas.',
+  verification: {
+    google: 'ws6t5DhLN0GNd09VNsZ-RssROSNvyr5HJ',
+  },
 }
 
 import Link from 'next/link'
@@ -20,9 +23,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <meta name="google-site-verification" content="ws6t5DhLN0GNd09VNsZ-RssROSNvyr5HJ" />
-      </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header />
         <main className="flex-1">{children}</main>
