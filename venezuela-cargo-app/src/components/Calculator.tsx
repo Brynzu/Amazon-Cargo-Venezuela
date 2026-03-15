@@ -14,12 +14,12 @@ import Link from "next/link";
 import { translations } from '@/lib/translations';
 import toast from 'react-hot-toast';
 
-type Item = { url: string; price: string; name?: string; image?: string; loading?: boolean };
+type Item = { url: string; price: string; name?: string; image?: string; loading?: boolean; hasFetched?: boolean };
 
 export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLang?: 'en' | 'es' }) {
   const [lang, setLang] = useState<'en' | 'es'>(defaultLang);
   useEffect(() => setLang(defaultLang), [defaultLang]);
-  const [items, setItems] = useState<Item[]>([{ url: "", price: "", loading: false }]);
+  const [items, setItems] = useState<Item[]>([{ url: "", price: "", loading: false, hasFetched: false }]);
 
   // Logistics & Client Details
   const [clientName, setClientName] = useState("");
@@ -113,8 +113,8 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
   // Debounced Auto-Fetch for Amazon Metadata
   useEffect(() => {
     const timers = items.map((item, index) => {
-      // Check if URL is valid, has changed recently, and we aren't already loading or haven't fetched a name yet
-      if (item.url && item.url.startsWith('http') && !item.name && !item.loading) {
+      // Trigger if we have a valid URL but haven't fetched it yet, and we aren't currently loading it
+      if (item.url && item.url.startsWith('http') && !item.hasFetched && !item.loading) {
         return setTimeout(async () => {
           setItems(currentItems => {
             const updated = [...currentItems];
@@ -133,19 +133,30 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
             setItems(currentItems => {
               const updated = [...currentItems];
               if (data.title) updated[index].name = data.title.substring(0, 100);
+              else updated[index].name = "Unknown Product"; // Fallback to prevent UI break
+
               if (data.image) updated[index].image = data.image;
-              if (data.price && !updated[index].price) updated[index].price = data.price;
+
+              // Only override price if it's currently empty or 0 to not overwrite manual user input
+              if (data.price && (!updated[index].price || parseFloat(updated[index].price) === 0)) {
+                updated[index].price = data.price;
+              }
+
               updated[index].loading = false;
+              updated[index].hasFetched = true;
               return updated;
             });
           } catch (err) {
+            console.error("Scrape failed", err);
             setItems(currentItems => {
               const updated = [...currentItems];
               updated[index].loading = false;
+              updated[index].hasFetched = true;
+              updated[index].name = "Product metadata unavailable";
               return updated;
             });
           }
-        }, 800); // 800ms debounce
+        }, 500); // Reduced debounce to 500ms for snappier feel
       }
       return null;
     });
@@ -155,7 +166,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
         if (timer) clearTimeout(timer);
       });
     };
-  }, [items.map(i => i.url).join('|')]); // Re-run when URLs change
+  }, [items]); // Re-run when the items array changes (e.g. typing the URL)
 
   const handleAutoFill = () => {
     if (savedProfile) {
@@ -325,6 +336,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                     newItems[index].name = undefined;
                     newItems[index].image = undefined;
                     newItems[index].price = "";
+                    newItems[index].hasFetched = false;
                     setItems(newItems);
                   }}
                 />

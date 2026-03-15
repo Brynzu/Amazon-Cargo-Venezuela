@@ -55,16 +55,23 @@ export async function POST(req: Request) {
 
     // Attempt to scrape Amazon price, prioritizing the actual 'buy box' price
     let rawPrice = '';
-    const genericWhole = $('.a-price-whole').first().text();
-    const genericFraction = $('.a-price-fraction').first().text();
-    const desktopWhole = $('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text();
-    const desktopFraction = $('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text();
 
-    if (genericWhole) {
-      rawPrice = genericWhole + '.' + genericFraction;
-    } else if (desktopWhole) {
+    // Sometimes the DOM renders corePriceDisplay_desktop_feature_div but empty, so we must check text length
+    const desktopWhole = $('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text().trim();
+    const desktopFraction = $('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text().trim();
+    const genericWhole = $('.a-price-whole').first().text().trim();
+    const genericFraction = $('.a-price-fraction').first().text().trim();
+
+    // 1. Try Desktop Buy Box Price First (Most accurate for active price)
+    if (desktopWhole) {
       rawPrice = desktopWhole + '.' + desktopFraction;
-    } else {
+    }
+    // 2. Try Generic Buy Box Price
+    else if (genericWhole) {
+      rawPrice = genericWhole + '.' + genericFraction;
+    }
+    // 3. Fallback Selectors (Offscreen text, legacy blocks, kindle prices)
+    else {
       rawPrice = $('#corePrice_feature_div .a-offscreen').first().text() ||
                  $('.a-price .a-offscreen').first().text() ||
                  $('#priceblock_ourprice').text() ||
@@ -74,13 +81,15 @@ export async function POST(req: Request) {
     }
 
     if (rawPrice && rawPrice !== '.') {
-      // Extract numeric value from string like "$19.99"
-      const priceMatch = rawPrice.match(/[\d,]+(?:\.\d+)?/);
+      // Extract numeric value from string like "$19.99", "$1,099.00", or "19.99"
+      // Remove all commas first, then match digits and optional decimals
+      const cleanString = rawPrice.replace(/,/g, '');
+      const priceMatch = cleanString.match(/\d+(?:\.\d+)?/);
+
       if (priceMatch) {
-        // Parse it to ensure it's a valid float string before sending to calculator
-        const parsed = parseFloat(priceMatch[0].replace(/,/g, ''));
+        const parsed = parseFloat(priceMatch[0]);
         if (!isNaN(parsed) && parsed > 0) {
-          price = parsed.toString();
+          price = parsed.toFixed(2);
         }
       }
     }
