@@ -20,6 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="ws6t5DhLN0GNd09VNsZ-RssROSNvyr5HJ" />
+      </head>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
         <Header />
         <main className="flex-1">{children}</main>
