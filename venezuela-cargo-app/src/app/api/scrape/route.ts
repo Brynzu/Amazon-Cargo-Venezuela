@@ -86,34 +86,39 @@ export async function POST(req: Request) {
     // This prevents scraping prices from "Sponsored" carousels or "Customers also bought"
     let rawPrice = '';
 
-    // The buy box and core price feature divs are the most reliable for the currently selected variant
-    const centerCol = $('#centerCol, #corePrice_desktop, #desktop_buybox, #corePrice_feature_div, #price_inside_buybox, #buyNewSection');
+    // 1. Prioritize explicitly the active variant price from the core price feature div or apex price
+    const corePriceFeature = $('#corePriceDisplay_desktop_feature_div, #corePrice_feature_div');
+    const apexPrice = $('.apexPriceToPay .a-offscreen').first().text();
+    const buyBoxPrice = $('#price_inside_buybox').text();
 
-    // Sometimes the DOM renders corePriceDisplay_desktop_feature_div but empty, so we must check text length
-    const desktopWhole = centerCol.find('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text().trim();
-    const desktopFraction = centerCol.find('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text().trim();
+    const desktopWhole = corePriceFeature.find('.a-price-whole').first().text().trim();
+    const desktopFraction = corePriceFeature.find('.a-price-fraction').first().text().trim();
 
-    const genericWhole = centerCol.find('.a-price-whole').first().text().trim();
-    const genericFraction = centerCol.find('.a-price-fraction').first().text().trim();
-
-    // 1. Try Desktop Buy Box Price First (Most accurate for active price)
     if (desktopWhole) {
       rawPrice = desktopWhole + '.' + desktopFraction;
+    } else if (apexPrice) {
+      rawPrice = apexPrice;
+    } else if (buyBoxPrice) {
+      rawPrice = buyBoxPrice;
+    } else if (corePriceFeature.find('.a-offscreen').first().text()) {
+      rawPrice = corePriceFeature.find('.a-offscreen').first().text();
     }
-    // 2. Try Generic Buy Box Price scoped to center column
-    else if (genericWhole) {
-      rawPrice = genericWhole + '.' + genericFraction;
-    }
-    // 3. Fallback Selectors scoped to center column (Offscreen text, legacy blocks, kindle prices)
-    else {
-      rawPrice = $('#corePrice_feature_div .a-offscreen').first().text() ||
-                 $('#price_inside_buybox').text() ||
-                 centerCol.find('.a-price .a-offscreen').first().text() ||
-                 $('#priceblock_ourprice').text() || // ID selectors are globally unique usually
-                 $('#priceblock_dealprice').text() ||
-                 $('#kindle-price').text() ||
-                 $('.apexPriceToPay .a-offscreen').first().text() ||
-                 centerCol.find('.a-color-price').first().text();
+
+    // 2. If nothing found in the primary nodes, fallback to scoped center column
+    if (!rawPrice) {
+      const centerCol = $('#centerCol, #corePrice_desktop, #desktop_buybox');
+      const genericWhole = centerCol.find('.a-price-whole').first().text().trim();
+      const genericFraction = centerCol.find('.a-price-fraction').first().text().trim();
+
+      if (genericWhole) {
+        rawPrice = genericWhole + '.' + genericFraction;
+      } else {
+        rawPrice = centerCol.find('.a-price .a-offscreen').first().text() ||
+                   $('#priceblock_ourprice').text() ||
+                   $('#priceblock_dealprice').text() ||
+                   $('#kindle-price').text() ||
+                   centerCol.find('.a-color-price').first().text();
+      }
     }
 
     if (rawPrice && rawPrice !== '.' && rawPrice !== '') {
