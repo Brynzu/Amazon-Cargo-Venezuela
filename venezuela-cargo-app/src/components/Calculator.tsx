@@ -110,6 +110,53 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
   const t = translations[lang];
 
+  // Debounced Auto-Fetch for Amazon Metadata
+  useEffect(() => {
+    const timers = items.map((item, index) => {
+      // Check if URL is valid, has changed recently, and we aren't already loading or haven't fetched a name yet
+      if (item.url && item.url.startsWith('http') && !item.name && !item.loading) {
+        return setTimeout(async () => {
+          setItems(currentItems => {
+            const updated = [...currentItems];
+            updated[index].loading = true;
+            return updated;
+          });
+
+          try {
+            const res = await fetch('/api/scrape', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ url: item.url })
+            });
+            const data = await res.json();
+
+            setItems(currentItems => {
+              const updated = [...currentItems];
+              if (data.title) updated[index].name = data.title.substring(0, 100);
+              if (data.image) updated[index].image = data.image;
+              if (data.price && !updated[index].price) updated[index].price = data.price;
+              updated[index].loading = false;
+              return updated;
+            });
+          } catch (err) {
+            setItems(currentItems => {
+              const updated = [...currentItems];
+              updated[index].loading = false;
+              return updated;
+            });
+          }
+        }, 800); // 800ms debounce
+      }
+      return null;
+    });
+
+    return () => {
+      timers.forEach(timer => {
+        if (timer) clearTimeout(timer);
+      });
+    };
+  }, [items.map(i => i.url).join('|')]); // Re-run when URLs change
+
   const handleAutoFill = () => {
     if (savedProfile) {
       if (savedProfile.full_name) setClientName(savedProfile.full_name);
@@ -274,38 +321,11 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                   onChange={(e) => {
                     const newItems = [...items];
                     newItems[index].url = e.target.value;
+                    // Reset fetched metadata when URL changes manually
+                    newItems[index].name = undefined;
+                    newItems[index].image = undefined;
+                    newItems[index].price = "";
                     setItems(newItems);
-                  }}
-                  onBlur={async (e) => {
-                    const url = e.target.value;
-                    if (url && url.startsWith('http')) {
-                      const newItems = [...items];
-                      newItems[index].loading = true;
-                      setItems(newItems);
-                      try {
-                        const res = await fetch('/api/scrape', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ url })
-                        });
-                        const data = await res.json();
-
-                        setItems(currentItems => {
-                          const updated = [...currentItems];
-                          if (data.title) updated[index].name = data.title.substring(0, 100);
-                          if (data.image) updated[index].image = data.image;
-                          if (data.price && !updated[index].price) updated[index].price = data.price;
-                          updated[index].loading = false;
-                          return updated;
-                        });
-                      } catch (err) {
-                        setItems(currentItems => {
-                          const updated = [...currentItems];
-                          updated[index].loading = false;
-                          return updated;
-                        });
-                      }
-                    }
                   }}
                 />
               </div>

@@ -53,9 +53,10 @@ export async function POST(req: Request) {
       image = $('#landingImage').attr('src') || '';
     }
 
-    // Attempt to scrape Amazon price
-    const rawPrice = $('.a-price .a-offscreen').first().text() ||
+    // Attempt to scrape Amazon price, prioritizing the actual 'buy box' price
+    const rawPrice = $('#corePriceDisplay_desktop_feature_div .a-price-whole').first().text() + $('#corePriceDisplay_desktop_feature_div .a-price-fraction').first().text() ||
                      $('#corePrice_feature_div .a-offscreen').first().text() ||
+                     $('.a-price .a-offscreen').first().text() ||
                      $('#priceblock_ourprice').text() ||
                      $('#priceblock_dealprice').text();
 
