@@ -36,7 +36,9 @@ type Order = {
   exchange_rate: number | null
   status: string
   rejection_reason: string | null
-  office: string
+  delivery_method?: string | null
+  delivery_address?: string | null
+  office: string | null
   office_map_url: string | null
   payment_receipt: string | null
   created_at: string
@@ -761,9 +763,13 @@ export function AdminDashboard({ initialOrders, initialExchangeRate }: { initial
               </div>
 
               <div className="pt-2 border-t">
-                <p className="text-sm font-semibold text-gray-500">Destination Office</p>
-                <p className="text-md font-medium break-words">{selectedOrder.office}</p>
-                {selectedOrder.office_map_url && (
+                <p className="text-sm font-semibold text-gray-500">Delivery Method / Destination</p>
+                <p className="text-md font-medium break-words">
+                  {selectedOrder.delivery_method === 'domicilio'
+                    ? `🏠 Home Delivery: ${selectedOrder.delivery_address || 'No address provided'}`
+                    : `🏢 Office Pickup: ${selectedOrder.office || selectedOrder.delivery_address || 'No office selected'}`}
+                </p>
+                {selectedOrder.delivery_method !== 'domicilio' && selectedOrder.office_map_url && (
                   <a
                     href={selectedOrder.office_map_url}
                     target="_blank"

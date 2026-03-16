@@ -28,6 +28,8 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedOfficeCode, setSelectedOfficeCode] = useState("");
+  const [deliveryMethod, setDeliveryMethod] = useState<"oficina" | "domicilio">("oficina");
+  const [homeAddress, setHomeAddress] = useState("");
 
   const [paymentMethod, setPaymentMethod] = useState("Zelle");
   const [file, setFile] = useState<File | null>(null);
@@ -172,6 +174,11 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
     if (savedProfile) {
       if (savedProfile.full_name) setClientName(savedProfile.full_name);
       if (savedProfile.phone) setWhatsapp(savedProfile.phone);
+
+      if (savedProfile.home_address) {
+        setHomeAddress(savedProfile.home_address);
+      }
+
       if (savedProfile.zip_code) {
         setPostalCodeInput(savedProfile.zip_code);
       }
@@ -219,8 +226,21 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
     const hasInvalidItems = items.some(i => !i.url || !i.price || isNaN(parseFloat(i.price)));
 
-    if (!breakdown || hasInvalidItems || !user || !clientName || !whatsapp || !selectedOfficeDetails) {
+    const isOfficeDelivery = deliveryMethod === "oficina";
+    const isHomeDelivery = deliveryMethod === "domicilio";
+
+    if (!breakdown || hasInvalidItems || !user || !clientName || !whatsapp) {
       toast.error(lang === 'es' ? "Por favor completa todos los campos correctamente." : "Please ensure all item fields and logistics details are filled out correctly.");
+      return;
+    }
+
+    if (isOfficeDelivery && !selectedOfficeDetails) {
+      toast.error(lang === 'es' ? "Por favor selecciona una oficina." : "Please select an office.");
+      return;
+    }
+
+    if (isHomeDelivery && (!homeAddress || !selectedState || !selectedCity)) {
+      toast.error(lang === 'es' ? "Por favor ingresa una dirección de domicilio válida." : "Please enter a valid home address.");
       return;
     }
 
@@ -229,7 +249,15 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
       console.log('Creating database record...');
 
       // Insert Order
-      const fullOfficeString = `${selectedOfficeDetails.carrier} - ${selectedOfficeDetails.officeName} - ${selectedOfficeDetails.fullAddress}`;
+      let fullOfficeString = "";
+      let deliveryAddress = "";
+
+      if (isOfficeDelivery && selectedOfficeDetails) {
+        fullOfficeString = `${selectedOfficeDetails.carrier} - ${selectedOfficeDetails.officeName} - ${selectedOfficeDetails.fullAddress}`;
+        deliveryAddress = fullOfficeString;
+      } else if (isHomeDelivery) {
+        deliveryAddress = homeAddress;
+      }
 
       // Store clean numbers and metadata in DB
       const cleanItems = items.map(i => ({
@@ -250,10 +278,12 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
           total_price_usd: breakdown.totalCost,
           client_name: clientName,
           whatsapp: whatsapp,
-          state: selectedOfficeDetails.state,
-          city: selectedOfficeDetails.city,
-          office: fullOfficeString,
-          office_map_url: selectedOfficeDetails.mapUrl,
+          state: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails.state : selectedState,
+          city: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails.city : selectedCity,
+          office: fullOfficeString || null,
+          office_map_url: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails.mapUrl : null,
+          delivery_method: deliveryMethod,
+          delivery_address: deliveryAddress,
           exchange_rate: exchangeRate,
           status: 'awaiting_approval',
         })
@@ -460,6 +490,26 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                   <Input id="whatsapp" placeholder="+58 412..." value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
                 </div>
 
+                <div className="space-y-2 mt-4">
+                  <Label>{lang === 'es' ? 'Método de Entrega' : 'Delivery Method'}</Label>
+                  <Select value={deliveryMethod} onValueChange={(val: "oficina" | "domicilio") => setDeliveryMethod(val)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder={lang === 'es' ? 'Selecciona...' : 'Select...'} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="oficina">{lang === 'es' ? 'Retiro en Oficina' : 'Office Pickup'}</SelectItem>
+                      <SelectItem value="domicilio">{lang === 'es' ? 'Entrega a Domicilio' : 'Home Delivery'}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {deliveryMethod === "domicilio" && (
+                  <div className="space-y-2">
+                    <Label>{lang === 'es' ? 'Dirección de Domicilio' : 'Home Address'}</Label>
+                    <Input placeholder={lang === 'es' ? 'Ej. Calle 1, Casa 2, Urb. Las Trinitarias...' : 'e.g. 123 Main St...'} value={homeAddress} onChange={e => setHomeAddress(e.target.value)} required />
+                  </div>
+                )}
+
                 <div className="grid grid-cols-3 gap-2 mt-4">
                   <div className="space-y-2 col-span-1">
                     <Label>{t.zip_code}</Label>
@@ -493,45 +543,47 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label>{t.select_office}</Label>
-                  <Select value={selectedOfficeCode} onValueChange={setSelectedOfficeCode}>
-                    <SelectTrigger className="h-auto whitespace-normal text-left py-3">
-                      <SelectValue placeholder={t.choose_office} />
-                    </SelectTrigger>
-                    <SelectContent className="max-w-[350px]">
-                      {availableOffices.map((o) => {
-                        const val = `${o.carrier}-${o.officeName}`;
-                        return (
-                          <SelectItem key={val} value={val} className="py-2">
-                            <div className="flex flex-col">
-                              <span className="font-bold">{o.carrier} - {o.officeName}</span>
-                              <span className="text-xs text-gray-500 whitespace-normal mt-1 leading-snug">{o.fullAddress}</span>
-                              {postalCodeInput && o.postalCode.startsWith(postalCodeInput.trim()) && (
-                                <span className="text-xs text-green-600 mt-1 font-medium">📍 Zip Match ({o.postalCode})</span>
-                              )}
-                            </div>
-                          </SelectItem>
-                        )
-                      })}
-                      {availableOffices.length === 0 && (
-                        <div className="p-2 text-sm text-gray-500">No offices match criteria.</div>
-                      )}
-                    </SelectContent>
-                  </Select>
+                {deliveryMethod === "oficina" && (
+                  <div className="space-y-2">
+                    <Label>{t.select_office}</Label>
+                    <Select value={selectedOfficeCode} onValueChange={setSelectedOfficeCode}>
+                      <SelectTrigger className="h-auto whitespace-normal text-left py-3">
+                        <SelectValue placeholder={t.choose_office} />
+                      </SelectTrigger>
+                      <SelectContent className="max-w-[350px]">
+                        {availableOffices.map((o) => {
+                          const val = `${o.carrier}-${o.officeName}`;
+                          return (
+                            <SelectItem key={val} value={val} className="py-2">
+                              <div className="flex flex-col">
+                                <span className="font-bold">{o.carrier} - {o.officeName}</span>
+                                <span className="text-xs text-gray-500 whitespace-normal mt-1 leading-snug">{o.fullAddress}</span>
+                                {postalCodeInput && o.postalCode.startsWith(postalCodeInput.trim()) && (
+                                  <span className="text-xs text-green-600 mt-1 font-medium">📍 Zip Match ({o.postalCode})</span>
+                                )}
+                              </div>
+                            </SelectItem>
+                          )
+                        })}
+                        {availableOffices.length === 0 && (
+                          <div className="p-2 text-sm text-gray-500">No offices match criteria.</div>
+                        )}
+                      </SelectContent>
+                    </Select>
 
-                  {selectedOfficeDetails && (
-                    <a
-                      href={selectedOfficeDetails.mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-blue-600 hover:underline flex items-center mt-2"
-                    >
-                      <ExternalLink className="h-4 w-4 mr-1 inline shrink-0" />
-                      {t.view_map}
-                    </a>
-                  )}
-                </div>
+                    {selectedOfficeDetails && (
+                      <a
+                        href={selectedOfficeDetails.mapUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-blue-600 hover:underline flex items-center mt-2"
+                      >
+                        <ExternalLink className="h-4 w-4 mr-1 inline shrink-0" />
+                        {t.view_map}
+                      </a>
+                    )}
+                  </div>
+                )}
 
                 <Button type="submit" className="w-full mt-4" size="lg" disabled={isSubmitting}>
                   {isSubmitting ? t.submitting : t.submit_approval}

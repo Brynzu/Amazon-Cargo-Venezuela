@@ -19,6 +19,8 @@ export default function ProfilePage() {
   const [state, setState] = useState("")
   const [city, setCity] = useState("")
   const [zipCode, setZipCode] = useState("")
+  const [officeAddress, setOfficeAddress] = useState("")
+  const [homeAddress, setHomeAddress] = useState("")
   const [avatarUrl, setAvatarUrl] = useState("")
   const [file, setFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -52,6 +54,8 @@ export default function ProfilePage() {
           setPhone(data.phone || "")
           setState(data.state || "")
           setZipCode(data.zip_code || "")
+          setOfficeAddress(data.office_address || "")
+          setHomeAddress(data.home_address || "")
           setAvatarUrl(data.avatar_url || "")
 
           // Delay setting city slightly to ensure State dropdown options have populated
@@ -105,6 +109,8 @@ export default function ProfilePage() {
         state: state,
         city: city,
         zip_code: zipCode,
+        office_address: officeAddress,
+        home_address: homeAddress,
         avatar_url: finalAvatarUrl
       }).eq('id', user.id)
 
@@ -203,6 +209,16 @@ export default function ProfilePage() {
                 <Label htmlFor="zipCode">{t.zip_code}</Label>
                 <Input id="zipCode" value={zipCode} onChange={e => setZipCode(e.target.value)} placeholder="1060" />
               </div>
+            </div>
+
+            <div className="space-y-2 pt-2">
+              <Label htmlFor="officeAddress">{lang === 'es' ? 'Dirección de Oficina Predeterminada (Opcional)' : 'Default Office Address (Optional)'}</Label>
+              <Input id="officeAddress" value={officeAddress} onChange={e => setOfficeAddress(e.target.value)} placeholder={lang === 'es' ? 'Ej. Liberty Express Chacao' : 'e.g. Liberty Express Doral'} />
+            </div>
+
+            <div className="space-y-2 pt-2">
+              <Label htmlFor="homeAddress">{lang === 'es' ? 'Dirección de Domicilio' : 'Home Address'}</Label>
+              <Input id="homeAddress" value={homeAddress} onChange={e => setHomeAddress(e.target.value)} placeholder={lang === 'es' ? 'Ej. Calle 1, Casa 2, Urb. Las Trinitarias...' : 'e.g. 123 Main St...'} />
             </div>
 
             {message && <p className={`text-sm font-medium ${message.includes('Error') ? 'text-red-500' : 'text-green-600'}`}>{message}</p>}

@@ -46,7 +46,7 @@ export default async function OrdersPage() {
           <Card className="shadow-none border-dashed bg-transparent p-12 text-center">
             <Package className="w-12 h-12 text-gray-300 mx-auto mb-4" />
             <h2 className="text-lg font-medium text-gray-700">No orders found</h2>
-            <p className="text-gray-500 mb-6">You haven't placed any orders yet.</p>
+            <p className="text-gray-500 mb-6">You haven&apos;t placed any orders yet.</p>
             <Link href="/" className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
               Start an Order
             </Link>

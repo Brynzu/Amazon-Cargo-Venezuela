@@ -55,7 +55,11 @@ export default async function ReceiptPage({ params }: { params: { id: string } }
             </div>
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">{t.destination}</p>
-              <p className="text-md font-medium">{order.office}</p>
+              <p className="text-md font-medium">
+                {order.delivery_method === 'domicilio'
+                  ? `🏠 Domicilio: ${order.delivery_address || 'No address provided'}`
+                  : `🏢 Oficina: ${order.office || order.delivery_address || 'No office selected'}`}
+              </p>
             </div>
           </div>
 
