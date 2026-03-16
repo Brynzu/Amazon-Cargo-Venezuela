@@ -46,8 +46,8 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
   // Auto-select State and City if zip code matches perfectly
   useEffect(() => {
-    if (postalCodeInput.trim().length >= 4) {
-      const match = logisticsData.find(o => o.postalCode === postalCodeInput.trim());
+    if (postalCodeInput?.trim().length >= 4) {
+      const match = logisticsData.find(o => o.postalCode === postalCodeInput?.trim());
       // Only auto-fill from zip code if the state/city are NOT already populated
       if (match && !selectedState && !selectedCity) {
         setSelectedState(match.state);
@@ -62,8 +62,8 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
   // If a zip code is entered, filter the available cities to only those that match the zip code
   const cities = validCitiesForState.filter(city => {
-    if (postalCodeInput.trim().length >= 3) {
-      return logisticsData.some(o => o.state === selectedState && o.city === city && o.postalCode.startsWith(postalCodeInput.trim()));
+    if (postalCodeInput?.trim().length >= 3) {
+      return logisticsData.some(o => o.state === selectedState && o.city === city && o.postalCode.startsWith(postalCodeInput?.trim() || ""));
     }
     return true;
   });
@@ -74,10 +74,10 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
   );
 
   // If user entered a postal code, sort matching offices to top
-  if (postalCodeInput.trim().length > 2) {
+  if (postalCodeInput?.trim().length > 2) {
     availableOffices = availableOffices.sort((a, b) => {
-      const aMatch = a.postalCode.startsWith(postalCodeInput.trim()) ? 1 : 0;
-      const bMatch = b.postalCode.startsWith(postalCodeInput.trim()) ? 1 : 0;
+      const aMatch = a.postalCode.startsWith(postalCodeInput?.trim() || "") ? 1 : 0;
+      const bMatch = b.postalCode.startsWith(postalCodeInput?.trim() || "") ? 1 : 0;
       return bMatch - aMatch;
     });
   }
@@ -558,7 +558,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                               <div className="flex flex-col">
                                 <span className="font-bold">{o.carrier} - {o.officeName}</span>
                                 <span className="text-xs text-gray-500 whitespace-normal mt-1 leading-snug">{o.fullAddress}</span>
-                                {postalCodeInput && o.postalCode.startsWith(postalCodeInput.trim()) && (
+                                {postalCodeInput && o.postalCode.startsWith(postalCodeInput?.trim() || "") && (
                                   <span className="text-xs text-green-600 mt-1 font-medium">📍 Zip Match ({o.postalCode})</span>
                                 )}
                               </div>
