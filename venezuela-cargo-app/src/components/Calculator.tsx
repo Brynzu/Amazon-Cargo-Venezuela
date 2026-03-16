@@ -253,7 +253,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
       let deliveryAddress = "";
 
       if (isOfficeDelivery && selectedOfficeDetails) {
-        fullOfficeString = `${selectedOfficeDetails.carrier} - ${selectedOfficeDetails.officeName} - ${selectedOfficeDetails.fullAddress}`;
+        fullOfficeString = `${selectedOfficeDetails?.carrier || ""} - ${selectedOfficeDetails?.officeName || ""} - ${selectedOfficeDetails?.fullAddress || ""}`;
         deliveryAddress = fullOfficeString;
       } else if (isHomeDelivery) {
         deliveryAddress = homeAddress;
@@ -278,10 +278,10 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
           total_price_usd: breakdown.totalCost,
           client_name: clientName,
           whatsapp: whatsapp,
-          state: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails.state : selectedState,
-          city: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails.city : selectedCity,
+          state: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails?.state || selectedState : selectedState,
+          city: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails?.city || selectedCity : selectedCity,
           office: fullOfficeString || null,
-          office_map_url: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails.mapUrl : null,
+          office_map_url: isOfficeDelivery && selectedOfficeDetails ? selectedOfficeDetails?.mapUrl || null : null,
           delivery_method: deliveryMethod,
           delivery_address: deliveryAddress,
           exchange_rate: exchangeRate,
@@ -571,7 +571,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                       </SelectContent>
                     </Select>
 
-                    {selectedOfficeDetails && (
+                    {selectedOfficeDetails && selectedOfficeDetails.mapUrl && (
                       <a
                         href={selectedOfficeDetails.mapUrl}
                         target="_blank"
