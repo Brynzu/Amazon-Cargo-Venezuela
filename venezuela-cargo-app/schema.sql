@@ -24,6 +24,8 @@ CREATE TABLE public.users (
   email TEXT NOT NULL,
 
   -- Profile Fields
+  office_address TEXT,
+  home_address TEXT,
   full_name TEXT,
   phone TEXT,
   state TEXT,
@@ -123,9 +125,11 @@ CREATE TABLE public.orders (
   admin_note TEXT,
 
   -- New Logistics Fields
+  delivery_method TEXT,
+  delivery_address TEXT,
   state TEXT NOT NULL,
   city TEXT NOT NULL,
-  office TEXT NOT NULL,
+  office TEXT,
   office_map_url TEXT,
 
   -- New Receipt URL (as requested by user)

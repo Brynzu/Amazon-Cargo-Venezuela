@@ -145,7 +145,11 @@ export function ClientOrderList({ initialOrders, user, lang = 'en' }: { initialO
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
                     <p className="text-sm font-medium text-gray-900">{t.destination}</p>
-                    <p className="text-sm text-gray-500 mt-0.5 truncate max-w-md">{order.office}</p>
+                    <p className="text-sm text-gray-500 mt-0.5 truncate max-w-md">
+                      {order.delivery_method === 'domicilio'
+                        ? `🏠 Domicilio: ${order.delivery_address || 'No address provided'}`
+                        : `🏢 Oficina: ${order.office || order.delivery_address || 'No office selected'}`}
+                    </p>
 
                     {order.status === 'rejected' && order.rejection_reason && (
                       <div className="mt-3 bg-red-50 border border-red-100 text-red-800 text-sm p-3 rounded-md">
