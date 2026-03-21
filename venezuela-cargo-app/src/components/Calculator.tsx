@@ -371,7 +371,20 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                 </button>
               )}
               <div className="space-y-2 pr-6">
-                <Label>{t.amazon_url}</Label>
+                <div className="flex justify-between items-center mb-1">
+                  <Label className="m-0">{t.amazon_url}</Label>
+                  {index === 0 && (
+                    <a
+                      href="https://www.amazon.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-xs font-semibold px-2 py-1 rounded bg-[#FF9900] text-black hover:bg-[#e38800] transition-colors"
+                    >
+                      <ExternalLink className="w-3 h-3 mr-1" />
+                      {lang === 'es' ? 'Buscar en Amazon' : 'Search Amazon'}
+                    </a>
+                  )}
+                </div>
                 <Input
                   placeholder="https://amazon.com/dp/..."
                   value={item.url}
