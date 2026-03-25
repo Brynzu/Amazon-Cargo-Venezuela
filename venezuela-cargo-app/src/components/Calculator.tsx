@@ -28,6 +28,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
   const [selectedState, setSelectedState] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedOfficeCode, setSelectedOfficeCode] = useState("");
+  const [shippingPartner, setShippingPartner] = useState<"Liberty Express" | "Tealca/Oceanika21">("Liberty Express");
   const [deliveryMethod, setDeliveryMethod] = useState<"oficina" | "domicilio">("oficina");
   const [homeAddress, setHomeAddress] = useState("");
 
@@ -70,7 +71,8 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
   let availableOffices = logisticsData.filter(o =>
     (!selectedState || o.state === selectedState) &&
-    (!selectedCity || o.city === selectedCity)
+    (!selectedCity || o.city === selectedCity) &&
+    (shippingPartner === "Liberty Express" ? o.carrier === "Liberty Express" : o.carrier === "Tealca")
   );
 
   // If user entered a postal code, sort matching offices to top
@@ -503,17 +505,31 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                   <Input id="whatsapp" placeholder="+58 412..." value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
                 </div>
 
-                <div className="space-y-2 mt-4">
-                  <Label>{lang === 'es' ? 'Método de Entrega' : 'Delivery Method'}</Label>
-                  <Select value={deliveryMethod} onValueChange={(val: "oficina" | "domicilio") => setDeliveryMethod(val)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder={lang === 'es' ? 'Selecciona...' : 'Select...'} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="oficina">{lang === 'es' ? 'Retiro en Oficina' : 'Office Pickup'}</SelectItem>
-                      <SelectItem value="domicilio">{lang === 'es' ? 'Entrega a Domicilio' : 'Home Delivery'}</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div className="space-y-2">
+                    <Label>{lang === 'es' ? 'Agencia de Envío' : 'Shipping Partner'}</Label>
+                    <Select value={shippingPartner} onValueChange={(val: "Liberty Express" | "Tealca/Oceanika21") => { setShippingPartner(val); setSelectedOfficeCode(""); }}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={lang === 'es' ? 'Selecciona...' : 'Select...'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Liberty Express">Liberty Express</SelectItem>
+                        <SelectItem value="Tealca/Oceanika21">Tealca / Oceanika21</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{lang === 'es' ? 'Método de Entrega' : 'Delivery Method'}</Label>
+                    <Select value={deliveryMethod} onValueChange={(val: "oficina" | "domicilio") => setDeliveryMethod(val)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder={lang === 'es' ? 'Selecciona...' : 'Select...'} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="oficina">{lang === 'es' ? 'Retiro en Oficina' : 'Office Pickup'}</SelectItem>
+                        <SelectItem value="domicilio">{lang === 'es' ? 'Entrega a Domicilio' : 'Home Delivery'}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 {deliveryMethod === "domicilio" && (
@@ -558,10 +574,10 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
                 {deliveryMethod === "oficina" && (
                   <div className="space-y-2">
-                    <Label>{t.select_office}</Label>
+                    <Label>{shippingPartner === "Liberty Express" ? t.select_office : (lang === 'es' ? 'Selecciona la Oficina (Tealca / Oceanika21)' : 'Select Office (Tealca / Oceanika21)')}</Label>
                     <Select value={selectedOfficeCode} onValueChange={setSelectedOfficeCode}>
                       <SelectTrigger className="h-auto whitespace-normal text-left py-3">
-                        <SelectValue placeholder={t.choose_office} />
+                        <SelectValue placeholder={shippingPartner === "Liberty Express" ? t.choose_office : (lang === 'es' ? 'Elige una sucursal de Tealca...' : 'Choose a Tealca location...')} />
                       </SelectTrigger>
                       <SelectContent className="max-w-[350px]">
                         {availableOffices.map((o) => {

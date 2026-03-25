@@ -1,0 +1,1215 @@
+[
+  {
+    "id": 16986,
+    "name": "Guatire",
+    "code": "1302",
+    "stateIds": [
+      653,
+      651
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.3313811433745!2d-66.54634118527969!3d10.474521367557937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2babc9f029ddeb%3A0xc746c073104859ae!2sTealca!5e0!3m2!1ses!2sve!4v1649791546454!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16989,
+    "name": "Charallave",
+    "code": "1501",
+    "stateIds": [
+      656,
+      651
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1963.2000314336487!2d-66.86417815783958!3d10.229282354698991!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2aeee458749825%3A0x786414cc92db39b7!2sTealca%20Charallave%201501%2F%20Tealca%20Charallave%20Centro%201501B!5e0!3m2!1ses!2sve!4v1649793920037!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16992,
+    "name": "Juan Griego",
+    "code": "2706B",
+    "stateIds": [
+      659,
+      657
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1957.7065762797672!2d-63.96542579999014!3d11.082554123827423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c31ed42250dc651%3A0xe8a4c9beba43bccb!2sTealca!5e0!3m2!1ses!2sve!4v1649795214160!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16993,
+    "name": "Cumaná",
+    "code": "2802",
+    "stateIds": [
+      661,
+      660
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d980.8957103327252!2d-64.18576697080928!3d10.454639518374853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c3271a510a7a4d9%3A0x3abc2737196eb76!2sTealca%20Cumana!5e0!3m2!1ses!2sve!4v1649795747869!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16994,
+    "name": "El Tigre",
+    "code": "2901",
+    "stateIds": [],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d985.4811367898208!2d-64.25798917082575!3d8.886607424607586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcd8171b5b29c21%3A0xbd420f3316eeded1!2sTealca!5e0!3m2!1ses!2sve!4v1649853748496!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 26849,
+    "name": "Ciudad Bolívar",
+    "code": "YY",
+    "stateIds": [
+      671,
+      814
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d150302.05143354138!2d-63.59365847444506!3d8.138149465562787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dce87069672c5f9%3A0xed66fc23d4afc6da!2sEdificio%20Arianne!5e0!3m2!1ses-419!2sve!4v1681417236917!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17530,
+    "name": "Quinta Crespo Internacional",
+    "code": "EXPNN",
+    "stateIds": [
+      741,
+      740
+    ]
+  },
+  {
+    "id": 17531,
+    "name": "Oficina Comercial Barquisimeto",
+    "code": "GG",
+    "stateIds": [
+      698,
+      697
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4949.383558552057!2d-69.3146595822648!3d10.072162337252886!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e87670c97d4c755%3A0xb4f66817ec9eb800!2sTEALCA!5e0!3m2!1ses!2sve!4v1650546768224!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17536,
+    "name": "La Guaira",
+    "code": "J1231",
+    "stateIds": [
+      727,
+      726
+    ],
+    "map": ""
+  },
+  {
+    "id": 17537,
+    "name": "Caribe",
+    "code": "J1232",
+    "stateIds": [
+      736,
+      726
+    ],
+    "map": ""
+  },
+  {
+    "id": 17557,
+    "name": "Oficina Comercial Maturín",
+    "code": "RR",
+    "stateIds": [
+      753,
+      669
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3932.1610879103805!2d-63.169731285283156!3d9.7524191799241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c3340dab23cbc99%3A0xc402731b2403ed51!2sTEALCA%20RR%20MATURIN!5e0!3m2!1ses!2sve!4v1650301658763!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 26848,
+    "name": "Av. Victoria",
+    "code": "FF",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1623.2444632080803!2d-66.9143266400747!3d10.485406464885685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e0!3m2!1ses!2sve!4v1763392758652!5m2!1ses!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 30027,
+    "name": "La Grita",
+    "code": "J8132",
+    "stateIds": [
+      855,
+      703
+    ]
+  },
+  {
+    "id": 37956,
+    "name": "Temblador",
+    "code": "J3008",
+    "stateIds": [
+      753,
+      669
+    ]
+  },
+  {
+    "id": 37957,
+    "name": "El Tejero Punta De Mata   El Furrial",
+    "code": "J3009",
+    "stateIds": [
+      753,
+      669
+    ]
+  },
+  {
+    "id": 17069,
+    "name": "Dr. Portillo",
+    "code": "8511",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.934241715705!2d-71.62546548527881!3d10.662212264207193!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e89991cefdbaaab%3A0x13724bdd5be09dd1!2sTealca%208511%20Dr.%20Portillo!5e0!3m2!1ses!2sve!4v1650486481322!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17070,
+    "name": "Los Chaguaramos",
+    "code": "AA",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3923.1814089339487!2d-66.89273718833341!3d10.486361264431732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDI5JzEwLjkiTiA2NsKwNTMnMjQuNiJX!5e0!3m2!1ses-419!2sve!4v1768597023022!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17525,
+    "name": "Oficina Comercial Maracaibo &#8211; Cecilio Acosta",
+    "code": "BB",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.910532119783!2d-71.63520158527858!3d10.664052364174049!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e89991094669809%3A0xcc4829640872a67e!2sTealca!5e0!3m2!1ses!2sve!4v1650487620296!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17527,
+    "name": "Oficina Comercial Maracay",
+    "code": "CC",
+    "stateIds": [
+      678,
+      679
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1167.3162030735718!2d-67.597209699515!3d10.231871331437302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e803cead2669f53%3A0xf09bd90b165ae556!2sTIENDA%20PRINCIPAL%20TEALCA%20MARACAY%20OFICINA%20CC!5e0!3m2!1ses!2sve!4v1650487901375!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17529,
+    "name": "Oficina Comercial Valencia",
+    "code": "DD",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.846320888238!2d-67.94875945729642!3d10.193132834579515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e806801daab251d%3A0x88a47aeded080c07!2sZona%20Industrial%20La%20Union!5e0!3m2!1ses!2sve!4v1650548192793!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 18174,
+    "name": "Maracaibo Oeste &#8211; La Limpia",
+    "code": "8513",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.771323632646!2d-71.65718!3d10.674850000000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xe5538c658aab993f!2zMTDCsDQwJzI5LjUiTiA3McKwMzknMjUuOSJX!5e0!3m2!1ses!2sve!4v1655408440035!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 27281,
+    "name": "Maracaibo Norte",
+    "code": "8514",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.4800054914526!2d-71.63980021155685!3d10.697411084488689!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e899ecc16adc273%3A0x1751bd2971c5ecd8!2sTealca%20-%20Maracaibo%20Norte!5e0!3m2!1ses!2sve!4v1682714304722!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 36228,
+    "name": "Maracaibo Circunvalacion 2 Sur Oeste",
+    "code": "8513B",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d490.16086494052246!2d-71.66441638112711!3d10.63480380955149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDM4JzA1LjAiTiA3McKwMzknNTAuOSJX!5e0!3m2!1ses!2sve!4v1719860507418!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 44084,
+    "name": "Maracaibo Centro Cc Gran Bazar",
+    "code": "8511B",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1648.6656553200733!2d-71.62043668618671!3d10.640798848470414!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDM4JzI4LjciTiA3McKwMzcnMTAuNyJX!5e0!3m2!1ses-419!2sve!4v1749043479233!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 45056,
+    "name": "Maracaibo Delicias Norte Centro Comercial El Pilar",
+    "code": "8513C",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3920.64956555981!2d-71.6267902890842!3d10.684285260841941!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDQxJzAzLjQiTiA3McKwMzcnMjcuMiJX!5e0!3m2!1ses-419!2sve!4v1753287960060!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17055,
+    "name": "Caja Seca",
+    "code": "8204C",
+    "stateIds": [
+      853,
+      710
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d246.19789621211913!2d-71.08463221959418!3d9.139444908462794!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e630eb9ef0c8e29%3A0x906ec067a672a284!2sTealca!5e0!3m2!1ses!2sve!4v1650314894244!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17056,
+    "name": "Mérida",
+    "code": "8301B",
+    "stateIds": [
+      710,
+      854
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3945.0866947441878!2d-71.15941772562842!3d8.587663191457102!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwMzUnMTUuNiJOIDcxwrAwOScyNC42Ilc!5e0!3m2!1ses-419!2sve!4v1773087085944!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17058,
+    "name": "El Vigía",
+    "code": "8307",
+    "stateIds": [
+      816,
+      710
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1972.3994427661382!2d-71.64864343168598!3d8.615297980548522!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e640c39be4c1305%3A0xaeab33a8e32268bb!2sTEALCA!5e0!3m2!1ses-419!2sve!4v1720624868635!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17059,
+    "name": "Cabimas",
+    "code": "8405",
+    "stateIds": [
+      715,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3924.2837913023172!2d-71.46040753528013!3d10.399020068889982!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e89c73ee7fcf7e7%3A0xa807413adebdeb17!2sTealca%20Cabimas!5e0!3m2!1ses!2sve!4v1650468457317!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17060,
+    "name": "Ciudad Ojeda",
+    "code": "8406",
+    "stateIds": [
+      716,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15706.832687733402!2d-71.32616067384664!3d10.204337251743397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e89d04ef194d3b1%3A0x4061544ee2cd8da4!2sTEALCA%20Ciudad%20Ojeda!5e0!3m2!1ses!2sve!4v1650472693399!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17067,
+    "name": "Maracaibo Sur (La Coromoto)",
+    "code": "8509B",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1166.0981851601603!2d-71.63458618670727!3d10.557943233530523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8996e383d9edef%3A0x4c7e1daa411360ab!2sTEALCA!5e0!3m2!1ses!2sve!4v1650483315125!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17519,
+    "name": "Bella Vista 5 De Julio",
+    "code": "8502",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3920.915708349125!2d-71.60921758527873!3d10.663650664181306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8998ef4f1ca839%3A0x464bf493d3adffc!2sTealca%20Bella%20Vista%20(8502)!5e0!3m2!1ses!2sve!4v1650472962738!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17520,
+    "name": "Delicias 5 De Julio",
+    "code": "8502B",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15683.517014799647!2d-71.62803743022462!3d10.666479399999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8998e1dc548b3f%3A0x7bdec138ecba8f2f!2sTEALCA!5e0!3m2!1ses!2sve!4v1650473956156!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17524,
+    "name": "Maracaibo Sur (San Francisco)",
+    "code": "8509",
+    "stateIds": [
+      717,
+      714
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3921.9760518108733!2d-71.64096158527913!3d10.581045165663152!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e89971413585791%3A0xb43981c68a97b589!2sTealca%20Maracaibo%20Sur%208509!5e0!3m2!1ses!2sve!4v1650483577362!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17052,
+    "name": "Paramillo",
+    "code": "8112",
+    "stateIds": [
+      706,
+      703
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.975186927667!2d-72.21713688529057!3d7.792451659272482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e666c5f405eacfd%3A0xde437adf0b7409a!2sAv.%20la%20ULA%2C%20San%20Crist%C3%B3bal%205001%2C%20T%C3%A1chira!5e0!3m2!1ses!2sve!4v1650313798924!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17053,
+    "name": "Valera",
+    "code": "8204",
+    "stateIds": [
+      708,
+      709
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7874.582055607662!2d-70.61442456511229!3d9.307460500000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e632887fcd5a3d5%3A0x21d7a156bb855b12!2sTealca!5e0!3m2!1ses!2sve!4v1650314127671!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17054,
+    "name": "Valera-Centro",
+    "code": "8204B",
+    "stateIds": [
+      708,
+      709
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7874.450566522813!2d-70.61105072603031!3d9.313296260732775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e6329691165ac07%3A0x1fd450d3bc90d1a1!2sTealca%20Valera%20centro%208204b!5e0!3m2!1ses!2sve!4v1650314251452!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17550,
+    "name": "La Fria",
+    "code": "8113",
+    "stateIds": [
+      852,
+      703
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1974.3982448248612!2d-72.2569831!3d8.2232103!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e668d9941487ca1%3A0x7f9d80e21a64dac9!2sTEALCA%20LA%20FRIA!5e0!3m2!1ses-419!2sve!4v1673468578290!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 33361,
+    "name": "San Cristóbal Sur",
+    "code": "8114",
+    "stateIds": [
+      706,
+      703
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d988.3228481084647!2d-72.23383813037684!3d7.758888899516262!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwNDUnMzIuMCJOIDcywrAxMyc1OS41Ilc!5e0!3m2!1ses!2sve!4v1712240158282!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 48419,
+    "name": "Tariba",
+    "code": "8115B",
+    "stateIds": [
+      703,
+      707
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3952.7430000074505!2d-72.22703028834665!3d7.817005306747101!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwNDknMDEuMiJOIDcywrAxMycyOC4wIlc!5e0!3m2!1ses!2sve!4v1769024777319!5m2!1ses!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 48420,
+    "name": "San Cristobal",
+    "code": "8115",
+    "stateIds": [
+      706,
+      703
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3953.055644948877!2d-72.2332902883467!3d7.783925307199817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwNDcnMDIuMSJOIDcywrAxMyc1MC42Ilc!5e0!3m2!1ses!2sve!4v1769024753151!5m2!1ses!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 48439,
+    "name": "Capacho",
+    "code": "8115C",
+    "stateIds": [
+      851,
+      703
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3952.674682129987!2d-72.31521028834644!3d7.824215306648261!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwNDknMjcuMiJOIDcywrAxOCc0NS41Ilc!5e0!3m2!1ses!2sve!4v1769024726131!5m2!1ses!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 49611,
+    "name": "San Antonio Del Tachira",
+    "code": "8112B",
+    "stateIds": [
+      883,
+      703
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3952.7468386806822!2d-72.44498028863694!3d7.816599992171548!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zN8KwNDgnNTkuOCJOIDcywrAyNiczMi42Ilc!5e0!3m2!1ses-419!2sve!4v1774271657729!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17043,
+    "name": "Carora",
+    "code": "7916",
+    "stateIds": [
+      700,
+      697
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3927.1295191747067!2d-70.08086708528127!3d10.170126172872475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e87ed619f747ef5%3A0xe9b938e74d3321c!2sCENTRO%20COMERCIAL%20PEDRO%20LEON%20TORRES!5e0!3m2!1ses!2sve!4v1650307453918!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17047,
+    "name": "Ureña",
+    "code": "8107",
+    "stateIds": [
+      703,
+      705
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d659.3765323497151!2d-72.45382504750624!3d7.91656163002476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e6644c618d3437b%3A0xa4dd9a1d6321fc5b!2sTealca%20Ure%C3%B1a!5e0!3m2!1ses!2sve!4v1650310128434!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17051,
+    "name": "San Cristóbal (Barrio Obrero)",
+    "code": "8111",
+    "stateIds": [
+      706,
+      703
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3953.166249159787!2d-72.22644398529067!3d7.772189109543638!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e666c97f14678bd%3A0x2379664af833cc5a!2sCalle%2013%20%26%20Carrera%2016%2C%20San%20Crist%C3%B3bal%205001%2C%20T%C3%A1chira!5e0!3m2!1ses!2sve!4v1650313244211!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 37953,
+    "name": "Barquisimeto Oeste",
+    "code": "7918",
+    "stateIds": [
+      698,
+      697
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3928.5386572394646!2d-69.35211028833615!3d10.054875272044418!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDAzJzE3LjUiTiA2OcKwMjAnNTguMyJX!5e0!3m2!1ses-419!2sve!4v1765973728432!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 37954,
+    "name": "Barquisimeto Oeste Av. Las Industrias",
+    "code": "7918B",
+    "stateIds": [
+      698,
+      697
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3928.332679448371!2d-69.37268608833598!3d10.071803271751383!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDA0JzE4LjUiTiA2OcKwMjInMTIuNCJX!5e0!3m2!1ses-419!2sve!4v1765973747472!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 37955,
+    "name": "Barquisimeto Carrera 19",
+    "code": "7918C",
+    "stateIds": [
+      698,
+      697
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3928.4094744879667!2d-69.32955028833597!3d10.065495271860625!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDAzJzU1LjgiTiA2OcKwMTknMzcuMSJX!5e0!3m2!1ses-419!2sve!4v1765973771344!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 40677,
+    "name": "Cabudare",
+    "code": "7915",
+    "stateIds": [
+      699,
+      697
+    ],
+    "map": ""
+  },
+  {
+    "id": 45131,
+    "name": "Alto Barinas",
+    "code": "8006",
+    "stateIds": [
+      701,
+      702
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3944.7149022952594!2d-70.26321028834339!3d8.623345295168933!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwMzcnMjQuMCJOIDcwwrAxNSczOC4zIlc!5e0!3m2!1ses-419!2sve!4v1765973648177!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 45132,
+    "name": "Barinas Centro  Comercial  Barinas",
+    "code": "8006B",
+    "stateIds": [
+      701,
+      702
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3944.7084286341064!2d-70.22464028834324!3d8.623965295159651!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwMzcnMjYuMyJOIDcwwrAxMycxOS40Ilc!5e0!3m2!1ses-419!2sve!4v1765973678913!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 45133,
+    "name": "Barinitas",
+    "code": "8007",
+    "stateIds": [
+      701,
+      856
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3943.2473264610744!2d-70.41227028909914!3d8.76278529306234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwNDUnNDYuMCJOIDcwwrAyNCczNC45Ilc!5e0!3m2!1ses-419!2sve!4v1753475654869!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17039,
+    "name": "Barquisimeto Este",
+    "code": "7910",
+    "stateIds": [
+      698,
+      697
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7856.662083710057!2d-69.30440879927791!3d10.071937742271704!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e87677838388329%3A0x228fd65d3524401b!2sTEALCA%20BARQUISIMETO%20ESTE!5e0!3m2!1ses!2sve!4v1650300922569!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17040,
+    "name": "Barquisimeto Sur",
+    "code": "7912",
+    "stateIds": [
+      698,
+      697
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.3764729180857!2d-69.31742578542392!3d10.06820652385667!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e87670dad75a497%3A0xb22343e3fcb30242!2sTEALCA!5e0!3m2!1ses!2sve!4v1652107857731!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17946,
+    "name": "Guanare",
+    "code": "7705",
+    "stateIds": [
+      777,
+      689
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d246.26855951798157!2d-69.7381517!3d9.0366532!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e7cf43d238cb019%3A0xd22f0b20787f9620!2sCC%20Giramara!5e0!3m2!1ses!2sve!4v1655300793053!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 39837,
+    "name": "San Carlos",
+    "code": "5402",
+    "stateIds": [
+      687,
+      688
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1966.595064473246!2d-68.58538242995743!3d9.664790085126777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwMzknNTQuMyJOIDY4wrAzNScwMy44Ilc!5e0!3m2!1ses-419!2sve!4v1733884002169!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 39838,
+    "name": "Calabozo",
+    "code": "5501",
+    "stateIds": [
+      735,
+      685
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1393.522663847019!2d-67.42778214402239!3d8.928087621358147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwNTUnNDIuNiJOIDY3wrAyNSczNy44Ilc!5e0!3m2!1ses-419!2sve!4v1733884349617!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 40586,
+    "name": "San Felipe",
+    "code": "7802",
+    "stateIds": [
+      695,
+      694
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3925.051232428065!2d-68.7436049242672!3d10.337785267129977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDIwJzE2LjAiTiA2OMKwNDQnMjcuNyJX!5e0!3m2!1ses-419!2sve!4v1736176773295!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 45129,
+    "name": "Coro",
+    "code": "7607",
+    "stateIds": [
+      692,
+      691
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3911.067065147285!2d-69.66861028907756!3d11.40267524728292!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDI0JzA5LjYiTiA2OcKwMzknNTcuNyJX!5e0!3m2!1ses-419!2sve!4v1754336271982!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 45130,
+    "name": "Punto Fijo",
+    "code": "7607B",
+    "stateIds": [
+      691,
+      693
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3906.835297930212!2d-70.19373028907444!3d11.706075241310302!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDQyJzIxLjkiTiA3MMKwMTEnMjguMSJX!5e0!3m2!1ses-419!2sve!4v1754336701248!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 47544,
+    "name": "Tinaquillo",
+    "code": "5403",
+    "stateIds": [
+      687,
+      859
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3930.238963817119!2d-68.31199028833692!3d9.91404527446475!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwNTQnNTAuNSJOIDY4wrAxOCczMy45Ilc!5e0!3m2!1ses!2sve!4v1765374166153!5m2!1ses!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17023,
+    "name": "Valencia (Distribuidor San Blas)",
+    "code": "5207",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.978672381736!2d-67.9902983852812!3d10.182387172661247!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e806790a9d698cb%3A0xedcd0d366edd0aa6!2sTEALCA%20Av.%20Bolivar%20Sur%205207!5e0!3m2!1ses!2sve!4v1650293148753!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17024,
+    "name": "Valencia (Plaza La Candelaria)",
+    "code": "5207B",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3927.0533025675904!2d-68.00766858528117!3d10.176322972765767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e80670b66fcf377%3A0x760eaee7f067294a!2sTealca%20Plaza%20Candelaria!5e0!3m2!1ses!2sve!4v1650293643905!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17025,
+    "name": "Valencia (Zona Industrial Norte)",
+    "code": "5208",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3927.064384674805!2d-67.98042378528126!3d10.175422172781246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8067bfb10f16f1%3A0xaca066435730b445!2sTEALCA%20Zona%20Industrial%20Norte%205208!5e0!3m2!1ses!2sve!4v1650295078989!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17026,
+    "name": "Naguanagua",
+    "code": "5209",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.38724778548203!2d-68.0097182517965!3d10.245773460629191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e805c522fd1ab51%3A0x45f996e710f8a5c9!2sTealca!5e0!3m2!1ses!2sve!4v1650295563431!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17027,
+    "name": "San Diego",
+    "code": "5210",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.644513885311!2d-67.96518458528111!3d10.209496072193426!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e805d4f739c36e7%3A0xcb55d79861af5b9!2sTealca%20San%20Diego!5e0!3m2!1ses!2sve!4v1650295905896!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17028,
+    "name": "Tocuyito",
+    "code": "5211",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.9176330156315!2d-68.03761428528118!3d10.1873443725758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8063b6a5ce5a65%3A0xa77bbb1cbb2cb63f!2sTealca%20Tocuyito%205211!5e0!3m2!1ses!2sve!4v1650296363193!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17029,
+    "name": "Guacara",
+    "code": "5214",
+    "stateIds": [
+      682,
+      684
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3926.4434008224575!2d-67.88019758833501!3d10.225777269064755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDEzJzMyLjgiTiA2N8KwNTInMzkuNCJX!5e0!3m2!1ses-419!2sve!4v1765973698355!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17030,
+    "name": "Valle De La Pascua",
+    "code": "5303",
+    "stateIds": [
+      685,
+      850
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3938.402983078961!2d-66.00628888528557!3d9.20820338869203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dd48521666eeaef%3A0x49f66cc4c2098f2b!2sTealca%20Valle%20de%20la%20Pascua!5e0!3m2!1ses!2sve!4v1650296843879!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17032,
+    "name": "Acarigua",
+    "code": "5401B",
+    "stateIds": [
+      690,
+      689
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3934.477356073028!2d-69.20843978528407!3d9.554054283174956!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e7dc16d187c2b5b%3A0xdecbb0eb41680044!2sTEALCA%20Acarigua%205401B!5e0!3m2!1ses!2sve!4v1650297557610!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17011,
+    "name": "Maracay Este (Av. Sucre)",
+    "code": "5113",
+    "stateIds": [
+      678,
+      679
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d38446.09607942291!2d-67.65752946575763!3d10.253160644004437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e803bacb7e42ae1%3A0x457a071da8baa7b2!2sTealca%20Av.%20Sucre%205113%20(Maracay%20Este)!5e0!3m2!1ses!2sve!4v1649867820523!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17012,
+    "name": "Tealca Maracay Sector Santa Ana",
+    "code": "5113B",
+    "stateIds": [
+      678,
+      679
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d412.69722940638167!2d-67.59342520200153!3d10.240614158906881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDE0JzI2LjgiTiA2N8KwMzUnMzUuMyJX!5e0!3m2!1ses!2sve!4v1704720751379!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17015,
+    "name": "Cagua",
+    "code": "5115",
+    "stateIds": [
+      678,
+      680
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d11107.06364748668!2d-67.46555787596877!3d10.185527173199077!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xdbf1e7fe441f4881!2sTealca%20Centro%20Comercial%20Piramide!5e0!3m2!1ses-419!2sve!4v1650397229717!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17018,
+    "name": "La Morita",
+    "code": "5117",
+    "stateIds": [
+      678,
+      681
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31411.273901192224!2d-67.52861283505482!3d10.228540416177376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e80231502fa7827%3A0xc18844da056d0e48!2sMultiservicios%20Express%20C.A%20(Tealca)!5e0!3m2!1ses!2sve!4v1650289295218!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17020,
+    "name": "La Victoria",
+    "code": "5118",
+    "stateIds": [
+      678,
+      826
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d490.8026931425858!2d-67.32389237392344!3d10.227545060681368!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a9e845fbe3891%3A0x751ffff8bda83d19!2sTealca!5e0!3m2!1ses!2sve!4v1650290419035!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17021,
+    "name": "Valencia (Av. Andrés Eloy Blanco)",
+    "code": "5201",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.620448212264!2d-68.0162934352811!3d10.211445672159755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e805d8c71c94559%3A0x37d579c494260347!2sTealca%20Valencia%205201%20Av.%20Andres%20Eloy%20Blanco!5e0!3m2!1ses!2sve!4v1650290806697!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17022,
+    "name": "Valencia Sur (Paseo Las Industrias)",
+    "code": "5206",
+    "stateIds": [
+      682,
+      683
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1651.1856018059145!2d-67.96115511545271!3d10.164121272651588!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8067d09f571067%3A0x90ad086983e4c511!2sTealca%20Valencia%205206%20Paseo%20Las%20Industrias!5e0!3m2!1ses!2sve!4v1650292632439!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 43017,
+    "name": "Maracay Oeste",
+    "code": "5119",
+    "stateIds": [
+      678,
+      679
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1167.255812000398!2d-67.60566767252357!3d10.248280203013817!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDE0JzUzLjYiTiA2N8KwMzYnMTguNyJX!5e0!3m2!1ses-419!2sve!4v1744680440083!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16999,
+    "name": "Anaco",
+    "code": "2912",
+    "stateIds": [
+      813,
+      807
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1391.5373529392696!2d-64.46550601944197!3d9.433501131165718!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dd2a58ed9d8b5c9%3A0x3c89afdc974b51ee!2sCentro%20Comercial%20Anaco%20Center!5e0!3m2!1ses-419!2sve!4v1690311856507!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17001,
+    "name": "Maturín Este (C.C. Juanico)",
+    "code": "3005",
+    "stateIds": [
+      753,
+      669
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15729.379028263686!2d-63.171709230224636!3d9.736835900000015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c33472c091073bf%3A0x9525cea9e954cb02!2sC.C.%20Juanico%20Este!5e0!3m2!1ses!2sve!4v1649859549720!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17004,
+    "name": "Puerto Ordaz Castillito",
+    "code": "3205",
+    "stateIds": [
+      671,
+      673
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3947.8805109961986!2d-62.7186236812816!3d8.314671377156001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwMTgnNTIuOCJOIDYywrA0Mic1Ny44Ilc!5e0!3m2!1ses-419!2sve!4v1767897287688!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17005,
+    "name": "Puerto Ordaz Alta Vista",
+    "code": "3205B",
+    "stateIds": [
+      671,
+      673
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d246.75509017281152!2d-62.732102313530675!3d8.294693955115584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOMKwMTcnNDEuMiJOIDYywrA0Myc1NS40Ilc!5e0!3m2!1ses-419!2sve!4v1774059675241!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17006,
+    "name": "Unare",
+    "code": "3207",
+    "stateIds": [
+      671,
+      674
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31585.831997658064!2d-62.765815535579435!3d8.279992787145352!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcbf93eb4926077%3A0x8dec672df88a35d1!2sTEALCA%20Unare%203207!5e0!3m2!1ses!2sve!4v1649863990151!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17007,
+    "name": "San Félix (El Roble)",
+    "code": "3208",
+    "stateIds": [
+      671,
+      815
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d493.43717626336587!2d-62.67342653454987!3d8.352629297730799!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcbf1fd240d9cdb%3A0x968a44348a30dbe1!2sTealca%20El%20Roble%20La%20Cari%C3%B1osa!5e0!3m2!1ses!2sve!4v1649864461269!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17008,
+    "name": "Upata",
+    "code": "3208B",
+    "stateIds": [
+      671,
+      857
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d212459.44825232547!2d-62.528893152537115!3d8.32407712272616!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcbefddd55ce531%3A0xe265875b6797f705!2sTealca%20Manuel%20Piar%203208B!5e0!3m2!1ses!2sve!4v1649866003887!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17009,
+    "name": "Ventuari",
+    "code": "3209",
+    "stateIds": [
+      671,
+      673
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d830.0454181217584!2d-62.77065861438512!3d8.264555234141014!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcbfed2d93e6787%3A0x2ab1e833c7fe657a!2sTEALCA%20Av%20Atlantico!5e0!3m2!1ses!2sve!4v1649866431322!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17010,
+    "name": "Tucupita",
+    "code": "3300",
+    "stateIds": [
+      676,
+      677
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d255.30524258227558!2d-62.050651882605514!3d9.059755198234159!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwMDMnMzQuNyJOIDYywrAwMycwMS44Ilc!5e0!3m2!1ses!2sve!4v1712595168736!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 49173,
+    "name": "Tipuro",
+    "code": "3007",
+    "stateIds": [
+      753,
+      669
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3931.784188313745!2d-63.20095492561168!3d9.784319990310372!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zOcKwNDcnMDMuNiJOIDYzwrAxMSc1NC4yIlc!5e0!3m2!1ses-419!2sve!4v1773425991034!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16991,
+    "name": "Porlamar",
+    "code": "2706",
+    "stateIds": [
+      818,
+      657
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1958.3267180249995!2d-63.84011434203844!3d10.989509998044303!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xbd745286c9135e77!2zMTDCsDU5JzIyLjIiTiA2M8KwNTAnMjAuNSJX!5e0!3m2!1ses!2sve!4v1655738469827!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16996,
+    "name": "Lechería",
+    "code": "2906",
+    "stateIds": [
+      807,
+      810
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3926.988844017335!2d-64.66224698833533!3d10.181560869840153!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDEwJzUzLjYiTiA2NMKwMzknMzQuOCJX!5e0!3m2!1ses!2sve!4v1770408520053!5m2!1ses!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16997,
+    "name": "Barcelona",
+    "code": "2907",
+    "stateIds": [
+      807,
+      811
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.4583719340882!2d-64.68620011977275!3d10.153486344489119!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2d72e21bd16519%3A0xa1f7727ea6d22cc1!2sTealca%20Barcelona%202907!5e0!3m2!1ses!2sve!4v1649857182329!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16998,
+    "name": "Puerto La Cruz",
+    "code": "2909",
+    "stateIds": [
+      807,
+      812
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.655073893186!2d-64.63358188528098!3d10.208640472208243!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2d7419b0864a7f%3A0x828f8d9c72b355bf!2sTealca!5e0!3m2!1ses!2sve!4v1649857574001!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17579,
+    "name": "Charallave",
+    "code": "1501",
+    "stateIds": [
+      656,
+      651
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1963.1990529362138!2d-66.86421775274769!3d10.229440604422663!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2aeee458749825%3A0x786414cc92db39b7!2sTealca%20Charallave%201501%2F%20Tealca%20Charallave%20Centro%201501B!5e0!3m2!1ses!2sve!4v1658780052542!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17583,
+    "name": "Cumaná",
+    "code": "2802",
+    "stateIds": [
+      661,
+      660
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3923.5827939890983!2d-64.18780028833359!3d10.45464326500143!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDI3JzE2LjciTiA2NMKwMTEnMDYuOCJX!5e0!3m2!1ses-419!2sve!4v1765973793871!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17584,
+    "name": "El Tigre",
+    "code": "2901",
+    "stateIds": [
+      807,
+      808
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d985.4811367898208!2d-64.25798917082575!3d8.886607424607586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcd8171b5b29c21%3A0xbd420f3316eeded1!2sTealca!5e0!3m2!1ses!2sve!4v1649853748496!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 40310,
+    "name": "Cocheima",
+    "code": "2706C",
+    "stateIds": [
+      849,
+      657
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3915.9753320578266!2d-63.860314924261985!3d11.040476254266274!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDAyJzI1LjciTiA2M8KwNTEnMjcuOSJX!5e0!3m2!1ses-419!2sve!4v1734977366868!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 40932,
+    "name": "Carupano",
+    "code": "2803",
+    "stateIds": [
+      723,
+      660
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3920.9362645031624!2d-63.25377492426494!3d10.662055261291455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDM5JzQzLjQiTiA2M8KwMTUnMDQuMyJX!5e0!3m2!1ses-419!2sve!4v1737382662761!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16987,
+    "name": "San Antonio De Los Altos",
+    "code": "1405",
+    "stateIds": [
+      651,
+      829
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7849.194979329187!2d-66.96645159373652!3d10.374032999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2af37d6b775be7%3A0x74d20ca8abe84277!2sTEALCA%20Los%20Castores!5e0!3m2!1ses-419!2sve!4v1689345685123!5m2!1ses-419!2sve\" width=\"773\" height=\"443\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17577,
+    "name": "Guatire",
+    "code": "1302",
+    "stateIds": [
+      653,
+      651
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3923.3118421856707!2d-66.54814838833356!3d10.47606466461684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDI4JzMzLjgiTiA2NsKwMzInNDQuMSJX!5e0!3m2!1ses-419!2sve!4v1765973628136!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 18141,
+    "name": "Guarenas",
+    "code": "1305",
+    "stateIds": [
+      718,
+      651
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.20980965861241!2d-66.62138264506856!3d10.472501096859506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a553ee5c3018f%3A0x6fb2e5cc3a4e145!2sFORUM%20SuperMayorista!5e0!3m2!1ses!2sve!4v1655310846364!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 27279,
+    "name": "Los Teques",
+    "code": "1405B",
+    "stateIds": [
+      655,
+      651
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d981.2134734012476!2d-67.03343872466985!3d10.353565316982037!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a8cee65406c57%3A0x9fb6a3eaf8f4eeae!2sTEALCA%20Los%20Teques!5e0!3m2!1ses-419!2sve!4v1689103250874!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 28285,
+    "name": "El Cafetal",
+    "code": "1142",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.5399541189936!2d-66.83215822488555!3d10.458033064985711!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a580d0c2bc05d%3A0x988da88b14c11f0d!2sTEALCA!5e0!3m2!1ses-419!2sve!4v1687288927251!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 42815,
+    "name": "Junquito",
+    "code": "1141",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d490.41274357164497!2d-67.0051492854069!3d10.476846032190121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDI4JzM2LjgiTiA2N8KwMDAnMTcuNSJX!5e0!3m2!1ses-419!2sve!4v1743518971893!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 45057,
+    "name": "Ccct",
+    "code": "1137B",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3923.1963124454082!2d-66.85776028908595!3d10.485185264454415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDI5JzA2LjciTiA2NsKwNTEnMTguNyJX!5e0!3m2!1ses-419!2sve!4v1753287858144!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 49612,
+    "name": "Maiquetia",
+    "code": "1234",
+    "stateIds": [
+      884,
+      726
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3921.7708626424765!2d-66.95403028860899!3d10.597079989497427!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDM1JzQ5LjUiTiA2NsKwNTcnMDUuMiJX!5e0!3m2!1ses-419!2sve!4v1774272414590!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16963,
+    "name": "Los Palos Grandes",
+    "code": "1127",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5548.004067925587!2d-66.84694313503596!3d10.49819885321661!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a59ae75c0aec3%3A0x9d3b2d6a22dca3c6!2sTEALCA%20Los%20Palos%20Grandes!5e0!3m2!1ses!2sve!4v1649709388365!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16964,
+    "name": "La Candelaria",
+    "code": "1128",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3922.9026018507407!2d-66.91100628527941!3d10.508337266958398!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a5ecdfb359a41%3A0x40b7b6a93cad535!2sTEALCA!5e0!3m2!1ses!2sve!4v1649772629004!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16965,
+    "name": "El Cementerio",
+    "code": "1128B",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15692.991909495755!2d-66.92720623022464!3d10.481107499999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a5f390aba02b1%3A0xf522fdc882596f4b!2sMercado%20Merposur!5e0!3m2!1ses!2sve!4v1649773692473!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16966,
+    "name": "La Candelaria  C.C. Lord Center",
+    "code": "1128C",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3922.938280376129!2d-66.90242048527946!3d10.50552756700829!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a592da10aaa99%3A0xa1bf38056ff82d72!2sCentro%20Comercial%20Lord%20Center!5e0!3m2!1ses!2sve!4v1649775826874!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16969,
+    "name": "Los Caobos",
+    "code": "1131",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d980.7546478476844!2d-66.88774487080924!3d10.4992003181833!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a5926c1ebd933%3A0x73a3ce6b827093ae!2sTEALCA%20LOS%20CAOBOS%20-%20SAN%20BERNARDINO%201131!5e0!3m2!1ses!2sve!4v1649788422154!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16970,
+    "name": "Filas De Mariches",
+    "code": "1132",
+    "stateIds": [
+      652,
+      651
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.21010069392935!2d-66.77134749324958!3d10.472133191742419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a57bb46a6e94b%3A0x480b236f37665c1c!2sTealca%20Filas%20De%20Mariche!5e0!3m2!1ses!2sve!4v1649788899714!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16971,
+    "name": "Prados Del Este",
+    "code": "1133",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.22533805837017!2d-66.87179776882448!3d10.452853368809496!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a589d857104bb%3A0x91cb318c1b2f942e!2sC.C.%20La%20Pir%C3%A1mide!5e0!3m2!1ses!2sve!4v1649789828913!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17311,
+    "name": "El Rosal &#8211; Chacao",
+    "code": "1137",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d583.1763756711237!2d-66.85977600821994!3d10.490622667219814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a58fef85627fd%3A0xee7bd76544c1d285!2sTealca!5e0!3m2!1ses!2sve!4v1649790456385!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16952,
+    "name": "Sabana Grande",
+    "code": "1102",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d980.763686666753!2d-66.8787337708093!3d10.496350618195574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a591fb98ad3ad%3A0x2770687aaa3f621!2sTealca!5e0!3m2!1ses!2sve!4v1649434323992!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16956,
+    "name": "Boleíta",
+    "code": "1114",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1387.0311400856046!2d-66.82145899841052!3d10.491481591634887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a5963e07ed3fb%3A0xdcf5e567742ca2a0!2sTealca!5e0!3m2!1ses!2sve!4v1649705108212!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16957,
+    "name": "Montecristo",
+    "code": "1114B",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.0459152442386!2d-66.83019658527961!3d10.497046767158764!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a59c96f4f048d%3A0xc07bc49ca8f87b62!2s4ta%20Transversal%20%26%203ra%20Transversal%2C%20Caracas%201071%2C%20Miranda!5e0!3m2!1ses!2sve!4v1649768212010!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16958,
+    "name": "La California",
+    "code": "1114C",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d980.8124470979727!2d-66.8194392049874!3d10.480964533094378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a582fc1bfca61%3A0x5b61eb309b9ce1f1!2sEdificio%20Premier!5e0!3m2!1ses!2sve!4v1649770806538!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 16962,
+    "name": "El Paraíso",
+    "code": "1126",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.217521715983!2d-66.9413572352797!3d10.483511467398744!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a5fab1e1d2ae7%3A0x81d461328595adb9!2sTealca%201126!5e0!3m2!1ses!2sve!4v1649708856021!5m2!1ses!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 17309,
+    "name": "Catia",
+    "code": "1125",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15692.072487070665!2d-66.95081722660814!3d10.499237328077415!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2a5f3cbfe19589%3A0x5cab07165233f073!2sTealca%20Catia!5e0!3m2!1ses-419!2sve!4v1649359429618!5m2!1ses-419!2sve\" width=\"773\" height=\"441\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 43631,
+    "name": "San Martin",
+    "code": "1119",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1166.3331759082678!2d-66.93679284274636!3d10.49581458482786!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDI5JzQ0LjIiTiA2NsKwNTYnMTAuNSJX!5e0!3m2!1ses-419!2sve!4v1748526414162!5m2!1ses-419!2sve\" width=\"600\" height=\"450\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  },
+  {
+    "id": 47487,
+    "name": "La Trinidad",
+    "code": "1110",
+    "stateIds": [
+      741,
+      740
+    ],
+    "map": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d2310.763911720398!2d-66.87382073048575!3d10.43586862438597!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTDCsDI2JzA5LjUiTiA2NsKwNTInMjAuMSJX!5e0!3m2!1ses-419!2sve!4v1765225027317!5m2!1ses-419!2sve\" width=\"800\" height=\"600\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+  }
+]

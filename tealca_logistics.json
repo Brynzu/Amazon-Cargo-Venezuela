@@ -1,16 +1,22 @@
-export type Carrier = "Liberty Express" | "Tealca";
-
-export interface CourierOffice {
-  carrier: Carrier;
-  state: string;
-  city: string;
-  officeName: string;
-  fullAddress: string;
-  postalCode: string;
-  mapUrl: string;
-}
-
-export const tealcaData: CourierOffice[] = [
+[
+  {
+    "carrier": "Tealca",
+    "officeName": "Guatire",
+    "fullAddress": "Oficina Guatire (1302)",
+    "postalCode": "1302",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923.3313811433745!2d-66.54634118527969!3d10.474521367557937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2babc9f029ddeb%3A0xc746c073104859ae!2sTealca!5e0!3m2!1ses!2sve!4v1649791546454!5m2!1ses!2sve",
+    "state": "Miranda",
+    "city": "Guatire"
+  },
+  {
+    "carrier": "Tealca",
+    "officeName": "Charallave",
+    "fullAddress": "Oficina Charallave (1501)",
+    "postalCode": "1501",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1963.2000314336487!2d-66.86417815783958!3d10.229282354698991!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c2aeee458749825%3A0x786414cc92db39b7!2sTealca%20Charallave%201501%2F%20Tealca%20Charallave%20Centro%201501B!5e0!3m2!1ses!2sve!4v1649793920037!5m2!1ses!2sve",
+    "state": "Miranda",
+    "city": "Charallave"
+  },
   {
     "carrier": "Tealca",
     "officeName": "Juan Griego",
@@ -19,6 +25,24 @@ export const tealcaData: CourierOffice[] = [
     "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1957.7065762797672!2d-63.96542579999014!3d11.082554123827423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c31ed42250dc651%3A0xe8a4c9beba43bccb!2sTealca!5e0!3m2!1ses!2sve!4v1649795214160!5m2!1ses!2sve",
     "state": "Nueva Esparta",
     "city": "Juan Griego"
+  },
+  {
+    "carrier": "Tealca",
+    "officeName": "Cumaná",
+    "fullAddress": "Oficina Cumaná (2802)",
+    "postalCode": "2802",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d980.8957103327252!2d-64.18576697080928!3d10.454639518374853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c3271a510a7a4d9%3A0x3abc2737196eb76!2sTealca%20Cumana!5e0!3m2!1ses!2sve!4v1649795747869!5m2!1ses!2sve",
+    "state": "Sucre",
+    "city": "Cumaná"
+  },
+  {
+    "carrier": "Tealca",
+    "officeName": "El Tigre",
+    "fullAddress": "Oficina El Tigre (2901)",
+    "postalCode": "2901",
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d985.4811367898208!2d-64.25798917082575!3d8.886607424607586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8dcd8171b5b29c21%3A0xbd420f3316eeded1!2sTealca!5e0!3m2!1ses!2sve!4v1649853748496!5m2!1ses!2sve",
+    "state": "",
+    "city": "El Tigre"
   },
   {
     "carrier": "Tealca",
@@ -1073,223 +1097,4 @@ export const tealcaData: CourierOffice[] = [
     "state": "D.Capital",
     "city": "La Trinidad"
   }
-];
-
-export const logisticsData: CourierOffice[] = [
-  ...tealcaData,
-  {
-    carrier: "Liberty Express",
-    state: "Miranda",
-    city: "San Antonio de Los Altos",
-    officeName: "C.C. Los Altos",
-    fullAddress: "Centro Comercial Los Altos, Planta Baja, San Antonio de Los Altos",
-    postalCode: "1204",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Centro+Comercial+Los+Altos+San+Antonio"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Miranda",
-    city: "Guarenas",
-    officeName: "Buenaventura",
-    fullAddress: "Centro Comercial Buenaventura, Nivel Planta Baja, Guarenas",
-    postalCode: "1220",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Buenaventura+Guarenas"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Miranda",
-    city: "Los Teques",
-    officeName: "Centro",
-    fullAddress: "Calle Miquilén, Edificio Centro Comercial Luz, Los Teques",
-    postalCode: "1201",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Los+Teques"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Miranda",
-    city: "Guatire",
-    officeName: "Castillejo",
-    fullAddress: "Centro Comercial Castillejo, Nivel Planta Baja, Guatire",
-    postalCode: "1221",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Guatire"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Miranda",
-    city: "Charallave",
-    officeName: "Matalinda",
-    fullAddress: "Centro Comercial Matalinda, Charallave",
-    postalCode: "1210",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Charallave"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Miranda",
-    city: "Cúa",
-    officeName: "Centro",
-    fullAddress: "Centro Comercial Colonial, Nivel Planta Baja, Cúa",
-    postalCode: "1211",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Cua"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Distrito Capital",
-    city: "Caracas",
-    officeName: "Chacao",
-    fullAddress: "Av. Francisco de Miranda, Edificio Liberty, Planta Baja, Chacao, Caracas",
-    postalCode: "1060",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Chacao+Caracas"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Distrito Capital",
-    city: "Caracas",
-    officeName: "La Candelaria",
-    fullAddress: "Esq. Peligro a Puente República, Edif. Centro Villasmil, PB, La Candelaria",
-    postalCode: "1010",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+La+Candelaria+Caracas"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Aragua",
-    city: "Maracay",
-    officeName: "Las Delicias",
-    fullAddress: "Av. Las Delicias, Centro Comercial Locatel, Planta Baja",
-    postalCode: "2102",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Las+Delicias+Maracay"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Carabobo",
-    city: "Valencia",
-    officeName: "El Trigal",
-    fullAddress: "Av. Mañongo, C.C. Patio Trigal",
-    postalCode: "2001",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+El+Trigal+Valencia"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Lara",
-    city: "Barquisimeto",
-    officeName: "Este",
-    fullAddress: "Av. Los Leones, Centro Empresarial",
-    postalCode: "3001",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Los+Leones+Barquisimeto"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Zulia",
-    city: "Maracaibo",
-    officeName: "5 de Julio",
-    fullAddress: "Av. 5 de Julio, entre Av. 10 y 11, Maracaibo",
-    postalCode: "4002",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+5+de+Julio+Maracaibo"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Anzoátegui",
-    city: "Lechería",
-    officeName: "Principal",
-    fullAddress: "Av. Principal de Lechería, Centro Comercial",
-    postalCode: "6016",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Lecheria"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Bolívar",
-    city: "Puerto Ordaz",
-    officeName: "Alta Vista",
-    fullAddress: "Carrera Guri, Sector Alta Vista Sur",
-    postalCode: "8050",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Alta+Vista+Puerto+Ordaz"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Monagas",
-    city: "Maturín",
-    officeName: "Juanico",
-    fullAddress: "Av. Alirio Ugarte Pelayo, C.C. Monagas Plaza",
-    postalCode: "6201",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Maturin"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Nueva Esparta",
-    city: "Porlamar",
-    officeName: "Sigo",
-    fullAddress: "Av. Juan Bautista Arismendi, C.C. Sigo",
-    postalCode: "6301",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Porlamar"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Táchira",
-    city: "San Cristóbal",
-    officeName: "Barrio Obrero",
-    fullAddress: "Carrera 22 con Calle 10, Barrio Obrero",
-    postalCode: "5001",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+San+Cristobal"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Mérida",
-    city: "Mérida",
-    officeName: "Las Américas",
-    fullAddress: "Av. Las Américas, C.C. Plaza Mayor",
-    postalCode: "5101",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Merida"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Falcón",
-    city: "Punto Fijo",
-    officeName: "Sambil",
-    fullAddress: "Av. Intercomunal Alí Primera, C.C. Sambil Paraguaná",
-    postalCode: "4102",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Punto+Fijo"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Portuguesa",
-    city: "Acarigua",
-    officeName: "Centro",
-    fullAddress: "Av. Libertador, Edificio Central",
-    postalCode: "3301",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Acarigua"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Barinas",
-    city: "Barinas",
-    officeName: "Alto Barinas",
-    fullAddress: "Av. Los Andes, C.C. Cima",
-    postalCode: "5201",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Barinas"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "Yaracuy",
-    city: "San Felipe",
-    officeName: "Independencia",
-    fullAddress: "5ta Avenida con Calle 31",
-    postalCode: "3201",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+San+Felipe"
-  },
-  {
-    carrier: "Liberty Express",
-    state: "La Guaira",
-    city: "Maiquetía",
-    officeName: "Centro",
-    fullAddress: "Calle Los Baños, Centro Comercial Maiquetía Plaza",
-    postalCode: "1160",
-    mapUrl: "https://www.google.com/maps/search/?api=1&query=Liberty+Express+Maiquetia"
-  }
-];
-
-export const getUniqueStates = () => {
-  return Array.from(new Set(logisticsData.map(o => o.state))).sort();
-};
-
-export const getCitiesByState = (state: string) => {
-  return Array.from(new Set(logisticsData.filter(o => o.state === state).map(o => o.city))).sort();
-};
+]
