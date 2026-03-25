@@ -75,12 +75,24 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
     (shippingPartner === "Liberty Express" ? o.carrier === "Liberty Express" : o.carrier === "Tealca")
   );
 
+  // Sort offices alphabetically by state, then by city, then by name
+  availableOffices.sort((a, b) => {
+    if (a.state !== b.state) return a.state.localeCompare(b.state);
+    if (a.city !== b.city) return a.city.localeCompare(b.city);
+    return a.officeName.localeCompare(b.officeName);
+  });
+
   // If user entered a postal code, sort matching offices to top
   if (postalCodeInput?.trim().length > 2) {
     availableOffices = availableOffices.sort((a, b) => {
       const aMatch = a.postalCode.startsWith(postalCodeInput?.trim() || "") ? 1 : 0;
       const bMatch = b.postalCode.startsWith(postalCodeInput?.trim() || "") ? 1 : 0;
-      return bMatch - aMatch;
+      if (aMatch !== bMatch) return bMatch - aMatch;
+
+      // If zip match is same, maintain alphabetical order
+      if (a.state !== b.state) return a.state.localeCompare(b.state);
+      if (a.city !== b.city) return a.city.localeCompare(b.city);
+      return a.officeName.localeCompare(b.officeName);
     });
   }
 
