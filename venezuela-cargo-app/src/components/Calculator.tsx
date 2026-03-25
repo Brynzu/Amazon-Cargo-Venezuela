@@ -61,12 +61,9 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
 
   const validCitiesForState = selectedState ? getCitiesByState(selectedState) : [];
 
-  // If a zip code is entered, filter the available cities to only those that match the zip code
+  // Only show cities for the selected shipping partner, avoiding filtering them out strictly by postal code
   const cities = validCitiesForState.filter(city => {
-    if (postalCodeInput?.trim().length >= 3) {
-      return logisticsData.some(o => o.state === selectedState && o.city === city && o.postalCode.startsWith(postalCodeInput?.trim() || ""));
-    }
-    return true;
+    return logisticsData.some(o => o.state === selectedState && o.city === city && (shippingPartner === "Liberty Express" ? o.carrier === "Liberty Express" : o.carrier === "Tealca"));
   });
 
   let availableOffices = logisticsData.filter(o =>
@@ -82,7 +79,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
     return a.officeName.localeCompare(b.officeName);
   });
 
-  // If user entered a postal code, sort matching offices to top
+  // If user entered a postal code, sort matching offices to top, but DO NOT filter them out
   if (postalCodeInput?.trim().length > 2) {
     availableOffices = availableOffices.sort((a, b) => {
       const aMatch = a.postalCode.startsWith(postalCodeInput?.trim() || "") ? 1 : 0;
@@ -558,11 +555,12 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                   </div>
                   <div className="space-y-2 col-span-1">
                     <Label>{t.state}</Label>
-                    <Select value={selectedState} onValueChange={(val) => { setSelectedState(val); setSelectedCity(""); setSelectedOfficeCode(""); }}>
+                    <Select value={selectedState} onValueChange={(val) => { setSelectedState(val === "any" ? "" : val); setSelectedCity(""); setSelectedOfficeCode(""); }}>
                       <SelectTrigger>
                         <SelectValue placeholder={t.any} />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="any">{t.any}</SelectItem>
                         {states.map(s => (
                           <SelectItem key={s} value={s}>{s}</SelectItem>
                         ))}
@@ -571,11 +569,12 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                   </div>
                   <div className="space-y-2 col-span-1">
                     <Label>{t.city}</Label>
-                    <Select value={selectedCity} onValueChange={(val) => { setSelectedCity(val); setSelectedOfficeCode(""); }} disabled={!selectedState}>
+                    <Select value={selectedCity} onValueChange={(val) => { setSelectedCity(val === "any" ? "" : val); setSelectedOfficeCode(""); }} disabled={!selectedState}>
                       <SelectTrigger>
                         <SelectValue placeholder={t.any} />
                       </SelectTrigger>
                       <SelectContent>
+                        <SelectItem value="any">{t.any}</SelectItem>
                         {cities.map(c => (
                           <SelectItem key={c} value={c}>{c}</SelectItem>
                         ))}
