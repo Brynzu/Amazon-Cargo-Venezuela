@@ -386,7 +386,7 @@ export function Calculator({ user, defaultLang = 'en' }: { user: any, defaultLan
                   <Label className="m-0">{t.amazon_url}</Label>
                   {index === 0 && (
                     <a
-                      href="https://www.amazon.com"
+                      href="https://www.amazon.com/?tag=dfyovzla-20"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center text-xs font-semibold px-2 py-1 rounded bg-[#FF9900] text-black hover:bg-[#e38800] transition-colors"
